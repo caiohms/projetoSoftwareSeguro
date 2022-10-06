@@ -16,10 +16,15 @@ public class MenuView {
     }
 
     private void showOptionsMenu() {
-        System.out.println("***********");
-        System.out.println("Menu");
-        System.out.println("1- Cadastras");
-        System.out.println("2- Listar");
-        System.out.println("outro- Sair");
+        System.out.print("\n##-------LarDoceJar Menu-------##\n\n");
+        System.out.print("|-------------------------------|\n");
+        System.out.print("| Opcao 1 - Login Comprador     |\n");
+        System.out.print("| Opcao 2 - Login Vendedor      |\n");
+        System.out.print("| Opcao 3 - Cadastrar Uusario   |\n");
+        System.out.print("| Opcao 4 - Sair                |\n");
+        System.out.print("|-------------------------------|\n");
+        System.out.print("Digite uma opção: ");
+
+
     }
 }

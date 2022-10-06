@@ -1,5 +1,7 @@
-import java.sql.*;
+import controller.MainController;
 
+import java.sql.*;
+import model.Usuario;
 
 
 /*
@@ -13,9 +15,11 @@ public class Main {
 * */
 
 public class Main {
+	Usuario usuario;
 
 	public static void main(String[] args) {
-		System.out.println("test");
+
+		MainController menu = new MainController();
 	}
 
 	private static void runSql(Connection conn) {

@@ -13,7 +13,8 @@ public class AutenticacaoView {
     }
 
     public Usuario login(Usuario usuario){
-        System.out.print("E-mail: ");
+
+        System.out.print("\nE-mail: ");
         usuario.setEmail(sc.nextLine());
 
         System.out.print("Senha: ");
