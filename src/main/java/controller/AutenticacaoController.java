@@ -1,33 +1,48 @@
 package controller;
 
 import dao.AutenticacaoDAO;
+import model.Comprador;
 import model.Usuario;
+import model.Vendedor;
 import view.AutenticacaoView;
 
 public class AutenticacaoController {
 
-    private AutenticacaoView aview;
-    private AutenticacaoDAO adao;
-    private Usuario user;
+	private final AutenticacaoView aView;
 
-    public AutenticacaoController(){
+	public AutenticacaoController() {
+		aView = new AutenticacaoView();
+	}
 
-        aview = new AutenticacaoView();
-        Usuario user = new Usuario();
-        while (user == null) {
-            user = aview.login(user);
+	public Usuario authComprador() {
+		Usuario user = null;
+		AutenticacaoDAO<Comprador> aDao = new AutenticacaoDAO<>(Comprador.class);
 
-            adao = new AutenticacaoDAO();
-            if (adao.autenticarUsuario(user)) {
-                aview.usuarioAutenticado();
+		while (user == null) {
+			user = aView.login();
+			if (aDao.autenticarUsuario(user)) {
+				aView.usuarioAutenticado();
+			} else {
+				aView.usuarioNaoAutenticado();
+			}
+		}
 
-            } else {
-                aview.usuarioNaoAutenticado();
-            }
-        }
-    }
+		return user;
+	}
 
-    public Usuario getUsuario() {
-        return this.user;
-    }
+	public Usuario authVendedor() {
+		Usuario user = null;
+		AutenticacaoDAO<Vendedor> aDao = new AutenticacaoDAO<>(Vendedor.class);
+
+		while (user == null) {
+			user = aView.login();
+			if (aDao.autenticarUsuario(user)) {
+				aView.usuarioAutenticado();
+			} else {
+				aView.usuarioNaoAutenticado();
+			}
+		}
+
+		return user;
+	}
 }

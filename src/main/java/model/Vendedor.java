@@ -1,14 +1,9 @@
 package model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
-@AllArgsConstructor
-public class Vendedor {
-
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class Vendedor extends Usuario {
 	String nome;
-
 }

@@ -1,35 +1,51 @@
 package dao;
 
+import database.DatabaseConSingleton;
+import model.Comprador;
 import model.Usuario;
+import model.Vendedor;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class AutenticacaoDAO {
+public class AutenticacaoDAO<T> {
 
-    private Conexao con;
-    private ResultSet rs;
-    PreparedStatement ps;
+	private static final Connection conn = DatabaseConSingleton.getConn();
 
-    public AutenticacaoDAO(){
-        con = new Conexao();
-    }
+	private final Class<T> type;
 
-    public Boolean autenticarUsuario(Usuario u){
+	public AutenticacaoDAO(Class<T> type) {
+		this.type = type;
+	}
 
-        try{
-            String query = "SELECT * FROM usuario WHERE email = '" + u.getEmail() + "' AND senha = '" + u.getSenha() + "'";
-            ps = con.getConexao().prepareStatement(query);
-            this.rs = ps.executeQuery();
+	public boolean autenticarUsuario(Usuario u) {
 
-            return rs.next();
-        }
-        catch(SQLException ex) {
-            ex.printStackTrace();
-        }
+		String tableName;
 
-        return false;
+		if (type == Comprador.class) {
+			tableName = "comprador";
+		} else if (type == Vendedor.class) {
+			tableName = "vendedor";
+		} else {
+			tableName = "corretor";
+		}
 
-    }
+		String query = "SELECT * FROM " + tableName + " WHERE e_mail = ? AND senha = ?";
+
+		try (PreparedStatement ps = conn.prepareStatement(query)) {
+			ps.setString(1, u.getEmail());
+			ps.setString(2, u.getPassword());
+
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) return true;
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+
+		return false;
+	}
 }

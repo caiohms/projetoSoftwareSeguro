@@ -1,41 +1,46 @@
 package controller;
 
 import model.Usuario;
-import view.MenuView;
-import controller.AutenticacaoController;
-import view.CadastroView;
-import controller.CadastroController;
+import view.MainView;
+
 public class MainController {
-    private final MenuView menuView;
-    private Usuario user;
 
-    public MainController() {
-        this.menuView = new MenuView();
+	private final MainView mainView;
 
-        while (true) {
-            Integer userOption = menuView.getOption();
-            switch (userOption) {
-                case 1:
-                    System.out.print("\nOpcao de Login como Comprador Selecionado");
-                    this.user = new AutenticacaoController().getUsuario();
-                    new CompradorController();
-                    break;
+	public MainController() {
 
-                case 2:
-                    System.out.print("\nOpcao de Login como Vendedor Selecionado");
-                    new AutenticacaoController();
-                    break;
+		this.mainView = new MainView();
+		boolean quit = false;
 
-                case 3:
-                    System.out.print("\nOpcao de Cadastro de Usuario\n");
-                    new CadastroController();
-                    break;
+		while (!quit) {
+			Integer userOption = mainView.getOption();
+			Usuario user;
 
-                default:
-                    System.out.print("\nOpcao Invalida!");
-                    break;
-            }
-        }
+			switch (userOption) {
+				case 1:
+					// Login como comprador
+					user = new AutenticacaoController().authComprador();
+					new CompradorController(user);
+					break;
+				case 2:
+					// Login como Vendedor
+					user = new AutenticacaoController().authVendedor();
+//                    new VendedorController(user);
+					break;
+				case 3:
+					// cadastrar
+					new CadastroController();
+					break;
 
-    }
+				case 4:
+					// sair
+					quit = true;
+					break;
+
+				default:
+					System.err.println("Erro ao selecionar opcao");
+					break;
+			}
+		}
+	}
 }
