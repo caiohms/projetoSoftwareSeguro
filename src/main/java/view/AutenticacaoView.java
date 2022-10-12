@@ -6,30 +6,31 @@ import java.util.Scanner;
 
 public class AutenticacaoView {
 
-    Scanner sc;
+	Scanner sc;
 
-    public AutenticacaoView(){
-        this.sc =new Scanner(System.in);
-    }
+	public AutenticacaoView() {
+		this.sc = new Scanner(System.in);
+	}
 
-    public Usuario login(Usuario usuario){
+	public Usuario login() {
 
-        System.out.print("\nE-mail: ");
-        usuario.setEmail(sc.nextLine());
+		Usuario usuario = new Usuario();
 
-        System.out.print("Senha: ");
-        usuario.setSenha(sc.next());
+		System.out.print("\nE-mail: ");
+		usuario.setEmail(sc.nextLine());
 
-        return usuario;
-    }
+		System.out.print("Senha: ");
+		usuario.setPassword(sc.nextLine());
 
-    public void usuarioAutenticado(){
-        System.out.println("Usuario Autenticado");
-    }
+		return usuario;
+	}
 
-    public void usuarioNaoAutenticado(){
-        System.out.println("Usuario Não Autenticado");
-    }
+	public void usuarioAutenticado() {
+		System.out.println("Usuario autenticado.");
+	}
 
+	public void usuarioNaoAutenticado() {
+		System.out.println("Usuario não autenticado, tente novamente.");
+	}
 
 }
