@@ -31,6 +31,18 @@ public class AutenticacaoView {
 
 	public void usuarioNaoAutenticado() {
 		System.out.println("Usuario não autenticado, tente novamente.");
+
+	}
+
+	public Integer OpcoesAuth() {
+		opcoesUsuario();
+		return sc.nextInt();
+	}
+
+	public void opcoesUsuario(){
+		System.out.println("\nOpção 1 - criar cadastro.");
+		System.out.println("\nOpção 2 - redefinir senha.");
+		System.out.print("\nInsira  uma opcao: ");
 	}
 
 }

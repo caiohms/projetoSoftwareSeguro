@@ -24,6 +24,14 @@ public class AutenticacaoController {
 				aView.usuarioAutenticado();
 			} else {
 				aView.usuarioNaoAutenticado();
+				aView.login();
+				if(aView.OpcoesAuth() == 1){
+					System.out.println("Opcao cadastrar selecionada");
+					new CadastroController();
+				}else if(aView.OpcoesAuth() == 2){
+					System.out.println("Recuperar senha");
+
+				}
 			}
 		}
 
@@ -40,6 +48,16 @@ public class AutenticacaoController {
 				aView.usuarioAutenticado();
 			} else {
 				aView.usuarioNaoAutenticado();
+				aView.login();
+				if(aView.OpcoesAuth() == 1){
+					System.out.println("Opcao cadastrar selecionada");
+					new CadastroController();
+				}else if(aView.OpcoesAuth() == 2){
+					System.out.println("Recuperar senha");
+
+				}
+
+
 			}
 		}
 
