@@ -22,7 +22,7 @@ public class CadastroController {
 				break;
 			case 2:
 //                Opcao 2 - Cadastrar como Vendedor
-//				CadastroUser user = new Vendedor();
+				new VendedorController().realizarCadastro();
 
 				break;
 			default:
