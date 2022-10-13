@@ -3,7 +3,6 @@ package dao;
 import dao.helper.DatabaseConverter;
 import database.DatabaseConSingleton;
 import lombok.extern.slf4j.Slf4j;
-import model.Comprador;
 import model.Usuario;
 import model.Vendedor;
 
@@ -88,12 +87,69 @@ public class VendedorDAO extends GenericDaoImpl<Vendedor> {
     }
 
     @Override
-    public void update(Vendedor vendedor) throws SQLException {
-        //TODO
+    public boolean update(Vendedor vendedor, int id) throws SQLException {
+
+        String insertString = "UPDATE vendedor SET nome = ?, idade = ?, sexo = ?, cpf = ?, email = ?, password = ?, telefone = ?" +
+                " WHERE id = ?";
+
+        PreparedStatement pstm = null;
+
+        try {
+            //Cria um PreparedStatment, classe usada para executar a query
+            pstm = conn.prepareStatement(insertString);
+
+            pstm.setString(1, vendedor.getNome());
+            pstm.setString(2, vendedor.getIdade());
+            pstm.setString(3, vendedor.getSexo());
+            pstm.setString(4, vendedor.getCpf());
+            pstm.setString(5, vendedor.getEmail());
+            pstm.setString(6, vendedor.getPassword()); // TODO add bcrypt
+            pstm.setString(7, vendedor.getTelefone());
+            pstm.setInt(8, id);
+
+            log.info("Atualizando dados do usuario :: " + pstm);
+
+            //Executa a sql para inserção dos dados
+            pstm.execute();
+
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return false;
+        } finally {
+            if (pstm != null)
+                pstm.close();
+        }
+
+        return true;
     }
 
     @Override
     public void delete(int id) throws SQLException {
         //TODO
+        String deleteQuery = "DELETE FROM vendedor WHERE id = ?";
+
+        PreparedStatement pstm = null;
+
+        try {
+            pstm = conn.prepareStatement(deleteQuery);
+            pstm.setInt(1, id);
+            pstm.execute();
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }finally{
+
+            try{
+                if(pstm != null){
+                    pstm.close();
+                }
+                if(conn != null){
+                    conn.close();
+                }
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 }
