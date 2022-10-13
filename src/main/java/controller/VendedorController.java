@@ -23,14 +23,33 @@ public class VendedorController {
 
     private VendedorController(Vendedor vendedor) {
 
-        log.info("Comprador autenticado :: " + vendedor.toString());
+        log.info("Vendedor autenticado :: " + vendedor.toString());
 
         // chamar apenas para vendedores autenticados
         vendedorView = new VendedorView();
         vendedorDAO = new VendedorDAO();
         this.vendedorAutenticado = vendedor;
+        int idSaved = vendedorAutenticado.getId();
+        int option = vendedorView.getVendedorOption();
 
-        vendedorView.getVendedorOption();
+        switch (option) {
+            case 1:
+//                Vender Imóvel
+                break;
+            case 2:
+//                Atualizar Dados do vendedor
+                new VendedorController().atualizarDados(idSaved);
+                break;
+            case 3:
+//                Consultar Dados do vendedor
+                break;
+            case 4:
+//                Excluir Dados do vendedor
+                new VendedorController().deletarComprador(idSaved);
+                break;
+            default:
+                break;
+        }
     }
 
     public VendedorController autenticado(Usuario user) {
@@ -45,6 +64,32 @@ public class VendedorController {
         try {
             if (vendedorDAO.save(novoCadastro))
                 vendedorView.cadastroSuccess();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void atualizarDados(int idVendedor){
+        //update to db
+        Vendedor vendedor = vendedorView.atualizarVendedor();
+        try {
+            if (vendedorDAO.update(vendedor, idVendedor))
+                vendedorView.atualizacaoSuccess();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deletarComprador(int idVendedor){
+        //update to db
+        int decision = vendedorView.getDeleteOption();
+        try {
+            if (decision == 1) {
+                vendedorDAO.delete(idVendedor);
+            }
+            else {
+                new MainController();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

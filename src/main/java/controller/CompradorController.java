@@ -19,8 +19,6 @@ public class CompradorController {
 		compradorView = new CompradorView();
 		compradorDAO = new CompradorDAO();
 		compradorAutenticado = null;
-
-
 	}
 
 	private CompradorController(Comprador comprador) {
@@ -37,7 +35,6 @@ public class CompradorController {
 		switch (option) {
 			case 1:
 //                Ver propriedades
-//				new CompradorController().realizarCadastro();
 				break;
 			case 2:
 //                Atualizar Dados do comprador
@@ -45,7 +42,6 @@ public class CompradorController {
 				break;
 			case 3:
 //                Consultar Dados do comprador
-//
 				break;
 			case 4:
 //                Excluir Dados do comprador

@@ -39,7 +39,7 @@ public class VendedorView {
     public Vendedor realizarCadastro() {
         Vendedor novoVendedor = new Vendedor();
 
-        System.out.println("\n##--Cadastro do Comprador--##\n");
+        System.out.println("\n##--Cadastro do Vendedor--##\n");
         System.out.println("|-----------------------------|");
 
         System.out.print("| E-mail: \n");
