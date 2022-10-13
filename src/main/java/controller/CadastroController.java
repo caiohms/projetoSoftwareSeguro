@@ -1,27 +1,33 @@
 package controller;
 
-//import dao.CadastroDAO;
-//import model.Cadastro;
 import view.CadastroView;
+import view.CompradorView;
 
 public class CadastroController {
 
-    private CadastroView caview;
-//    private Cadastro comprador;
-//    private CadastroDAO cadao;
-//    private Usuario user;
-    public CadastroController(){
+	private final CadastroView cadastroView;
+	private final CompradorView compradorView;
 
-        caview = new CadastroView();
+	public CadastroController() {
 
-        if (caview.getCadastroOption() == 1){
-            System.out.println("Cadastrar Comprador");
-            //CadastroUser user = new Comprador();
-        }
-        else if (caview.getCadastroOption() == 2) {
-            System.out.println("Cadastro Vendedor");
-            //CadastroUser user = new Vendedor();
-        }
+		cadastroView = new CadastroView();
+		compradorView = new CompradorView();
+
+		int option = cadastroView.getCadastroOption();
+
+		switch (option) {
+			case 1:
+//                Opcao 1 - Cadastrar como Comprador
+				new CompradorController().realizarCadastro();
+				break;
+			case 2:
+//                Opcao 2 - Cadastrar como Vendedor
+//				CadastroUser user = new Vendedor();
+
+				break;
+			default:
+				break;
+		}
 
 
 //        cdao = new CompradorDAO();
@@ -31,6 +37,6 @@ public class CadastroController {
 //        }
 //        else {
 //            cview.usuarioNaoAutenticado();
-    }
+	}
 }
 
