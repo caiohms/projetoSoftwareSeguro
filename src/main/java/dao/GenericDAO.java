@@ -8,7 +8,7 @@ public interface GenericDAO<T> {
 
 	T get(int id) throws SQLException;
 
-	void update(T t) throws SQLException;
+	boolean update(T t, int id) throws SQLException;
 
 	void delete(int id) throws SQLException;
 }
