@@ -24,7 +24,7 @@ public class AutenticacaoController {
 				aView.usuarioAutenticado();
 			} else {
 				aView.usuarioNaoAutenticado();
-				aView.login();
+
 				if(aView.OpcoesAuth() == 1){
 					System.out.println("Opcao cadastrar selecionada");
 					new CadastroController();
@@ -48,7 +48,7 @@ public class AutenticacaoController {
 				aView.usuarioAutenticado();
 			} else {
 				aView.usuarioNaoAutenticado();
-				aView.login();
+
 				if(aView.OpcoesAuth() == 1){
 					System.out.println("Opcao cadastrar selecionada");
 					new CadastroController();
