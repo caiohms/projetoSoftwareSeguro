@@ -1,36 +1,54 @@
 package controller;
 
 import dao.CompradorDAO;
+import lombok.extern.slf4j.Slf4j;
 import model.Comprador;
 import model.Usuario;
 import view.CompradorView;
 
+import java.sql.SQLException;
+
+@Slf4j
 public class CompradorController {
 
-	private final CompradorView cView;
-	private final CompradorDAO cDao;
-	private Comprador comprador;
+	private final CompradorView compradorView;
+	private final CompradorDAO compradorDAO;
+	private final Comprador compradorAutenticado;
 
-	public CompradorController(Usuario user) {
-
-		cView = new CompradorView();
-		cDao = new CompradorDAO();
-
-		loadUser(user);
-
-		cView.getCompradorOption();
-
-//        cdao = new CompradorDAO();
-//        if(cdao.autenticarUsuario(comprador)){
-//            cview.usuarioAutenticado();
-//            new MenuController(comprador);
-//        }
-//        else {
-//            cview.usuarioNaoAutenticado();
+	public CompradorController() {
+		compradorView = new CompradorView();
+		compradorDAO = new CompradorDAO();
+		compradorAutenticado = null;
 	}
 
-	private void loadUser(Usuario user) {
-		this.comprador = cDao.getCompradorFromUsuario(user);
+	private CompradorController(Comprador comprador) {
+
+		log.info("Comprador autenticado :: " + comprador.toString());
+
+		// chamar apenas para compradores autenticados
+		compradorView = new CompradorView();
+		compradorDAO = new CompradorDAO();
+		this.compradorAutenticado = comprador;
+
+		compradorView.getCompradorOption();
+
+	}
+
+	public CompradorController autenticado(Usuario user) {
+		Comprador c = compradorDAO.getCompradorFromUsuario(user);
+		return new CompradorController(c);
+	}
+
+	public void realizarCadastro() {
+		Comprador novoCadastro = compradorView.realizarCadastro();
+		//save to db
+
+		try {
+			if (compradorDAO.save(novoCadastro))
+				compradorView.cadastroSuccess();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }
 
