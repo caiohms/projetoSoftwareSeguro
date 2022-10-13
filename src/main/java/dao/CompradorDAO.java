@@ -1,30 +1,40 @@
 package dao;
 
+import dao.helper.DatabaseConverter;
 import database.DatabaseConSingleton;
+import lombok.extern.slf4j.Slf4j;
 import model.Comprador;
 import model.Usuario;
-import org.w3c.dom.ls.LSOutput;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Slf4j
 public class CompradorDAO extends GenericDaoImpl<Comprador> {
 
 	private static final Connection conn = DatabaseConSingleton.getConn();
 
 	public Comprador getCompradorFromUsuario(Usuario user) {
 
-		String selectionString = "SELECT * FROM ? WHERE E_mail = ?";
+		String selectionString = "SELECT * FROM " + getTableName() + " WHERE email = ?";
+
+		ResultSet rs = null;
 
 		try (PreparedStatement ps = conn.prepareStatement(selectionString)) {
-			ps.setString(1, getTableName());
-			ps.setString(2, user.getEmail());
+			ps.setString(1, user.getEmail());
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				return DatabaseConverter.convertComprador(rs);
+			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error(e.getMessage(), e);
 		}
 
+		log.error("Usuario nao encontrado");
 		return null;
 	}
 
@@ -34,47 +44,40 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 	}
 
 	@Override
-	public int add(Comprador comprador) throws SQLException {
-		//TODO
-		String addComprador = "INSERT INTO comprador(nome,idade,sexo,cpf,email,senha,telefone,endereco)" +
-				" VALUES(?,?,?,?,?,?,?,?)";
+	public boolean save(Comprador comprador) throws SQLException {
 
-		Connection conn = null;
+		String insertString = "INSERT INTO " + getTableName() +
+				"(nome,idade,sexo,cpf,email,password,telefone)" +
+				" VALUES(?,?,?,?,?,?,?)";
+
 		PreparedStatement pstm = null;
 
 		try {
-			//Cria uma conexão com o banco
-			conn = DatabaseConSingleton.getConn();
-
 			//Cria um PreparedStatment, classe usada para executar a query
-			pstm = conn.prepareStatement(addComprador);
+			pstm = conn.prepareStatement(insertString);
 
-			//Adiciona o valor do primeiro parâmetro da sql
 			pstm.setString(1, comprador.getNome());
-			//Adicionar o valor do segundo parâmetro da sql
 			pstm.setString(2, comprador.getIdade());
-			//Adiciona o valor do terceiro parâmetro da sql
 			pstm.setString(3, comprador.getSexo());
-			//Adiciona o valor do quarto parâmetro da sql
 			pstm.setString(4, comprador.getCpf());
-			//Adicionar o valor do quinto parâmetro da sql
 			pstm.setString(5, comprador.getEmail());
-			//Adiciona o valor do sexo parâmetro da sql
-			pstm.setString(6, comprador.getPassword());
-			//Adiciona o valor do setimo parâmetro da sql
-			pstm.setString(7, comprador.getEmail());
-			//Adiciona o valor do oitavo parâmetro da sql
-			pstm.setString(8, comprador.getPassword());
+			pstm.setString(6, comprador.getPassword()); // TODO add bcrypt
+			pstm.setString(7, comprador.getTelefone());
 
+			log.info("Cadastrando usuario :: " + pstm);
 
 			//Executa a sql para inserção dos dados
 			pstm.execute();
 
 		} catch (Exception e) {
-
-			e.printStackTrace();
+			log.error(e.getMessage(), e);
+			return false;
+		} finally {
+			if (pstm != null)
+				pstm.close();
 		}
-		return 1;
+
+		return true;
 	}
 
 

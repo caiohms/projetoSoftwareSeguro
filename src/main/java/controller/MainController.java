@@ -1,8 +1,10 @@
 package controller;
 
+import lombok.extern.slf4j.Slf4j;
 import model.Usuario;
 import view.MainView;
 
+@Slf4j
 public class MainController {
 
 	private final MainView mainView;
@@ -20,7 +22,7 @@ public class MainController {
 				case 1:
 					// Login como comprador
 					user = new AutenticacaoController().authComprador();
-					new CompradorController(user);
+					new CompradorController().autenticado(user);
 					break;
 				case 2:
 					// Login como Vendedor
@@ -38,7 +40,7 @@ public class MainController {
 					break;
 
 				default:
-					System.err.println("Erro ao selecionar opcao");
+					log.error("Erro ao selecionar opcao");
 					break;
 			}
 		}
