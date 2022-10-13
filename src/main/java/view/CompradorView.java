@@ -71,8 +71,58 @@ public class CompradorView {
 
 		return novoComprador;
 	}
+	public Comprador atualizaComprador() {
+		Comprador comprador = new Comprador();
 
+		System.out.println("\n##--Atualizar dados do Comprador--##\n");
+		System.out.println("|-----------------------------|");
+
+		System.out.print("| E-mail: \n");
+		comprador.setEmail(sc.nextLine());
+
+		System.out.print("| Senha: \n");
+		comprador.setPassword(sc.nextLine());
+
+		System.out.print("| Nome Completo: \n");
+		comprador.setNome(sc.nextLine());
+
+		System.out.print("| Idade: \n");
+		comprador.setIdade(sc.nextLine());
+
+		System.out.print("| Sexo: \n");
+		comprador.setSexo(sc.nextLine());
+
+		System.out.print("| CPF: \n");
+		comprador.setCpf(sc.nextLine());
+
+		System.out.print("| Telefone: \n");
+		comprador.setTelefone(sc.nextLine());
+
+//		System.out.print("| Endereco: \n");
+//		String endereco = sc.nextLine();
+//		novoComprador.setPassword(sc.nextLine());
+
+		return comprador;
+	}
+
+	public Integer getDeleteOption() {
+		deletaComprador();
+		return sc.nextInt();
+	}
+
+	public void deletaComprador() {
+		System.out.print("\n##--Voce deseja deletar o usuario --##\n\n");
+		System.out.print("|----------------------------------|\n");
+		System.out.print("| Opcao 1 - Sim, quero deletar     |\n");
+		System.out.print("| Opcao 2 - Não, não quero deletar |\n");
+		System.out.print("|----------------------------------|\n");
+		System.out.print("Digite uma opcao: ");
+
+	}
 	public void cadastroSuccess() {
 		System.out.println("Cadastro efetuado com sucesso.");
+	}
+	public void atualizacaoSuccess() {
+		System.out.println("Atualização de dados efetuada com sucesso.");
 	}
 }
