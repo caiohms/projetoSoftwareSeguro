@@ -35,6 +35,24 @@ public class DatabaseConverter {
 	}
 
 	public static Vendedor convertVendedor(ResultSet resultSet) {
-		return null;
+		Vendedor converted = new Vendedor();
+
+		try {
+			converted.setId(resultSet.getInt("id"));
+			converted.setEmail(resultSet.getString("email"));
+			converted.setPassword(resultSet.getString("password"));
+			converted.setNome(resultSet.getString("nome"));
+			converted.setIdade(resultSet.getString("idade"));
+			converted.setSexo(resultSet.getString("sexo"));
+			converted.setCpf(resultSet.getString("cpf"));
+			converted.setTelefone(resultSet.getString("telefone"));
+			//		 TODO: convert endereco
+
+		} catch (Exception e) {
+			log.error("Failed to convert Comprador.");
+			return null;
+		}
+
+		return converted;
 	}
 }
