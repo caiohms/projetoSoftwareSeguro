@@ -1,29 +1,40 @@
 package dao;
 
+import dao.helper.DatabaseConverter;
 import database.DatabaseConSingleton;
+import lombok.extern.slf4j.Slf4j;
 import model.Comprador;
 import model.Usuario;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Slf4j
 public class CompradorDAO extends GenericDaoImpl<Comprador> {
 
 	private static final Connection conn = DatabaseConSingleton.getConn();
 
 	public Comprador getCompradorFromUsuario(Usuario user) {
 
-		String selectionString = "SELECT * FROM ? WHERE E_mail = ?";
+		String selectionString = "SELECT * FROM " + getTableName() + " WHERE email = ?";
+
+		ResultSet rs = null;
 
 		try (PreparedStatement ps = conn.prepareStatement(selectionString)) {
-			ps.setString(1, getTableName());
-			ps.setString(2, user.getEmail());
+			ps.setString(1, user.getEmail());
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				return DatabaseConverter.convertComprador(rs);
+			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error(e.getMessage(), e);
 		}
 
+		log.error("Usuario nao encontrado");
 		return null;
 	}
 
@@ -33,10 +44,42 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 	}
 
 	@Override
-	public int add(Comprador comprador) throws SQLException {
-		//TODO
-		return 0;
+	public boolean save(Comprador comprador) throws SQLException {
+
+		String insertString = "INSERT INTO " + getTableName() +
+				"(nome,idade,sexo,cpf,email,password,telefone)" +
+				" VALUES(?,?,?,?,?,?,?)";
+
+		PreparedStatement pstm = null;
+
+		try {
+			//Cria um PreparedStatment, classe usada para executar a query
+			pstm = conn.prepareStatement(insertString);
+
+			pstm.setString(1, comprador.getNome());
+			pstm.setString(2, comprador.getIdade());
+			pstm.setString(3, comprador.getSexo());
+			pstm.setString(4, comprador.getCpf());
+			pstm.setString(5, comprador.getEmail());
+			pstm.setString(6, comprador.getPassword()); // TODO add bcrypt
+			pstm.setString(7, comprador.getTelefone());
+
+			log.info("Cadastrando usuario :: " + pstm);
+
+			//Executa a sql para inserção dos dados
+			pstm.execute();
+
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return false;
+		} finally {
+			if (pstm != null)
+				pstm.close();
+		}
+
+		return true;
 	}
+
 
 	@Override
 	public Comprador get(int id) throws SQLException {
