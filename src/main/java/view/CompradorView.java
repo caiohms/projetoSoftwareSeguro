@@ -1,5 +1,6 @@
 package view;
 
+import form.CompradorForm;
 import model.Comprador;
 
 import java.util.Scanner;
@@ -29,6 +30,32 @@ public class CompradorView {
 		System.out.print("Digite uma opcao: ");
 
 
+	}
+	public Integer addCompradorOption() {
+		addCompradorMenu();
+		return sc.nextInt();
+	}
+	private CompradorForm addCompradorMenu(){
+		System.out.print("\n##--Cadastro do Comprador--##\n\n");
+		System.out.print("|-----------------------------|\n");
+		System.out.print("| E-mail: \n");
+		String email = sc.nextLine();
+		System.out.print("| Senha: \n");
+		String senha = sc.nextLine();
+		System.out.print("| Nome Completo: \n");
+		String nome = sc.nextLine();
+		System.out.print("| Idade: \n");
+		String idade = sc.nextLine();
+		System.out.print("| Sexo: \n");
+		String sexo = sc.nextLine();
+		System.out.print("| CPF: \n");
+		String cpf = sc.nextLine();
+		System.out.print("| Telefone: \n");
+		String telefone = sc.nextLine();
+		System.out.print("| Endereco: \n");
+		String endereco = sc.nextLine();
+
+		return new CompradorForm(email, senha, nome, idade, sexo, cpf, telefone, endereco);
 	}
 
 	public int compradorAlteraDados() {

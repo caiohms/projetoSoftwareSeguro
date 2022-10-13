@@ -1,25 +1,29 @@
 package controller;
 
-//import dao.CadastroDAO;
+import dao.CompradorDAO;
 //import model.Cadastro;
+import model.Comprador;
+import model.Usuario;
 import view.CadastroView;
+import view.CompradorView;
 
 public class CadastroController {
 
     private CadastroView caview;
-//    private Cadastro comprador;
-//    private CadastroDAO cadao;
-//    private Usuario user;
+    private CompradorView ccview;
+
     public CadastroController(){
 
         caview = new CadastroView();
+        ccview = new CompradorView();
+        caview.getCadastroOption();
 
         if (caview.getCadastroOption() == 1){
-            System.out.println("Cadastrar Comprador");
-            //CadastroUser user = new Comprador();
+            ccview.addCompradorOption();
+            new CompradorController().cadastroComprador(ccview);
+
         }
         else if (caview.getCadastroOption() == 2) {
-            System.out.println("Cadastro Vendedor");
             //CadastroUser user = new Vendedor();
         }
 
