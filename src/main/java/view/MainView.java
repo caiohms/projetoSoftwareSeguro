@@ -36,7 +36,8 @@ public class MainView {
 		System.out.print("| Opcao 1 - Login Comprador     |\n");
 		System.out.print("| Opcao 2 - Login Vendedor      |\n");
 		System.out.print("| Opcao 3 - Cadastrar Uusario   |\n");
-		System.out.print("| Opcao 4 - Sair                |\n");
+		System.out.print("| Opcao 4 - Login Administrador |\n");
+		System.out.print("| Opcao 5 - Sair                |\n");
 		System.out.print("|-------------------------------|\n");
 		System.out.print("Digite uma opção: ");
 	}

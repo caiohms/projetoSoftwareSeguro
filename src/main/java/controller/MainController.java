@@ -35,6 +35,11 @@ public class MainController {
 					break;
 
 				case 4:
+					// Login como administrador
+					user = new AutenticacaoController().authAdm();
+					new AdmController().autenticado(user);
+					break;
+				case 5:
 					// sair
 					quit = true;
 					break;

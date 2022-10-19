@@ -7,7 +7,7 @@ import java.sql.*;
 @Slf4j
 public class DatabaseConSingleton {
 
-	private static final String DB_ADDR = "[2001:1284:f013:1322:a8d3:843f:75c0:dd2f]";
+	private static final String DB_ADDR = "[2001:1284:f013:2eef:c958:6c70:3e73:5976]";
 	private static final String DB_PORT = "3306";
 	private static final String DB_NAME = "lino";
 	private static final String DB_USER = "lino";
