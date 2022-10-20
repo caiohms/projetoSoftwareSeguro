@@ -1,6 +1,7 @@
 package controller;
 
 import dao.AutenticacaoDAO;
+import model.Adm;
 import model.Comprador;
 import model.Usuario;
 import model.Vendedor;
@@ -58,6 +59,22 @@ public class AutenticacaoController {
 				}
 
 
+			}
+		}
+
+		return user;
+	}
+
+	public Usuario authAdm() {
+		Usuario user = null;
+		AutenticacaoDAO<Adm> aDao = new AutenticacaoDAO<>(Adm.class);
+
+		while (user == null) {
+			user = aView.login();
+			if (aDao.autenticarUsuario(user)) {
+				aView.usuarioAutenticado();
+			} else {
+				aView.usuarioNaoAutenticado();
 			}
 		}
 
