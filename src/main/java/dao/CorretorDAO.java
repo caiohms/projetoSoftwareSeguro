@@ -1,5 +1,6 @@
 package dao;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import dao.helper.DatabaseConverter;
 import database.DatabaseConSingleton;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +47,9 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
     @Override
     public boolean save(Corretor corretor) throws SQLException {
 
+        String password = corretor.getPassword();
+        String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
+
         String insertString = "INSERT INTO " + getTableName() +
                 "(nome,idade,sexo,cpf,email,password,telefone)" +
                 " VALUES(?,?,?,?,?,?,?)";
@@ -61,7 +65,7 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
             pstm.setString(3, corretor.getSexo());
             pstm.setString(4, corretor.getCpf());
             pstm.setString(5, corretor.getEmail());
-            pstm.setString(6, corretor.getPassword()); // TODO add bcrypt
+            pstm.setString(6, bcryptHashString);
             pstm.setString(7, corretor.getTelefone());
 
             log.info("Cadastrando usuario :: " + pstm);
@@ -89,6 +93,10 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
     @Override
     public boolean update(Corretor corretor, int id) throws SQLException {
 
+        String password = corretor.getPassword();
+        String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
+
+
         String insertString = "UPDATE corretor SET nome = ?, idade = ?, sexo = ?, cpf = ?, email = ?, password = ?, telefone = ?" +
                 " WHERE id = ?";
 
@@ -103,7 +111,7 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
             pstm.setString(3, corretor.getSexo());
             pstm.setString(4, corretor.getCpf());
             pstm.setString(5, corretor.getEmail());
-            pstm.setString(6, corretor.getPassword()); // TODO add bcrypt
+            pstm.setString(6, bcryptHashString);
             pstm.setString(7, corretor.getTelefone());
             pstm.setInt(8, id);
 

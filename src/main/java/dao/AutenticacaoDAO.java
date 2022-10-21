@@ -1,5 +1,6 @@
 package dao;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import database.DatabaseConSingleton;
 import lombok.extern.slf4j.Slf4j;
 import model.Comprador;
@@ -27,6 +28,8 @@ public class AutenticacaoDAO<T> {
 		log.debug("Autenticando usuario...");
 
 		String tableName;
+		String password = u.getPassword();
+		String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
 
 		if (type == Comprador.class) {
 			tableName = "comprador";
@@ -40,7 +43,7 @@ public class AutenticacaoDAO<T> {
 
 		try (PreparedStatement ps = conn.prepareStatement(query)) {
 			ps.setString(1, u.getEmail());
-			ps.setString(2, u.getPassword());
+			ps.setString(2, bcryptHashString);
 
 			log.debug(ps.toString());
 

@@ -1,5 +1,6 @@
 package dao;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import dao.helper.DatabaseConverter;
 import database.DatabaseConSingleton;
 import lombok.extern.slf4j.Slf4j;
@@ -54,6 +55,9 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 
 		try {
 			//Cria um PreparedStatment, classe usada para executar a query
+			String password = comprador.getPassword();
+			String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
+
 			pstm = conn.prepareStatement(insertString);
 
 			pstm.setString(1, comprador.getNome());
@@ -61,7 +65,7 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 			pstm.setString(3, comprador.getSexo());
 			pstm.setString(4, comprador.getCpf());
 			pstm.setString(5, comprador.getEmail());
-			pstm.setString(6, comprador.getPassword()); // TODO add bcrypt
+			pstm.setString(6, bcryptHashString);
 			pstm.setString(7, comprador.getTelefone());
 
 			log.info("Cadastrando usuario :: " + pstm);
@@ -89,6 +93,9 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 	@Override
 	public boolean update(Comprador comprador, int id) throws SQLException {
 
+		String password = comprador.getPassword();
+		String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
+
 		String insertString = "UPDATE comprador SET nome = ?, idade = ?, sexo = ?, cpf = ?, email = ?, password = ?, telefone = ?" +
 				" WHERE id = ?";
 
@@ -103,7 +110,7 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 			pstm.setString(3, comprador.getSexo());
 			pstm.setString(4, comprador.getCpf());
 			pstm.setString(5, comprador.getEmail());
-			pstm.setString(6, comprador.getPassword()); // TODO add bcrypt
+			pstm.setString(6, bcryptHashString);
 			pstm.setString(7, comprador.getTelefone());
 			pstm.setInt(8, id);
 
