@@ -55,6 +55,7 @@ public class AdmController {
                 break;
             case 3:
 //                Consultar Dados do corretor
+                new AdmController().consultarCorretor();
                 break;
             case 4:
 //                Consultar Dados do comprador
@@ -102,6 +103,12 @@ public class AdmController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void consultarCorretor() {
+        int id = admView.getIdCorretor();
+        Corretor corretor = corretorDAO.get(id);
+        admView.consultarCorretor(corretor);
     }
 
     public void deletarCorretor(){

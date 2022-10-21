@@ -55,8 +55,8 @@ public class AdmDAO extends GenericDaoImpl<Adm> {
             //Cria um PreparedStatment, classe usada para executar a query
             pstm = conn.prepareStatement(insertString);
 
-            pstm.setString(5, adm.getEmail());
-            pstm.setString(6, adm.getPassword()); // TODO add bcrypt
+            pstm.setString(1, adm.getEmail());
+            pstm.setString(2, adm.getPassword()); // TODO add bcrypt
 
             log.info("Cadastrando usuario :: " + pstm);
 
