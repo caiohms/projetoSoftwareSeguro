@@ -35,18 +35,29 @@ public class AdmView {
     }
 
     public Integer getIdCorretor() {
-        showInsertAdm();
+        showInsertCorretor();
         return sc.nextInt();
     }
 
-    private void showInsertAdm() {
+    private void showInsertCorretor() {
         System.out.print("\n##--Menu do Administrador--##\n\n");
         System.out.print("|-------------------|\n");
         System.out.print("| Id do Corretor    |\n");
         System.out.print("|-------------------|\n");
         System.out.print("Digite o Id: ");
+    }
 
+    public Integer getIdVendedor(){
+        showInsertVendedor();
+        return sc.nextInt();
+    }
 
+    public void showInsertVendedor(){
+        System.out.print("\n##--Menu do Administrador--##\n\n");
+        System.out.print("|-------------------|\n");
+        System.out.print("| Id do Vendedor    |\n");
+        System.out.print("|-------------------|\n");
+        System.out.print("Digite o Id: ");
     }
 
     public void consultarCorretor(Corretor corretor){

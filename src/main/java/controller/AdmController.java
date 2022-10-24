@@ -4,13 +4,16 @@ import controller.MainController;
 import dao.AdmDAO;
 
 import dao.CorretorDAO;
+import dao.VendedorDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.Adm;
 import model.Corretor;
 import model.Usuario;
+import model.Vendedor;
 import view.AdmView;
 import view.CorretorView;
 import dao.CorretorDAO;
+import view.VendedorView;
 
 import java.sql.SQLException;
 
@@ -22,13 +25,16 @@ public class AdmController {
     private final Adm admAutenticado;
     private final CorretorView corretorView;
     private final CorretorDAO corretorDAO;
-
+    private final VendedorDAO vendedorDao;
+    private final VendedorView vendedorView;
 
     public AdmController() {
         admView = new AdmView();
         admDAO = new AdmDAO();
         corretorView = new CorretorView();
         corretorDAO = new CorretorDAO();
+        vendedorDao = new VendedorDAO();
+        vendedorView = new VendedorView();
         admAutenticado = null;
     }
 
@@ -41,6 +47,8 @@ public class AdmController {
         admDAO = new AdmDAO();
         corretorView = new CorretorView();
         corretorDAO = new CorretorDAO();
+        vendedorDao = new VendedorDAO();
+        vendedorView = new VendedorView();
         this.admAutenticado = adm;
         int idSaved = admAutenticado.getId();
         int option = admView.getAdmOption();
@@ -63,6 +71,7 @@ public class AdmController {
                 break;
             case 5:
 //                Consultar Dados do vendedor
+                new AdmController().consultarVendedor();
                 break;
             case 6:
 //                Excluir Corretor
@@ -110,6 +119,12 @@ public class AdmController {
         int id = admView.getIdCorretor();
         Corretor corretor = corretorDAO.get(id);
         admView.consultarCorretor(corretor);
+    }
+
+    public void consultarVendedor(){
+        int id = admView.getIdVendedor();
+        Vendedor vendedor = vendedorDao.get(id);
+        vendedorView.consultarVendedor(vendedor);
     }
 
     public void deletarCorretor(){
