@@ -1,5 +1,6 @@
 package controller;
 
+import controller.MainController;
 import dao.AdmDAO;
 
 import dao.CorretorDAO;
