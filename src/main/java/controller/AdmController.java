@@ -1,15 +1,10 @@
 package controller;
 
 import controller.MainController;
-import dao.AdmDAO;
+import dao.*;
 
-import dao.CorretorDAO;
-import dao.VendedorDAO;
 import lombok.extern.slf4j.Slf4j;
-import model.Adm;
-import model.Corretor;
-import model.Usuario;
-import model.Vendedor;
+import model.*;
 import view.AdmView;
 import view.CorretorView;
 import dao.CorretorDAO;
@@ -20,21 +15,15 @@ import java.sql.SQLException;
 @Slf4j
 public class AdmController {
 
-    private final AdmView admView;
-    private final AdmDAO admDAO;
+    private final AdmView admView = new AdmView();
+    private final AdmDAO admDAO = new AdmDAO();
     private final Adm admAutenticado;
-    private final CorretorView corretorView;
-    private final CorretorDAO corretorDAO;
-    private final VendedorDAO vendedorDao;
-    private final VendedorView vendedorView;
+    private final CorretorView corretorView = new CorretorView();
+    private final CorretorDAO corretorDAO = new CorretorDAO();
+    private final VendedorDAO vendedorDao = new VendedorDAO();
+    private final CompradorDAO compradorDao = new CompradorDAO();
 
     public AdmController() {
-        admView = new AdmView();
-        admDAO = new AdmDAO();
-        corretorView = new CorretorView();
-        corretorDAO = new CorretorDAO();
-        vendedorDao = new VendedorDAO();
-        vendedorView = new VendedorView();
         admAutenticado = null;
     }
 
@@ -43,12 +32,6 @@ public class AdmController {
         log.info("Adm autenticado :: " + adm.toString());
 
         // chamar apenas para compradores autenticados
-        admView = new AdmView();
-        admDAO = new AdmDAO();
-        corretorView = new CorretorView();
-        corretorDAO = new CorretorDAO();
-        vendedorDao = new VendedorDAO();
-        vendedorView = new VendedorView();
         this.admAutenticado = adm;
         int idSaved = admAutenticado.getId();
         int option = admView.getAdmOption();
@@ -68,6 +51,7 @@ public class AdmController {
                 break;
             case 4:
 //                Consultar Dados do comprador
+                new AdmController().consultarComprador();
                 break;
             case 5:
 //                Consultar Dados do vendedor
@@ -121,10 +105,16 @@ public class AdmController {
         admView.consultarCorretor(corretor);
     }
 
+    public void consultarComprador(){
+        int id = admView.getIdComprador();
+        Comprador comprador = compradorDao.get(id);
+        admView.consultarComprador(comprador);
+    }
+
     public void consultarVendedor(){
         int id = admView.getIdVendedor();
         Vendedor vendedor = vendedorDao.get(id);
-        vendedorView.consultarVendedor(vendedor);
+        admView.consultarVendedor(vendedor);
     }
 
     public void deletarCorretor(){
