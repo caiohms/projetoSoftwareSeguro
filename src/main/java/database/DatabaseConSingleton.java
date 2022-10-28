@@ -2,7 +2,9 @@ package database;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 @Slf4j
 public class DatabaseConSingleton {

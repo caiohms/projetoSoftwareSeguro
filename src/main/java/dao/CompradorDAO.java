@@ -6,7 +6,6 @@ import database.DatabaseConSingleton;
 import lombok.extern.slf4j.Slf4j;
 import model.Comprador;
 import model.Usuario;
-import model.Vendedor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -122,7 +121,7 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 
 
 		// Criando um novo corretor com os dados encontrados na base de dados
-		Comprador comprador = new Comprador(id,nome,idade,sexo,cpf,telefone);
+		Comprador comprador = new Comprador(id, nome, idade, sexo, cpf, telefone);
 
 		return comprador;
 	}

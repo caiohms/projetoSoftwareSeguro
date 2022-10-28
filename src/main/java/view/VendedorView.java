@@ -34,25 +34,25 @@ public class VendedorView {
 		System.out.println("\n##--Cadastro do Vendedor--##\n");
 		System.out.println("|-----------------------------|");
 
-		System.out.print("| E-mail: \n");
+		System.out.println("| E-mail: ");
 		novoVendedor.setEmail(sc.nextLine());
 
-		System.out.print("| Senha: \n");
+		System.out.println("| Senha: ");
 		novoVendedor.setPassword(sc.nextLine());
 
-		System.out.print("| Nome Completo: \n");
+		System.out.println("| Nome Completo: ");
 		novoVendedor.setNome(sc.nextLine());
 
-		System.out.print("| Idade: \n");
+		System.out.println("| Idade: ");
 		novoVendedor.setIdade(sc.nextLine());
 
-		System.out.print("| Sexo: \n");
+		System.out.println("| Sexo: ");
 		novoVendedor.setSexo(sc.nextLine());
 
-		System.out.print("| CPF: \n");
+		System.out.println("| CPF: ");
 		novoVendedor.setCpf(sc.nextLine());
 
-		System.out.print("| Telefone: \n");
+		System.out.println("| Telefone: ");
 		novoVendedor.setTelefone(sc.nextLine());
 
 //		System.out.print("| Endereco: \n");

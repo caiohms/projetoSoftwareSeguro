@@ -110,18 +110,15 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
 			if (pstm != null) {
 				try {
 					pstm.close();
-				} catch (SQLException e) {
-					throw new RuntimeException(e);
+				} catch (SQLException ignored) {
 				}
 			}
 		}
-
 
 		// Criando um novo corretor com os dados encontrados na base de dados
 		Corretor corretor = new Corretor(id, nome, idade, sexo, cpf, telefone);
 
 		return corretor;
-
 	}
 
 	@Override
@@ -181,9 +178,7 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
 				if (pstm != null) {
 					pstm.close();
 				}
-				if (conn != null) {
-					conn.close();
-				}
+				conn.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
