@@ -3,7 +3,7 @@ package view;
 import java.util.Scanner;
 
 public class CadastroView {
-	Scanner sc;
+	private final Scanner sc;
 
 	public CadastroView() {
 		this.sc = new Scanner(System.in);

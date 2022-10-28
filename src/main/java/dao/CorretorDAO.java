@@ -1,12 +1,10 @@
 package dao;
 
 import dao.helper.DatabaseConverter;
-import database.DatabaseConSingleton;
 import lombok.extern.slf4j.Slf4j;
 import model.Corretor;
 import model.Usuario;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,188 +12,175 @@ import java.sql.SQLException;
 @Slf4j
 public class CorretorDAO extends GenericDaoImpl<Corretor> {
 
-    private static final Connection conn = DatabaseConSingleton.getConn();
+	public Corretor getCorretorFromUsuario(Usuario user) {
 
-    public Corretor getCorretorFromUsuario(Usuario user) {
+		String selectionString = "SELECT * FROM " + getTableName() + " WHERE email = ?";
 
-        String selectionString = "SELECT * FROM " + getTableName() + " WHERE email = ?";
+		ResultSet rs;
 
-        ResultSet rs = null;
+		try (PreparedStatement ps = conn.prepareStatement(selectionString)) {
+			ps.setString(1, user.getEmail());
+			rs = ps.executeQuery();
 
-        try (PreparedStatement ps = conn.prepareStatement(selectionString)) {
-            ps.setString(1, user.getEmail());
-            rs = ps.executeQuery();
+			if (rs.next()) {
+				return DatabaseConverter.convertCorretor(rs);
+			}
 
-            if (rs.next()) {
-                return DatabaseConverter.convertCorretor(rs);
-            }
+		} catch (SQLException e) {
+			log.error(e.getMessage(), e);
+		}
 
-        } catch (SQLException e) {
-            log.error(e.getMessage(), e);
-        }
+		log.error("Usuario nao encontrado");
+		return null;
+	}
 
-        log.error("Usuario nao encontrado");
-        return null;
-    }
+	@Override
+	protected String setTableName() {
+		return "corretor";
+	}
 
-    @Override
-    protected String setTableName() {
-        return "corretor";
-    }
+	@Override
+	public boolean save(Corretor corretor) throws SQLException {
 
-    @Override
-    public boolean save(Corretor corretor) throws SQLException {
+		String insertString = "INSERT INTO " + getTableName() +
+				"(nome,idade,sexo,cpf,email,password,telefone)" +
+				" VALUES(?,?,?,?,?,?,?)";
 
-        String insertString = "INSERT INTO " + getTableName() +
-                "(nome,idade,sexo,cpf,email,password,telefone)" +
-                " VALUES(?,?,?,?,?,?,?)";
+		try (PreparedStatement pstm = conn.prepareStatement(insertString)) {
+			//Cria um PreparedStatment, classe usada para executar a query
 
-        PreparedStatement pstm = null;
+			pstm.setString(1, corretor.getNome());
+			pstm.setString(2, corretor.getIdade());
+			pstm.setString(3, corretor.getSexo());
+			pstm.setString(4, corretor.getCpf());
+			pstm.setString(5, corretor.getEmail());
+			pstm.setString(6, corretor.getPassword()); // TODO add bcrypt
+			pstm.setString(7, corretor.getTelefone());
 
-        try {
-            //Cria um PreparedStatment, classe usada para executar a query
-            pstm = conn.prepareStatement(insertString);
+			log.info("Cadastrando usuario :: " + pstm);
 
-            pstm.setString(1, corretor.getNome());
-            pstm.setString(2, corretor.getIdade());
-            pstm.setString(3, corretor.getSexo());
-            pstm.setString(4, corretor.getCpf());
-            pstm.setString(5, corretor.getEmail());
-            pstm.setString(6, corretor.getPassword()); // TODO add bcrypt
-            pstm.setString(7, corretor.getTelefone());
+			//Executa a sql para inserção dos dados
+			pstm.execute();
 
-            log.info("Cadastrando usuario :: " + pstm);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return false;
+		}
 
-            //Executa a sql para inserção dos dados
-            pstm.execute();
+		return true;
+	}
 
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return false;
-        } finally {
-            if (pstm != null)
-                pstm.close();
-        }
+	@Override
+	public Corretor get(int id) {
+		String selectString = "SELECT * FROM corretor WHERE id = ?";
 
-        return true;
-    }
+		ResultSet rs = null;
+		PreparedStatement pstm = null;
 
-    @Override
-    public Corretor get(int id) {
-        String selectString = "SELECT * FROM corretor WHERE id = ?";
+		String nome = null;
+		String idade = null;
+		String sexo = null;
+		String cpf = null;
+		String telefone = null;
 
-        ResultSet rs = null;
-        PreparedStatement pstm = null;
+		try {
 
-        String nome = null;
-        String idade = null;
-        String sexo = null;
-        String cpf = null;
-        String telefone = null;
+			//Cria um PreparedStatment, classe usada para executar a query
+			pstm = conn.prepareStatement(selectString);
 
-        try {
+			pstm.setInt(1, id);
+			log.info("Getting Corretor :: " + pstm);
 
-            //Cria um PreparedStatment, classe usada para executar a query
-            pstm = conn.prepareStatement(selectString);
+			//Executa a sql para inserção dos dados
+			rs = pstm.executeQuery();
 
-            pstm.setInt(1, id);
-            log.info("Getting Corretor :: " + pstm);
-
-            //Executa a sql para inserção dos dados
-            rs = pstm.executeQuery();
-
-            nome = rs.getString("nome");
-            idade = rs.getString("idade");
-            sexo = rs.getString("sexo");
-            cpf = rs.getString("cpf");
-            telefone = rs.getString("telefone");
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
+			nome = rs.getString("nome");
+			idade = rs.getString("idade");
+			sexo = rs.getString("sexo");
+			cpf = rs.getString("cpf");
+			telefone = rs.getString("telefone");
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
 //            return false;
-        } finally {
-            if (pstm != null) {
-                try {
-                    pstm.close();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
+		} finally {
+			if (pstm != null) {
+				try {
+					pstm.close();
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}
 
 
-        // Criando um novo corretor com os dados encontrados na base de dados
-        Corretor corretor = new Corretor(id,nome,idade,sexo,cpf,telefone);
+		// Criando um novo corretor com os dados encontrados na base de dados
+		Corretor corretor = new Corretor(id, nome, idade, sexo, cpf, telefone);
 
-        return corretor;
+		return corretor;
 
-    }
+	}
 
-    @Override
-    public boolean update(Corretor corretor, int id) throws SQLException {
+	@Override
+	public boolean update(Corretor corretor, int id) throws SQLException {
 
-        String insertString = "UPDATE corretor SET nome = ?, idade = ?, sexo = ?, cpf = ?, email = ?, password = ?, telefone = ?" +
-                " WHERE id = ?";
+		String insertString = "UPDATE corretor " +
+				"SET nome = ?, idade = ?, sexo = ?, cpf = ?, email = ?, password = ?, telefone = ? " +
+				"WHERE id = ?";
 
-        PreparedStatement pstm = null;
+		try (PreparedStatement pstm = conn.prepareStatement(insertString)) {
+			//Cria um PreparedStatment, classe usada para executar a query
 
-        try {
-            //Cria um PreparedStatment, classe usada para executar a query
-            pstm = conn.prepareStatement(insertString);
+			pstm.setString(1, corretor.getNome());
+			pstm.setString(2, corretor.getIdade());
+			pstm.setString(3, corretor.getSexo());
+			pstm.setString(4, corretor.getCpf());
+			pstm.setString(5, corretor.getEmail());
+			pstm.setString(6, corretor.getPassword()); // TODO add bcrypt
+			pstm.setString(7, corretor.getTelefone());
+			pstm.setInt(8, id);
 
-            pstm.setString(1, corretor.getNome());
-            pstm.setString(2, corretor.getIdade());
-            pstm.setString(3, corretor.getSexo());
-            pstm.setString(4, corretor.getCpf());
-            pstm.setString(5, corretor.getEmail());
-            pstm.setString(6, corretor.getPassword()); // TODO add bcrypt
-            pstm.setString(7, corretor.getTelefone());
-            pstm.setInt(8, id);
+			log.info("Atualizando dados do usuario :: " + pstm);
 
-            log.info("Atualizando dados do usuario :: " + pstm);
+			//Executa a sql para inserção dos dados
+			pstm.execute();
 
-            //Executa a sql para inserção dos dados
-            pstm.execute();
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return false;
+		}
 
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return false;
-        } finally {
-            if (pstm != null)
-                pstm.close();
-        }
-
-        return true;
-    }
+		return true;
+	}
 
 
-    @Override
-    public void delete(int id) throws SQLException {
-        //TODO
-        String deleteQuery = "DELETE FROM corretor WHERE id = ?";
+	@Override
+	public void delete(int id) throws SQLException {
+		//TODO
+		String deleteQuery = "DELETE FROM corretor WHERE id = ?";
 
-        PreparedStatement pstm = null;
+		PreparedStatement pstm = null;
 
-        try {
-            pstm = conn.prepareStatement(deleteQuery);
-            pstm.setInt(1, id);
-            pstm.execute();
+		try {
+			pstm = conn.prepareStatement(deleteQuery);
+			pstm.setInt(1, id);
+			pstm.execute();
 
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }finally{
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
 
-            try{
-                if(pstm != null){
-                    pstm.close();
-                }
-                if(conn != null){
-                    conn.close();
-                }
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-        }
-    }
+			try {
+				if (pstm != null) {
+					pstm.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 }
