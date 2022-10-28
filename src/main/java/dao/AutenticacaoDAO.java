@@ -27,7 +27,6 @@ public class AutenticacaoDAO<T1 extends GenericDaoImpl<?>> {
 
 		String tableName = null;
 		String password = u.getPassword();
-		String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
 
 		try {
 			tableName = daoType.getDeclaredConstructor().newInstance().getTableName();
@@ -35,17 +34,19 @@ public class AutenticacaoDAO<T1 extends GenericDaoImpl<?>> {
 			e.printStackTrace();
 		}
 
-		String query = "SELECT * FROM " + tableName + " WHERE email = ? AND password = ?";
+		String query = "SELECT * FROM " + tableName + " WHERE email = ?";
 
 		try (PreparedStatement ps = conn.prepareStatement(query)) {
 			ps.setString(1, u.getEmail());
-			ps.setString(2, bcryptHashString);
 
 			log.debug(ps.toString());
 
 			ResultSet rs = ps.executeQuery();
 
-			if (rs.next()) return true;
+			if (rs.next()) {
+				BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), rs.getString("password"));
+				return result.verified;
+			}
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();

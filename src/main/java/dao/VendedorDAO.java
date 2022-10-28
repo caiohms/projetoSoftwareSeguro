@@ -44,7 +44,7 @@ public class VendedorDAO extends GenericDaoImpl<Vendedor> {
 	public boolean save(Vendedor vendedor) throws SQLException {
 
 		String password = vendedor.getPassword();
-		String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
+		String bcryptHashString = BCrypt.withDefaults().hashToString(6, password.toCharArray());
 
 
 		String insertString = "INSERT INTO " + getTableName() +
@@ -129,7 +129,7 @@ public class VendedorDAO extends GenericDaoImpl<Vendedor> {
 	public boolean update(Vendedor vendedor, int id) throws SQLException {
 
 		String password = vendedor.getPassword();
-		String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
+		String bcryptHashString = BCrypt.withDefaults().hashToString(6, password.toCharArray());
 
 
 		String insertString = "UPDATE vendedor SET nome = ?, idade = ?, sexo = ?, cpf = ?, email = ?, password = ?, telefone = ?" +

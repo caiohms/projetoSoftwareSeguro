@@ -54,7 +54,7 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 		try (PreparedStatement pstm = conn.prepareStatement(insertString)) {
 			//Cria um PreparedStatment, classe usada para executar a query
 			String password = comprador.getPassword();
-			String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
+			String bcryptHashString = BCrypt.withDefaults().hashToString(6, password.toCharArray());
 
 			pstm.setString(1, comprador.getNome());
 			pstm.setString(2, comprador.getIdade());
@@ -119,7 +119,6 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 			}
 		}
 
-
 		// Criando um novo corretor com os dados encontrados na base de dados
 		Comprador comprador = new Comprador(id, nome, idade, sexo, cpf, telefone);
 
@@ -130,7 +129,7 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 	public boolean update(Comprador comprador, int id) throws SQLException {
 
 		String password = comprador.getPassword();
-		String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
+		String bcryptHashString = BCrypt.withDefaults().hashToString(6, password.toCharArray());
 
 		String insertString = "UPDATE comprador SET nome = ?, idade = ?, sexo = ?, cpf = ?, email = ?, password = ?, telefone = ?" +
 				" WHERE id = ?";
@@ -182,9 +181,7 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 				if (pstm != null) {
 					pstm.close();
 				}
-				if (conn != null) {
-					conn.close();
-				}
+				conn.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

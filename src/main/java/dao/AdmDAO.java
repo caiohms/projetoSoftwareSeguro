@@ -41,31 +41,8 @@ public class AdmDAO extends GenericDaoImpl<Adm> {
 	}
 
 	public boolean save(Adm adm) throws SQLException {
-
-		String password = adm.getPassword();
-		String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
-
-		String insertString = "INSERT INTO " + getTableName() +
-				"(email,password)" +
-				" VALUES(?,?)";
-
-		try (PreparedStatement pstm = conn.prepareStatement(insertString)) {
-			//Cria um PreparedStatment, classe usada para executar a query
-
-			pstm.setString(1, adm.getEmail());
-			pstm.setString(2, adm.getPassword()); // TODO add bcrypt
-
-			log.info("Cadastrando usuario :: " + pstm);
-
-			//Executa a sql para inserção dos dados
-			pstm.execute();
-
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			return false;
-		}
-
-		return true;
+		// Admins cannot be added
+		return false;
 	}
 
 	public Adm get(int id) {
