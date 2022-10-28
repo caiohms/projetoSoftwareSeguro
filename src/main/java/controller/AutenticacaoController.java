@@ -26,10 +26,10 @@ public class AutenticacaoController {
 			} else {
 				aView.usuarioNaoAutenticado();
 
-				if(aView.OpcoesAuth() == 1){
+				if (aView.OpcoesAuth() == 1) {
 					System.out.println("Opcao cadastrar selecionada");
 					new CadastroController();
-				}else if(aView.OpcoesAuth() == 2){
+				} else if (aView.OpcoesAuth() == 2) {
 					System.out.println("Recuperar senha");
 
 				}
@@ -50,10 +50,10 @@ public class AutenticacaoController {
 			} else {
 				aView.usuarioNaoAutenticado();
 
-				if(aView.OpcoesAuth() == 1){
+				if (aView.OpcoesAuth() == 1) {
 					System.out.println("Opcao cadastrar selecionada");
 					new CadastroController();
-				}else if(aView.OpcoesAuth() == 2){
+				} else if (aView.OpcoesAuth() == 2) {
 					System.out.println("Recuperar senha");
 
 				}

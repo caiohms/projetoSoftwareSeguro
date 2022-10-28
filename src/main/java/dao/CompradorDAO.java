@@ -146,16 +146,16 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally{
+		} finally {
 
-			try{
-				if(pstm != null){
+			try {
+				if (pstm != null) {
 					pstm.close();
 				}
-				if(conn != null){
+				if (conn != null) {
 					conn.close();
 				}
-			}catch(Exception e){
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}

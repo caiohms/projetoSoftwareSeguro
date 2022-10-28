@@ -39,7 +39,7 @@ public class AutenticacaoView {
 		return sc.nextInt();
 	}
 
-	public void opcoesUsuario(){
+	public void opcoesUsuario() {
 		System.out.println("\nOpção 1 - criar cadastro.");
 		System.out.println("\nOpção 2 - redefinir senha.");
 		System.out.print("\nInsira  uma opcao: ");

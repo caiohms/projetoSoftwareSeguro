@@ -45,7 +45,7 @@ public class CompradorController {
 				break;
 			case 4:
 //                Excluir Dados do comprador
-                new CompradorController().deletarComprador(idSaved);
+				new CompradorController().deletarComprador(idSaved);
 				break;
 			default:
 				break;
@@ -68,7 +68,8 @@ public class CompradorController {
 			e.printStackTrace();
 		}
 	}
-	public void atualizarDados(int idComprador){
+
+	public void atualizarDados(int idComprador) {
 		//update to db
 		Comprador comprador = compradorView.atualizaComprador();
 		try {
@@ -79,14 +80,13 @@ public class CompradorController {
 		}
 	}
 
-	public void deletarComprador(int idComprador){
+	public void deletarComprador(int idComprador) {
 		//update to db
 		int decision = compradorView.getDeleteOption();
 		try {
 			if (decision == 1) {
 				compradorDAO.delete(idComprador);
-			}
-			else {
+			} else {
 				new MainController();
 			}
 		} catch (SQLException e) {

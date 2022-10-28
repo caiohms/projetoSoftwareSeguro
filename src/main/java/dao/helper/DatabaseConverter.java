@@ -1,10 +1,10 @@
 package dao.helper;
 
 import lombok.extern.slf4j.Slf4j;
+import model.Adm;
 import model.Comprador;
 import model.Corretor;
 import model.Vendedor;
-import model.Adm;
 
 import java.sql.ResultSet;
 
@@ -57,6 +57,7 @@ public class DatabaseConverter {
 
 		return converted;
 	}
+
 	public static Corretor convertCorretor(ResultSet resultSet) {
 		Corretor converted = new Corretor();
 
@@ -78,6 +79,7 @@ public class DatabaseConverter {
 
 		return converted;
 	}
+
 	public static Adm convertAdm(ResultSet resultSet) {
 		Adm converted = new Adm();
 

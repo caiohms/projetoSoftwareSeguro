@@ -71,6 +71,7 @@ public class CompradorView {
 
 		return novoComprador;
 	}
+
 	public Comprador atualizaComprador() {
 		Comprador comprador = new Comprador();
 
@@ -119,9 +120,11 @@ public class CompradorView {
 		System.out.print("Digite uma opcao: ");
 
 	}
+
 	public void cadastroSuccess() {
 		System.out.println("Cadastro efetuado com sucesso.");
 	}
+
 	public void atualizacaoSuccess() {
 		System.out.println("Atualização de dados efetuada com sucesso.");
 	}

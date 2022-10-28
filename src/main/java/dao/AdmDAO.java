@@ -15,83 +15,84 @@ import java.sql.SQLException;
 @Slf4j
 public class AdmDAO extends GenericDaoImpl<Adm> {
 
-    private static final Connection conn = DatabaseConSingleton.getConn();
+	private static final Connection conn = DatabaseConSingleton.getConn();
 
-    public Adm getAdmFromUsuario(Usuario user) {
+	public Adm getAdmFromUsuario(Usuario user) {
 
-        String selectionString = "SELECT * FROM " + getTableName() + " WHERE email = ?";
+		String selectionString = "SELECT * FROM " + getTableName() + " WHERE email = ?";
 
-        ResultSet rs = null;
+		ResultSet rs = null;
 
-        try (PreparedStatement ps = conn.prepareStatement(selectionString)) {
-            ps.setString(1, user.getEmail());
-            rs = ps.executeQuery();
+		try (PreparedStatement ps = conn.prepareStatement(selectionString)) {
+			ps.setString(1, user.getEmail());
+			rs = ps.executeQuery();
 
-            if (rs.next()) {
-                return DatabaseConverter.convertAdm(rs);
-            }
+			if (rs.next()) {
+				return DatabaseConverter.convertAdm(rs);
+			}
 
-        } catch (SQLException e) {
-            log.error(e.getMessage(), e);
-        }
+		} catch (SQLException e) {
+			log.error(e.getMessage(), e);
+		}
 
-        log.error("Usuario nao encontrado");
-        return null;
-    }
+		log.error("Usuario nao encontrado");
+		return null;
+	}
 
-    @Override
-    protected String setTableName() {
-        return "adm";
-    }
+	@Override
+	protected String setTableName() {
+		return "adm";
+	}
 
-    public boolean save(Adm adm) throws SQLException {
+	public boolean save(Adm adm) throws SQLException {
 
-        String password = adm.getPassword();
-        String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
-
-
-        String insertString = "INSERT INTO " + getTableName() +
-                "(email,password)" +
-                " VALUES(?,?)";
-
-        PreparedStatement pstm = null;
-
-        try {
-            //Cria um PreparedStatment, classe usada para executar a query
-            pstm = conn.prepareStatement(insertString);
-
-            pstm.setString(5, adm.getEmail());
-            pstm.setString(6, bcryptHashString);
-
-            log.info("Cadastrando usuario :: " + pstm);
-
-            //Executa a sql para inserção dos dados
-            pstm.execute();
-
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return false;
-        } finally {
-            if (pstm != null)
-                pstm.close();
-        }
-
-        return true;
-    }
-    public Adm get(int id) throws SQLException {
-        //TODO
-        return null;
-    }
-
-    @Override
-    public boolean update(Adm adm, int id) throws SQLException {
-        return true;
-    }
+		String password = adm.getPassword();
+		String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
 
 
-    @Override
-    public void delete(int id) throws SQLException {
+		String insertString = "INSERT INTO " + getTableName() +
+				"(email,password)" +
+				" VALUES(?,?)";
 
-    }
+		PreparedStatement pstm = null;
+
+		try {
+			//Cria um PreparedStatment, classe usada para executar a query
+			pstm = conn.prepareStatement(insertString);
+
+			pstm.setString(5, adm.getEmail());
+			pstm.setString(6, bcryptHashString);
+
+			log.info("Cadastrando usuario :: " + pstm);
+
+			//Executa a sql para inserção dos dados
+			pstm.execute();
+
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return false;
+		} finally {
+			if (pstm != null)
+				pstm.close();
+		}
+
+		return true;
+	}
+
+	public Adm get(int id) throws SQLException {
+		//TODO
+		return null;
+	}
+
+	@Override
+	public boolean update(Adm adm, int id) throws SQLException {
+		return true;
+	}
+
+
+	@Override
+	public void delete(int id) throws SQLException {
+
+	}
 
 }

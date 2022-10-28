@@ -27,7 +27,7 @@ public class MainController {
 				case 2:
 					// Login como Vendedor
 					user = new AutenticacaoController().authVendedor();
-                    new VendedorController().autenticado(user);
+					new VendedorController().autenticado(user);
 					break;
 				case 3:
 					// cadastrar
