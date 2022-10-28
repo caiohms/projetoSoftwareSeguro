@@ -25,7 +25,7 @@ public class AutenticacaoDAO<T1 extends GenericDaoImpl<?>> {
 
 		log.debug("Autenticando usuario...");
 
-		String tableName;
+		String tableName = null;
 		String password = u.getPassword();
 		String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
 
