@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class MainView {
 
-	Scanner sc;
+	private final Scanner sc;
 
 	public MainView() {
 		this.sc = new Scanner(System.in);
@@ -18,7 +18,7 @@ public class MainView {
 		while (!success) {
 			try {
 				option = sc.nextInt();
-				if (option > 0 && option < 5) success = true;
+				if (option > 0 && option < 6) success = true;
 				else System.out.println("Opção indisponível, tente novamente.");
 			} catch (InputMismatchException e) {
 				System.out.println("Opção indisponível, tente novamente.");
@@ -61,5 +61,7 @@ public class MainView {
 		}
 	}
 
-
+	public void showQuit() {
+		System.out.println("Saindo...");
+	}
 }

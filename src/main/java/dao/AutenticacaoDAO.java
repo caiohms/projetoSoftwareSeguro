@@ -2,9 +2,7 @@ package dao;
 
 import database.DatabaseConSingleton;
 import lombok.extern.slf4j.Slf4j;
-import model.Comprador;
 import model.Usuario;
-import model.Vendedor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,28 +10,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Slf4j
-public class AutenticacaoDAO<T> {
+public class AutenticacaoDAO<T1 extends GenericDaoImpl<?>> {
 
 	private static final Connection conn = DatabaseConSingleton.getConn();
 
-	private final Class<T> type;
+	private final Class<T1> daoType;
 
-	public AutenticacaoDAO(Class<T> type) {
-		this.type = type;
+	public AutenticacaoDAO(Class<T1> daoType) {
+		this.daoType = daoType;
 	}
 
 	public boolean autenticarUsuario(Usuario u) {
 
 		log.debug("Autenticando usuario...");
 
-		String tableName;
-
-		if (type == Comprador.class) {
-			tableName = "comprador";
-		} else if (type == Vendedor.class) {
-			tableName = "vendedor";
-		} else {
-			tableName = "corretor";
+		String tableName = null;
+		try {
+			tableName = daoType.getDeclaredConstructor().newInstance().getTableName();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		String query = "SELECT * FROM " + tableName + " WHERE email = ? AND password = ?";

@@ -1,18 +1,12 @@
 package controller;
 
 import view.CadastroView;
-import view.CompradorView;
 
 public class CadastroController {
 
-	private final CadastroView cadastroView;
-	private final CompradorView compradorView;
-
 	public CadastroController() {
 
-		cadastroView = new CadastroView();
-		compradorView = new CompradorView();
-
+		CadastroView cadastroView = new CadastroView();
 		int option = cadastroView.getCadastroOption();
 
 		switch (option) {
@@ -23,20 +17,12 @@ public class CadastroController {
 			case 2:
 //                Opcao 2 - Cadastrar como Vendedor
 				new VendedorController().realizarCadastro();
-
 				break;
 			default:
 				break;
 		}
 
 
-//        cdao = new CompradorDAO();
-//        if(cdao.autenticarUsuario(comprador)){
-//            cview.usuarioAutenticado();
-//            new MenuController(comprador);
-//        }
-//        else {
-//            cview.usuarioNaoAutenticado();
 	}
 }
 

@@ -5,11 +5,11 @@ import model.Corretor;
 import java.util.Scanner;
 
 public class CorretorView {
-    Scanner sc;
+	private final Scanner sc;
 
-    public CorretorView() {
-        this.sc = new Scanner(System.in);
-    }
+	public CorretorView() {
+		this.sc = new Scanner(System.in);
+	}
 
     public Integer getCompradorOption() {
         showOptionsComprador();
@@ -30,99 +30,95 @@ public class CorretorView {
 
     }
 
-    public int compradorAlteraDados() {
-        return 0;
-    }
+	public Corretor realizarCadastro() {
+		Corretor novoCorretor = new Corretor();
 
-    public Corretor login(Corretor usuarioSendoEnviadoParaOFront) {
-        return usuarioSendoEnviadoParaOFront;
-    }
+		System.out.println("\n##--Cadastro do Corretor--##\n");
+		System.out.println("|-----------------------------|");
 
-    public Corretor realizarCadastro() {
-        Corretor novoCorretor = new Corretor();
+		System.out.println("| E-mail: ");
+		novoCorretor.setEmail(sc.nextLine());
 
-        System.out.println("\n##--Cadastro do Corretor--##\n");
-        System.out.println("|-----------------------------|");
+		System.out.println("| Senha: ");
+		novoCorretor.setPassword(sc.nextLine());
 
-        System.out.print("| E-mail: \n");
-        novoCorretor.setEmail(sc.nextLine());
+		System.out.println("| Nome Completo: ");
+		novoCorretor.setNome(sc.nextLine());
 
-        System.out.print("| Senha: \n");
-        novoCorretor.setPassword(sc.nextLine());
+		System.out.println("| Idade: ");
+		novoCorretor.setIdade(sc.nextLine());
 
-        System.out.print("| Nome Completo: \n");
-        novoCorretor.setNome(sc.nextLine());
+		System.out.println("| Sexo: ");
+		novoCorretor.setSexo(sc.nextLine());
 
-        System.out.print("| Idade: \n");
-        novoCorretor.setIdade(sc.nextLine());
+		System.out.println("| CPF: ");
+		novoCorretor.setCpf(sc.nextLine());
 
-        System.out.print("| Sexo: \n");
-        novoCorretor.setSexo(sc.nextLine());
-
-        System.out.print("| CPF: \n");
-        novoCorretor.setCpf(sc.nextLine());
-
-        System.out.print("| Telefone: \n");
-        novoCorretor.setTelefone(sc.nextLine());
+		System.out.println("| Telefone: ");
+		novoCorretor.setTelefone(sc.nextLine());
 
 //		System.out.print("| Endereco: \n");
 //		String endereco = sc.nextLine();
 //		novoComprador.setPassword(sc.nextLine());
 
-        return novoCorretor;
-    }
-    public Corretor atualizaCorretor() {
-        Corretor corretor = new Corretor();
+		return novoCorretor;
+	}
 
-        System.out.println("\n##--Atualizar dados do Corretor--##\n");
-        System.out.println("|-----------------------------|");
+	public Corretor atualizaCorretor() {
+		Corretor corretor = new Corretor();
 
-        System.out.print("| E-mail: \n");
-        corretor.setEmail(sc.nextLine());
+		System.out.println();
+		System.out.println("##--Atualizar dados do Corretor--##");
+		System.out.println("|-----------------------------|");
 
-        System.out.print("| Senha: \n");
-        corretor.setPassword(sc.nextLine());
+		System.out.println("| E-mail: ");
+		corretor.setEmail(sc.nextLine());
 
-        System.out.print("| Nome Completo: \n");
-        corretor.setNome(sc.nextLine());
+		System.out.println("| Senha: ");
+		corretor.setPassword(sc.nextLine());
 
-        System.out.print("| Idade: \n");
-        corretor.setIdade(sc.nextLine());
+		System.out.println("| Nome Completo: ");
+		corretor.setNome(sc.nextLine());
 
-        System.out.print("| Sexo: \n");
-        corretor.setSexo(sc.nextLine());
+		System.out.println("| Idade: ");
+		corretor.setIdade(sc.nextLine());
 
-        System.out.print("| CPF: \n");
-        corretor.setCpf(sc.nextLine());
+		System.out.println("| Sexo: ");
+		corretor.setSexo(sc.nextLine());
 
-        System.out.print("| Telefone: \n");
-        corretor.setTelefone(sc.nextLine());
+		System.out.println("| CPF: ");
+		corretor.setCpf(sc.nextLine());
+
+		System.out.println("| Telefone: ");
+		corretor.setTelefone(sc.nextLine());
 
 //		System.out.print("| Endereco: \n");
 //		String endereco = sc.nextLine();
 //		novoComprador.setPassword(sc.nextLine());
 
-        return corretor;
-    }
+		return corretor;
+	}
 
-    public Integer getDeleteOption() {
-        deletaCorretor();
-        return sc.nextInt();
-    }
+	public Integer getDeleteOption() {
+		deletaCorretor();
+		return sc.nextInt();
+	}
 
-    public void deletaCorretor() {
-        System.out.print("\n##--Voce deseja deletar o usuario --##\n\n");
-        System.out.print("|----------------------------------|\n");
-        System.out.print("| Opcao 1 - Sim, quero deletar     |\n");
-        System.out.print("| Opcao 2 - Não, não quero deletar |\n");
-        System.out.print("|----------------------------------|\n");
-        System.out.print("Digite uma opcao: ");
+	public void deletaCorretor() {
+		System.out.println("\n##--Voce deseja deletar o usuario --##");
+		System.out.println("|----------------------------------|");
+		System.out.println("| Opcao 1 - Sim, quero deletar     |");
+		System.out.println("| Opcao 2 - Não, não quero deletar |");
+		System.out.println("|----------------------------------|");
+		System.out.print("Digite uma opcao: ");
 
-    }
-    public void cadastroSuccess() {
-        System.out.println("Cadastro efetuado com sucesso.");
-    }
-    public void atualizacaoSuccess() {
-        System.out.println("Atualização de dados efetuada com sucesso.");
-    }
+	}
+
+	public void cadastroSuccess() {
+		System.out.println("Cadastro efetuado com sucesso.");
+	}
+
+	public void atualizacaoSuccess() {
+		System.out.println("Atualização de dados efetuada com sucesso.");
+	}
 }

@@ -21,7 +21,7 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 
 		String selectionString = "SELECT * FROM " + getTableName() + " WHERE email = ?";
 
-		ResultSet rs = null;
+		ResultSet rs;
 
 		try (PreparedStatement ps = conn.prepareStatement(selectionString)) {
 			ps.setString(1, user.getEmail());
@@ -51,11 +51,8 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 				"(nome,idade,sexo,cpf,email,password,telefone)" +
 				" VALUES(?,?,?,?,?,?,?)";
 
-		PreparedStatement pstm = null;
-
-		try {
+		try (PreparedStatement pstm = conn.prepareStatement(insertString)) {
 			//Cria um PreparedStatment, classe usada para executar a query
-			pstm = conn.prepareStatement(insertString);
 
 			pstm.setString(1, comprador.getNome());
 			pstm.setString(2, comprador.getIdade());
@@ -73,9 +70,6 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			return false;
-		} finally {
-			if (pstm != null)
-				pstm.close();
 		}
 
 		return true;
@@ -133,14 +127,10 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 	@Override
 	public boolean update(Comprador comprador, int id) throws SQLException {
 
-		String insertString = "UPDATE comprador SET nome = ?, idade = ?, sexo = ?, cpf = ?, email = ?, password = ?, telefone = ?" +
-				" WHERE id = ?";
+		String insertString = "UPDATE comprador SET nome = ?, idade = ?, sexo = ?, cpf = ?, email = ?, password = ?, telefone = ?" + " WHERE id = ?";
 
-		PreparedStatement pstm = null;
-
-		try {
+		try (PreparedStatement pstm = conn.prepareStatement(insertString)) {
 			//Cria um PreparedStatment, classe usada para executar a query
-			pstm = conn.prepareStatement(insertString);
 
 			pstm.setString(1, comprador.getNome());
 			pstm.setString(2, comprador.getIdade());
@@ -159,9 +149,6 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			return false;
-		} finally {
-			if (pstm != null)
-				pstm.close();
 		}
 
 		return true;
@@ -183,16 +170,16 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally{
+		} finally {
 
-			try{
-				if(pstm != null){
+			try {
+				if (pstm != null) {
 					pstm.close();
 				}
-				if(conn != null){
+				if (conn != null) {
 					conn.close();
 				}
-			}catch(Exception e){
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}

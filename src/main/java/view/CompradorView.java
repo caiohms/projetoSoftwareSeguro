@@ -5,7 +5,7 @@ import model.Comprador;
 import java.util.Scanner;
 
 public class CompradorView {
-	Scanner sc;
+	private final Scanner sc;
 
 	public CompradorView() {
 		this.sc = new Scanner(System.in);
@@ -17,52 +17,42 @@ public class CompradorView {
 	}
 
 	private void showOptionsComprador() {
-		System.out.print("\n##--Menu do Comprador--##\n\n");
-		System.out.print("|-----------------------------|\n");
-		System.out.print("| Opcao 1 - Ver Propriedades  |\n");
-		System.out.print("| Opcao 2 - Alterar Dados     |\n");
-		System.out.print("| Opcao 3 - Consultar Dados   |\n");
-		System.out.print("| Opcao 4 - Excluir Dados     |\n");
-		System.out.print("| Opcao 5 - Sair              |\n");
-		System.out.print("|-----------------------------|\n");
-		System.out.print("Digite uma opcao: ");
-
-
-	}
-
-	public int compradorAlteraDados() {
-		return 0;
-	}
-
-	public Comprador login(Comprador usuarioSendoEnviadoParaOFront) {
-		return usuarioSendoEnviadoParaOFront;
+		System.out.println("##--Menu do Comprador--##");
+		System.out.println("|-----------------------------|");
+		System.out.println("| Opcao 1 - Ver Propriedades  |");
+		System.out.println("| Opcao 2 - Alterar Dados     |");
+		System.out.println("| Opcao 3 - Consultar Dados   |");
+		System.out.println("| Opcao 4 - Excluir Dados     |");
+		System.out.println("| Opcao 5 - Sair              |");
+		System.out.println("|-----------------------------|");
+		System.out.println("Digite uma opcao: ");
 	}
 
 	public Comprador realizarCadastro() {
 		Comprador novoComprador = new Comprador();
 
-		System.out.println("\n##--Cadastro do Comprador--##\n");
+		System.out.println("##--Cadastro do Comprador--##");
 		System.out.println("|-----------------------------|");
 
-		System.out.print("| E-mail: \n");
+		System.out.print("| E-mail: ");
 		novoComprador.setEmail(sc.nextLine());
 
-		System.out.print("| Senha: \n");
+		System.out.print("| Senha: ");
 		novoComprador.setPassword(sc.nextLine());
 
-		System.out.print("| Nome Completo: \n");
+		System.out.print("| Nome Completo: ");
 		novoComprador.setNome(sc.nextLine());
 
-		System.out.print("| Idade: \n");
+		System.out.print("| Idade: ");
 		novoComprador.setIdade(sc.nextLine());
 
-		System.out.print("| Sexo: \n");
+		System.out.print("| Sexo: ");
 		novoComprador.setSexo(sc.nextLine());
 
-		System.out.print("| CPF: \n");
+		System.out.print("| CPF: ");
 		novoComprador.setCpf(sc.nextLine());
 
-		System.out.print("| Telefone: \n");
+		System.out.print("| Telefone: ");
 		novoComprador.setTelefone(sc.nextLine());
 
 //		System.out.print("| Endereco: \n");
@@ -71,31 +61,32 @@ public class CompradorView {
 
 		return novoComprador;
 	}
+
 	public Comprador atualizaComprador() {
 		Comprador comprador = new Comprador();
 
-		System.out.println("\n##--Atualizar dados do Comprador--##\n");
+		System.out.println("##--Atualizar dados do Comprador--##");
 		System.out.println("|-----------------------------|");
 
-		System.out.print("| E-mail: \n");
+		System.out.print("| E-mail: ");
 		comprador.setEmail(sc.nextLine());
 
-		System.out.print("| Senha: \n");
+		System.out.print("| Senha: ");
 		comprador.setPassword(sc.nextLine());
 
-		System.out.print("| Nome Completo: \n");
+		System.out.print("| Nome Completo: ");
 		comprador.setNome(sc.nextLine());
 
-		System.out.print("| Idade: \n");
+		System.out.print("| Idade: ");
 		comprador.setIdade(sc.nextLine());
 
-		System.out.print("| Sexo: \n");
+		System.out.print("| Sexo: ");
 		comprador.setSexo(sc.nextLine());
 
-		System.out.print("| CPF: \n");
+		System.out.print("| CPF: ");
 		comprador.setCpf(sc.nextLine());
 
-		System.out.print("| Telefone: \n");
+		System.out.print("| Telefone: ");
 		comprador.setTelefone(sc.nextLine());
 
 //		System.out.print("| Endereco: \n");
@@ -111,18 +102,27 @@ public class CompradorView {
 	}
 
 	public void deletaComprador() {
-		System.out.print("\n##--Voce deseja deletar o usuario --##\n\n");
-		System.out.print("|----------------------------------|\n");
-		System.out.print("| Opcao 1 - Sim, quero deletar     |\n");
-		System.out.print("| Opcao 2 - Não, não quero deletar |\n");
-		System.out.print("|----------------------------------|\n");
+		System.out.println("## Deseja mesmo deletar o usuario? ##");
+		System.out.println("|----------------------------------|");
+		System.out.println("| Opcao 1 - Sim, quero deletar     |");
+		System.out.println("| Opcao 2 - Não, não quero deletar |");
+		System.out.println("|----------------------------------|");
 		System.out.print("Digite uma opcao: ");
-
 	}
+
 	public void cadastroSuccess() {
 		System.out.println("Cadastro efetuado com sucesso.");
 	}
+
 	public void atualizacaoSuccess() {
 		System.out.println("Atualização de dados efetuada com sucesso.");
+	}
+
+	public void sendEmailAlreadyExists() {
+		System.out.println("Erro: O email digitado já foi cadastrado.");
+	}
+
+	public void sendInvalidAge() {
+		System.out.println("A idade digitada é inválida");
 	}
 }
