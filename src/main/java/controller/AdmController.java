@@ -53,6 +53,7 @@ public class AdmController {
 				break;
 			case 3:
 //                Consultar Dados do corretor
+				new AdmController().consultarCorretor();
 				break;
 			case 4:
 //                Consultar Dados do comprador
@@ -75,6 +76,10 @@ public class AdmController {
 	public AdmController autenticado(Usuario user) {
 		Adm ad = admDAO.getAdmFromUsuario(user);
 		return new AdmController(ad);
+	}
+
+	public void insertOfAdm() {
+		int decision = corretorView.getDeleteOption();
 	}
 
 	public void realizarCadastro() {
@@ -101,6 +106,12 @@ public class AdmController {
 		}
 	}
 
+	public void consultarCorretor() {
+		int id = admView.getIdCorretor();
+		Corretor corretor = corretorDAO.get(id);
+		admView.consultarCorretor(corretor);
+	}
+
 	public void deletarCorretor() {
 		//update to db
 		int id = admView.getIdCorretor();
@@ -115,4 +126,5 @@ public class AdmController {
 			e.printStackTrace();
 		}
 	}
+
 }
