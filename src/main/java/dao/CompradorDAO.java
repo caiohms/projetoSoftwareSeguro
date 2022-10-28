@@ -57,8 +57,6 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 			String password = comprador.getPassword();
 			String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
 
-			pstm = conn.prepareStatement(insertString);
-
 			pstm.setString(1, comprador.getNome());
 			pstm.setString(2, comprador.getIdade());
 			pstm.setString(3, comprador.getSexo());
