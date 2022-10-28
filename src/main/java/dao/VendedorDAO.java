@@ -2,25 +2,22 @@ package dao;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import dao.helper.DatabaseConverter;
-import database.DatabaseConSingleton;
 import lombok.extern.slf4j.Slf4j;
 import model.Usuario;
 import model.Vendedor;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Slf4j
 public class VendedorDAO extends GenericDaoImpl<Vendedor> {
-	private static final Connection conn = DatabaseConSingleton.getConn();
 
 	public Vendedor getVendedorFromUsuario(Usuario user) {
 
 		String selectionString = "SELECT * FROM " + getTableName() + " WHERE email = ?";
 
-		ResultSet rs = null;
+		ResultSet rs;
 
 		try (PreparedStatement ps = conn.prepareStatement(selectionString)) {
 			ps.setString(1, user.getEmail());
@@ -54,11 +51,8 @@ public class VendedorDAO extends GenericDaoImpl<Vendedor> {
 				"(nome,idade,sexo,cpf,email,password,telefone)" +
 				" VALUES(?,?,?,?,?,?,?)";
 
-		PreparedStatement pstm = null;
-
-		try {
+		try (PreparedStatement pstm = conn.prepareStatement(insertString)) {
 			//Cria um PreparedStatment, classe usada para executar a query
-			pstm = conn.prepareStatement(insertString);
 
 			pstm.setString(1, vendedor.getNome());
 			pstm.setString(2, vendedor.getIdade());
@@ -76,9 +70,6 @@ public class VendedorDAO extends GenericDaoImpl<Vendedor> {
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			return false;
-		} finally {
-			if (pstm != null)
-				pstm.close();
 		}
 
 		return true;
@@ -101,18 +92,15 @@ public class VendedorDAO extends GenericDaoImpl<Vendedor> {
 		String insertString = "UPDATE vendedor SET nome = ?, idade = ?, sexo = ?, cpf = ?, email = ?, password = ?, telefone = ?" +
 				" WHERE id = ?";
 
-		PreparedStatement pstm = null;
-
-		try {
+		try (PreparedStatement pstm = conn.prepareStatement(insertString)) {
 			//Cria um PreparedStatment, classe usada para executar a query
-			pstm = conn.prepareStatement(insertString);
 
 			pstm.setString(1, vendedor.getNome());
 			pstm.setString(2, vendedor.getIdade());
 			pstm.setString(3, vendedor.getSexo());
 			pstm.setString(4, vendedor.getCpf());
 			pstm.setString(5, vendedor.getEmail());
-			pstm.setString(6, bcryptHashString);
+			pstm.setString(6, vendedor.getPassword()); // TODO add bcrypt
 			pstm.setString(7, vendedor.getTelefone());
 			pstm.setInt(8, id);
 
@@ -124,9 +112,6 @@ public class VendedorDAO extends GenericDaoImpl<Vendedor> {
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			return false;
-		} finally {
-			if (pstm != null)
-				pstm.close();
 		}
 
 		return true;

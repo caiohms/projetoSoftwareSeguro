@@ -1,10 +1,10 @@
 package controller;
 
+import dao.AdmDAO;
 import dao.AutenticacaoDAO;
-import model.Adm;
-import model.Comprador;
+import dao.CompradorDAO;
+import dao.VendedorDAO;
 import model.Usuario;
-import model.Vendedor;
 import view.AutenticacaoView;
 
 public class AutenticacaoController {
@@ -16,68 +16,38 @@ public class AutenticacaoController {
 	}
 
 	public Usuario authComprador() {
-		Usuario user = null;
-		AutenticacaoDAO<Comprador> aDao = new AutenticacaoDAO<>(Comprador.class);
-
-		while (user == null) {
-			user = aView.login();
-			if (aDao.autenticarUsuario(user)) {
-				aView.usuarioAutenticado();
-			} else {
-				aView.usuarioNaoAutenticado();
-
-				if (aView.OpcoesAuth() == 1) {
-					System.out.println("Opcao cadastrar selecionada");
-					new CadastroController();
-				} else if (aView.OpcoesAuth() == 2) {
-					System.out.println("Recuperar senha");
-
-				}
-			}
-		}
-
-		return user;
+		AutenticacaoDAO<CompradorDAO> aDao = new AutenticacaoDAO<>(CompradorDAO.class);
+		return doAuth(aDao);
 	}
 
 	public Usuario authVendedor() {
-		Usuario user = null;
-		AutenticacaoDAO<Vendedor> aDao = new AutenticacaoDAO<>(Vendedor.class);
-
-		while (user == null) {
-			user = aView.login();
-			if (aDao.autenticarUsuario(user)) {
-				aView.usuarioAutenticado();
-			} else {
-				aView.usuarioNaoAutenticado();
-
-				if (aView.OpcoesAuth() == 1) {
-					System.out.println("Opcao cadastrar selecionada");
-					new CadastroController();
-				} else if (aView.OpcoesAuth() == 2) {
-					System.out.println("Recuperar senha");
-
-				}
-
-
-			}
-		}
-
-		return user;
+		AutenticacaoDAO<VendedorDAO> aDao = new AutenticacaoDAO<>(VendedorDAO.class);
+		return doAuth(aDao);
 	}
 
-	public Usuario authAdm() {
-		Usuario user = null;
-		AutenticacaoDAO<Adm> aDao = new AutenticacaoDAO<>(Adm.class);
+	public Usuario authAdministrator() {
+		AutenticacaoDAO<AdmDAO> aDao = new AutenticacaoDAO<>(AdmDAO.class);
+		return doAuth(aDao);
+	}
 
-		while (user == null) {
-			user = aView.login();
-			if (aDao.autenticarUsuario(user)) {
+	private Usuario doAuth(AutenticacaoDAO<?> aDao) {
+		Usuario u = null;
+
+		while (u == null) {
+			u = aView.login();
+
+			if (aDao.autenticarUsuario(u)) {
 				aView.usuarioAutenticado();
 			} else {
 				aView.usuarioNaoAutenticado();
+				u = null;
+				boolean retry = aView.retryMenu();
+
+				if (!retry)
+					break;
 			}
 		}
 
-		return user;
+		return u;
 	}
 }

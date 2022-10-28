@@ -5,7 +5,7 @@ import model.Corretor;
 import java.util.Scanner;
 
 public class CorretorView {
-	Scanner sc;
+	private final Scanner sc;
 
 	public CorretorView() {
 		this.sc = new Scanner(System.in);
@@ -30,39 +30,31 @@ public class CorretorView {
 //
 //    }
 
-	public int compradorAlteraDados() {
-		return 0;
-	}
-
-	public Corretor login(Corretor usuarioSendoEnviadoParaOFront) {
-		return usuarioSendoEnviadoParaOFront;
-	}
-
 	public Corretor realizarCadastro() {
 		Corretor novoCorretor = new Corretor();
 
 		System.out.println("\n##--Cadastro do Corretor--##\n");
 		System.out.println("|-----------------------------|");
 
-		System.out.print("| E-mail: \n");
+		System.out.println("| E-mail: ");
 		novoCorretor.setEmail(sc.nextLine());
 
-		System.out.print("| Senha: \n");
+		System.out.println("| Senha: ");
 		novoCorretor.setPassword(sc.nextLine());
 
-		System.out.print("| Nome Completo: \n");
+		System.out.println("| Nome Completo: ");
 		novoCorretor.setNome(sc.nextLine());
 
-		System.out.print("| Idade: \n");
+		System.out.println("| Idade: ");
 		novoCorretor.setIdade(sc.nextLine());
 
-		System.out.print("| Sexo: \n");
+		System.out.println("| Sexo: ");
 		novoCorretor.setSexo(sc.nextLine());
 
-		System.out.print("| CPF: \n");
+		System.out.println("| CPF: ");
 		novoCorretor.setCpf(sc.nextLine());
 
-		System.out.print("| Telefone: \n");
+		System.out.println("| Telefone: ");
 		novoCorretor.setTelefone(sc.nextLine());
 
 //		System.out.print("| Endereco: \n");
@@ -75,28 +67,29 @@ public class CorretorView {
 	public Corretor atualizaCorretor() {
 		Corretor corretor = new Corretor();
 
-		System.out.println("\n##--Atualizar dados do Corretor--##\n");
+		System.out.println();
+		System.out.println("##--Atualizar dados do Corretor--##");
 		System.out.println("|-----------------------------|");
 
-		System.out.print("| E-mail: \n");
+		System.out.println("| E-mail: ");
 		corretor.setEmail(sc.nextLine());
 
-		System.out.print("| Senha: \n");
+		System.out.println("| Senha: ");
 		corretor.setPassword(sc.nextLine());
 
-		System.out.print("| Nome Completo: \n");
+		System.out.println("| Nome Completo: ");
 		corretor.setNome(sc.nextLine());
 
-		System.out.print("| Idade: \n");
+		System.out.println("| Idade: ");
 		corretor.setIdade(sc.nextLine());
 
-		System.out.print("| Sexo: \n");
+		System.out.println("| Sexo: ");
 		corretor.setSexo(sc.nextLine());
 
-		System.out.print("| CPF: \n");
+		System.out.println("| CPF: ");
 		corretor.setCpf(sc.nextLine());
 
-		System.out.print("| Telefone: \n");
+		System.out.println("| Telefone: ");
 		corretor.setTelefone(sc.nextLine());
 
 //		System.out.print("| Endereco: \n");
@@ -112,11 +105,11 @@ public class CorretorView {
 	}
 
 	public void deletaCorretor() {
-		System.out.print("\n##--Voce deseja deletar o usuario --##\n\n");
-		System.out.print("|----------------------------------|\n");
-		System.out.print("| Opcao 1 - Sim, quero deletar     |\n");
-		System.out.print("| Opcao 2 - Não, não quero deletar |\n");
-		System.out.print("|----------------------------------|\n");
+		System.out.println("\n##--Voce deseja deletar o usuario --##");
+		System.out.println("|----------------------------------|");
+		System.out.println("| Opcao 1 - Sim, quero deletar     |");
+		System.out.println("| Opcao 2 - Não, não quero deletar |");
+		System.out.println("|----------------------------------|");
 		System.out.print("Digite uma opcao: ");
 
 	}

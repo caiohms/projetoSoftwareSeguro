@@ -58,23 +58,44 @@ public class CompradorController {
 	}
 
 	public void realizarCadastro() {
-		Comprador novoCadastro = compradorView.realizarCadastro();
-		//save to db
+		Comprador novoCadastro = null;
+
+		while (!verificarCadastroValido(novoCadastro)) {
+			novoCadastro = compradorView.realizarCadastro();
+		}
 
 		try {
-			if (compradorDAO.save(novoCadastro))
-				compradorView.cadastroSuccess();
+			if (compradorDAO.save(novoCadastro)) compradorView.cadastroSuccess();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private boolean verificarCadastroValido(Comprador novoCadastro) {
+		if (novoCadastro == null) {
+			return false;
+		}
+
+		if (compradorDAO.checkTakenEmail(novoCadastro.getEmail())) {
+			compradorView.sendEmailAlreadyExists();
+			return false;
+		}
+
+		try {
+			Integer.parseInt(novoCadastro.getIdade());
+		} catch (NumberFormatException e) {
+			compradorView.sendInvalidAge();
+			return false;
+		}
+
+		return true;
 	}
 
 	public void atualizarDados(int idComprador) {
 		//update to db
 		Comprador comprador = compradorView.atualizaComprador();
 		try {
-			if (compradorDAO.update(comprador, idComprador))
-				compradorView.atualizacaoSuccess();
+			if (compradorDAO.update(comprador, idComprador)) compradorView.atualizacaoSuccess();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

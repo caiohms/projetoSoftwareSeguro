@@ -21,7 +21,7 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 
 		String selectionString = "SELECT * FROM " + getTableName() + " WHERE email = ?";
 
-		ResultSet rs = null;
+		ResultSet rs;
 
 		try (PreparedStatement ps = conn.prepareStatement(selectionString)) {
 			ps.setString(1, user.getEmail());
@@ -51,9 +51,7 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 				"(nome,idade,sexo,cpf,email,password,telefone)" +
 				" VALUES(?,?,?,?,?,?,?)";
 
-		PreparedStatement pstm = null;
-
-		try {
+		try (PreparedStatement pstm = conn.prepareStatement(insertString)) {
 			//Cria um PreparedStatment, classe usada para executar a query
 			String password = comprador.getPassword();
 			String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
@@ -76,9 +74,6 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			return false;
-		} finally {
-			if (pstm != null)
-				pstm.close();
 		}
 
 		return true;
@@ -99,11 +94,8 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 		String insertString = "UPDATE comprador SET nome = ?, idade = ?, sexo = ?, cpf = ?, email = ?, password = ?, telefone = ?" +
 				" WHERE id = ?";
 
-		PreparedStatement pstm = null;
-
-		try {
+		try (PreparedStatement pstm = conn.prepareStatement(insertString)) {
 			//Cria um PreparedStatment, classe usada para executar a query
-			pstm = conn.prepareStatement(insertString);
 
 			pstm.setString(1, comprador.getNome());
 			pstm.setString(2, comprador.getIdade());
@@ -122,9 +114,6 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			return false;
-		} finally {
-			if (pstm != null)
-				pstm.close();
 		}
 
 		return true;

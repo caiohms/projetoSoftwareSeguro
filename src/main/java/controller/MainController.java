@@ -7,11 +7,9 @@ import view.MainView;
 @Slf4j
 public class MainController {
 
-	private final MainView mainView;
-
 	public MainController() {
 
-		this.mainView = new MainView();
+		MainView mainView = new MainView();
 		boolean quit = false;
 
 		while (!quit) {
@@ -22,12 +20,16 @@ public class MainController {
 				case 1:
 					// Login como comprador
 					user = new AutenticacaoController().authComprador();
-					new CompradorController().autenticado(user);
+					if (user != null) {
+						new CompradorController().autenticado(user);
+					}
 					break;
 				case 2:
 					// Login como Vendedor
 					user = new AutenticacaoController().authVendedor();
-					new VendedorController().autenticado(user);
+					if (user != null) {
+						new VendedorController().autenticado(user);
+					}
 					break;
 				case 3:
 					// cadastrar
@@ -36,12 +38,15 @@ public class MainController {
 
 				case 4:
 					// Login como administrador
-					user = new AutenticacaoController().authAdm();
-					new AdmController().autenticado(user);
+					user = new AutenticacaoController().authAdministrator();
+					if (user != null) {
+						new AdmController().autenticado(user);
+					}
 					break;
 				case 5:
 					// sair
 					quit = true;
+					mainView.showQuit();
 					break;
 
 				default:

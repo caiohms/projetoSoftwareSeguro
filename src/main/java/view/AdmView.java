@@ -1,12 +1,10 @@
 package view;
 
-import model.Adm;
-
 import java.util.Scanner;
 
 public class AdmView {
 
-	Scanner sc;
+	private final Scanner sc;
 
 	public AdmView() {
 		this.sc = new Scanner(System.in);
@@ -46,14 +44,6 @@ public class AdmView {
 		System.out.print("Digite o Id: ");
 
 
-	}
-
-	public int admAlteraDados() {
-		return 0;
-	}
-
-	public Adm login(Adm usuarioSendoEnviadoParaOFront) {
-		return usuarioSendoEnviadoParaOFront;
 	}
 
 }

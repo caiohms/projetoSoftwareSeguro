@@ -2,12 +2,10 @@ package dao;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import dao.helper.DatabaseConverter;
-import database.DatabaseConSingleton;
 import lombok.extern.slf4j.Slf4j;
 import model.Corretor;
 import model.Usuario;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,13 +13,11 @@ import java.sql.SQLException;
 @Slf4j
 public class CorretorDAO extends GenericDaoImpl<Corretor> {
 
-	private static final Connection conn = DatabaseConSingleton.getConn();
-
 	public Corretor getCorretorFromUsuario(Usuario user) {
 
 		String selectionString = "SELECT * FROM " + getTableName() + " WHERE email = ?";
 
-		ResultSet rs = null;
+		ResultSet rs;
 
 		try (PreparedStatement ps = conn.prepareStatement(selectionString)) {
 			ps.setString(1, user.getEmail());
@@ -54,11 +50,8 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
 				"(nome,idade,sexo,cpf,email,password,telefone)" +
 				" VALUES(?,?,?,?,?,?,?)";
 
-		PreparedStatement pstm = null;
-
-		try {
+		try (PreparedStatement pstm = conn.prepareStatement(insertString)) {
 			//Cria um PreparedStatment, classe usada para executar a query
-			pstm = conn.prepareStatement(insertString);
 
 			pstm.setString(1, corretor.getNome());
 			pstm.setString(2, corretor.getIdade());
@@ -76,9 +69,6 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			return false;
-		} finally {
-			if (pstm != null)
-				pstm.close();
 		}
 
 		return true;
@@ -100,11 +90,8 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
 		String insertString = "UPDATE corretor SET nome = ?, idade = ?, sexo = ?, cpf = ?, email = ?, password = ?, telefone = ?" +
 				" WHERE id = ?";
 
-		PreparedStatement pstm = null;
-
-		try {
+		try (PreparedStatement pstm = conn.prepareStatement(insertString)) {
 			//Cria um PreparedStatment, classe usada para executar a query
-			pstm = conn.prepareStatement(insertString);
 
 			pstm.setString(1, corretor.getNome());
 			pstm.setString(2, corretor.getIdade());
@@ -123,9 +110,6 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			return false;
-		} finally {
-			if (pstm != null)
-				pstm.close();
 		}
 
 		return true;

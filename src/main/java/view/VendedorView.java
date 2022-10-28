@@ -5,7 +5,7 @@ import model.Vendedor;
 import java.util.Scanner;
 
 public class VendedorView {
-	Scanner sc;
+	private final Scanner sc;
 
 	public VendedorView() {
 		this.sc = new Scanner(System.in);
@@ -26,14 +26,6 @@ public class VendedorView {
 		System.out.println("| Opcao 5 - Sair              |");
 		System.out.println("|-----------------------------|");
 		System.out.println("Digite uma opcao: ");
-	}
-
-	public int vendedorAlterarDados() {
-		return 0;
-	}
-
-	public Vendedor login(Vendedor usuarioSendoEnviadoParaOFront) {
-		return usuarioSendoEnviadoParaOFront;
 	}
 
 	public Vendedor realizarCadastro() {
