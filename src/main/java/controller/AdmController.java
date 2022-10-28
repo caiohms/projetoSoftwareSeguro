@@ -1,11 +1,11 @@
 package controller;
 
 import dao.AdmDAO;
+import dao.CompradorDAO;
 import dao.CorretorDAO;
+import dao.VendedorDAO;
 import lombok.extern.slf4j.Slf4j;
-import model.Adm;
-import model.Corretor;
-import model.Usuario;
+import model.*;
 import view.AdmView;
 import view.CorretorView;
 
@@ -19,7 +19,8 @@ public class AdmController {
 	private final Adm admAutenticado;
 	private final CorretorView corretorView;
 	private final CorretorDAO corretorDAO;
-
+	private final VendedorDAO vendedorDao = new VendedorDAO();
+	private final CompradorDAO compradorDao = new CompradorDAO();
 
 	public AdmController() {
 		admView = new AdmView();
@@ -57,9 +58,11 @@ public class AdmController {
 				break;
 			case 4:
 //                Consultar Dados do comprador
+				new AdmController().consultarComprador();
 				break;
 			case 5:
 //                Consultar Dados do vendedor
+				new AdmController().consultarVendedor();
 				break;
 			case 6:
 //                Excluir Corretor
@@ -87,8 +90,7 @@ public class AdmController {
 		//save to db
 
 		try {
-			if (corretorDAO.save(novoCadastro))
-				corretorView.cadastroSuccess();
+			if (corretorDAO.save(novoCadastro)) corretorView.cadastroSuccess();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -99,17 +101,10 @@ public class AdmController {
 		int id = admView.getIdCorretor();
 		Corretor corretor = corretorView.atualizaCorretor();
 		try {
-			if (corretorDAO.update(corretor, id))
-				corretorView.atualizacaoSuccess();
+			if (corretorDAO.update(corretor, id)) corretorView.atualizacaoSuccess();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public void consultarCorretor() {
-		int id = admView.getIdCorretor();
-		Corretor corretor = corretorDAO.get(id);
-		admView.consultarCorretor(corretor);
 	}
 
 	public void deletarCorretor() {
@@ -125,6 +120,24 @@ public class AdmController {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void consultarCorretor() {
+		int id = admView.getIdCorretor();
+		Corretor corretor = corretorDAO.get(id);
+		admView.consultarCorretor(corretor);
+	}
+
+	public void consultarComprador() {
+		int id = admView.getIdComprador();
+		Comprador comprador = compradorDao.get(id);
+		admView.consultarComprador(comprador);
+	}
+
+	public void consultarVendedor() {
+		int id = admView.getIdVendedor();
+		Vendedor vendedor = vendedorDao.get(id);
+		admView.consultarVendedor(vendedor);
 	}
 
 }

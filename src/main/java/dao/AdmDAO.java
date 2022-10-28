@@ -60,7 +60,6 @@ public class AdmDAO extends GenericDaoImpl<Adm> {
 			//Executa a sql para inserção dos dados
 			pstm.execute();
 
-
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			return false;
