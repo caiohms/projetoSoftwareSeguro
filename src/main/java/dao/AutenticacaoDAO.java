@@ -1,5 +1,6 @@
 package dao;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import database.DatabaseConSingleton;
 import lombok.extern.slf4j.Slf4j;
 import model.Usuario;
@@ -24,7 +25,10 @@ public class AutenticacaoDAO<T1 extends GenericDaoImpl<?>> {
 
 		log.debug("Autenticando usuario...");
 
-		String tableName = null;
+		String tableName;
+		String password = u.getPassword();
+		String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
+
 		try {
 			tableName = daoType.getDeclaredConstructor().newInstance().getTableName();
 		} catch (Exception e) {
@@ -35,7 +39,7 @@ public class AutenticacaoDAO<T1 extends GenericDaoImpl<?>> {
 
 		try (PreparedStatement ps = conn.prepareStatement(query)) {
 			ps.setString(1, u.getEmail());
-			ps.setString(2, u.getPassword());
+			ps.setString(2, bcryptHashString);
 
 			log.debug(ps.toString());
 

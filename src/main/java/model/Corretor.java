@@ -9,16 +9,16 @@ import java.io.Serializable;
 @Data
 public class Corretor extends Usuario implements Serializable {
 
-    private int id;
-    private String nome;
-    private String idade;
-    private String sexo;
-    private String cpf;
-    private String telefone;
+	private int id;
+	private String nome;
+	private String idade;
+	private String sexo;
+	private String cpf;
+	private String telefone;
 
 //	private String idEndereco;
 
-    public Corretor() { /* empty constructor */ }
+	public Corretor() { /* empty constructor */ }
 
     public Corretor(int id, String nome, String idade, String sexo, String cpf, String telefone) {
         this.id = id;

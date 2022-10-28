@@ -1,5 +1,6 @@
 package dao;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import dao.helper.DatabaseConverter;
 import lombok.extern.slf4j.Slf4j;
 import model.Usuario;
@@ -42,6 +43,10 @@ public class VendedorDAO extends GenericDaoImpl<Vendedor> {
 	@Override
 	public boolean save(Vendedor vendedor) throws SQLException {
 
+		String password = vendedor.getPassword();
+		String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
+
+
 		String insertString = "INSERT INTO " + getTableName() +
 				"(nome,idade,sexo,cpf,email,password,telefone)" +
 				" VALUES(?,?,?,?,?,?,?)";
@@ -54,7 +59,7 @@ public class VendedorDAO extends GenericDaoImpl<Vendedor> {
 			pstm.setString(3, vendedor.getSexo());
 			pstm.setString(4, vendedor.getCpf());
 			pstm.setString(5, vendedor.getEmail());
-			pstm.setString(6, vendedor.getPassword()); // TODO add bcrypt
+			pstm.setString(6, bcryptHashString);
 			pstm.setString(7, vendedor.getTelefone());
 
 			log.info("Cadastrando usuario :: " + pstm);
@@ -79,6 +84,10 @@ public class VendedorDAO extends GenericDaoImpl<Vendedor> {
 
 	@Override
 	public boolean update(Vendedor vendedor, int id) throws SQLException {
+
+		String password = vendedor.getPassword();
+		String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
+
 
 		String insertString = "UPDATE vendedor SET nome = ?, idade = ?, sexo = ?, cpf = ?, email = ?, password = ?, telefone = ?" +
 				" WHERE id = ?";

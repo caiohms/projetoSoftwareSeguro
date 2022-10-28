@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Data
 public class Adm extends Usuario implements Serializable {
 
-    private int id;
+	private int id;
 
-    public Adm() { /* empty constructor */}
+	public Adm() { /* empty constructor */}
 }
