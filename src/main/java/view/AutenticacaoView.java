@@ -2,11 +2,12 @@ package view;
 
 import model.Usuario;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class AutenticacaoView {
 
-	Scanner sc;
+	private final Scanner sc;
 
 	public AutenticacaoView() {
 		this.sc = new Scanner(System.in);
@@ -30,19 +31,11 @@ public class AutenticacaoView {
 	}
 
 	public void usuarioNaoAutenticado() {
-		System.out.println("Usuario não autenticado, tente novamente.");
-
+		System.out.println("Usuario não autenticado, deseja tentar novamente? [y/n]");
 	}
 
-	public Integer OpcoesAuth() {
-		opcoesUsuario();
-		return sc.nextInt();
-	}
-
-	public void opcoesUsuario(){
-		System.out.println("\nOpção 1 - criar cadastro.");
-		System.out.println("\nOpção 2 - redefinir senha.");
-		System.out.print("\nInsira  uma opcao: ");
+	public boolean retryMenu() {
+		return List.of("y", "yes").contains(sc.nextLine());
 	}
 
 }
