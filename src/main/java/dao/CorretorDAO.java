@@ -75,14 +75,58 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
 	}
 
 	@Override
-	public Corretor get(int id) throws SQLException {
-		//TODO
-		return null;
+	public Corretor get(int id) {
+		String selectString = "SELECT * FROM corretor WHERE id = ?";
+
+		ResultSet rs = null;
+		PreparedStatement pstm = null;
+
+		String nome = null;
+		String idade = null;
+		String sexo = null;
+		String cpf = null;
+		String telefone = null;
+
+		try {
+
+			//Cria um PreparedStatment, classe usada para executar a query
+			pstm = conn.prepareStatement(selectString);
+
+			pstm.setInt(1, id);
+			log.info("Getting Corretor :: " + pstm);
+
+			//Executa a sql para inserção dos dados
+			rs = pstm.executeQuery();
+
+			nome = rs.getString("nome");
+			idade = rs.getString("idade");
+			sexo = rs.getString("sexo");
+			cpf = rs.getString("cpf");
+			telefone = rs.getString("telefone");
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+//            return false;
+		} finally {
+			if (pstm != null) {
+				try {
+					pstm.close();
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}
+
+
+		// Criando um novo corretor com os dados encontrados na base de dados
+		Corretor corretor = new Corretor(id, nome, idade, sexo, cpf, telefone);
+
+		return corretor;
+
 	}
 
 	@Override
 	public boolean update(Corretor corretor, int id) throws SQLException {
-
+  
 		String password = corretor.getPassword();
 		String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
 

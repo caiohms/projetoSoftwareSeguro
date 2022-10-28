@@ -1,5 +1,8 @@
 package view;
 
+import model.Adm;
+import model.Corretor;
+
 import java.util.Scanner;
 
 public class AdmView {
@@ -27,8 +30,6 @@ public class AdmView {
 		System.out.print("| Opcao 7 - Sair                          |\n");
 		System.out.print("|-----------------------------------------|\n");
 		System.out.print("Digite uma opcao: ");
-
-
 	}
 
 	public Integer getIdCorretor() {
@@ -44,6 +45,26 @@ public class AdmView {
 		System.out.print("Digite o Id: ");
 
 
+	}
+
+	public void consultarCorretor(Corretor corretor) {
+		System.out.println("##--Vizualizar Corretor--##\n");
+		System.out.println("|-------------------|");
+		System.out.println("ID: " + corretor.getId());
+		System.out.println("Nome: " + corretor.getNome());
+		System.out.println("Idade: " + corretor.getIdade());
+		System.out.println("Sexo: " + corretor.getSexo());
+		System.out.println("Cpf: " + corretor.getCpf());
+		System.out.println("Telefone: " + corretor.getTelefone());
+		System.out.println("|-------------------|");
+	}
+
+	public int admAlteraDados() {
+		return 0;
+	}
+
+	public Adm login(Adm usuarioSendoEnviadoParaOFront) {
+		return usuarioSendoEnviadoParaOFront;
 	}
 
 }
