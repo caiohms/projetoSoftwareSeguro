@@ -1,5 +1,6 @@
 package dao;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import dao.helper.DatabaseConverter;
 import lombok.extern.slf4j.Slf4j;
 import model.Adm;
@@ -39,7 +40,10 @@ public class AdmDAO extends GenericDaoImpl<Adm> {
 		return "adm";
 	}
 
-	public boolean save(Adm adm) {
+	public boolean save(Adm adm) throws SQLException {
+
+		String password = adm.getPassword();
+		String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
 
 		String insertString = "INSERT INTO " + getTableName() +
 				"(email,password)" +
@@ -48,8 +52,8 @@ public class AdmDAO extends GenericDaoImpl<Adm> {
 		try (PreparedStatement pstm = conn.prepareStatement(insertString)) {
 			//Cria um PreparedStatment, classe usada para executar a query
 
-            pstm.setString(1, adm.getEmail());
-            pstm.setString(2, adm.getPassword()); // TODO add bcrypt
+			pstm.setString(1, adm.getEmail());
+			pstm.setString(2, adm.getPassword()); // TODO add bcrypt
 
 			log.info("Cadastrando usuario :: " + pstm);
 

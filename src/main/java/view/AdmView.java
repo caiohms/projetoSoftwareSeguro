@@ -32,8 +32,6 @@ public class AdmView {
 		System.out.print("| Opcao 7 - Sair                          |\n");
 		System.out.print("|-----------------------------------------|\n");
 		System.out.print("Digite uma opcao: ");
-
-
 	}
 
 	public Integer getIdCorretor() {

@@ -1,5 +1,6 @@
 package dao;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import dao.helper.DatabaseConverter;
 import lombok.extern.slf4j.Slf4j;
 import model.Corretor;
@@ -32,68 +33,47 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
 
 		log.error("Usuario nao encontrado");
 		return null;
-	}
-
-	@Override
-	protected String setTableName() {
-		return "corretor";
-	}
-
-	@Override
-	public boolean save(Corretor corretor) throws SQLException {
+	} catch(
+		String password = corretor.getPassword();
+		String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
 
 		String insertString = "INSERT INTO " + getTableName() +
 				"(nome,idade,sexo,cpf,email,password,telefone)" +
 				" VALUES(?,?,?,?,?,?,?)";
-
-		try (PreparedStatement pstm = conn.prepareStatement(insertString)) {
-			//Cria um PreparedStatment, classe usada para executar a query
 
 			pstm.setString(1, corretor.getNome());
 			pstm.setString(2, corretor.getIdade());
 			pstm.setString(3, corretor.getSexo());
 			pstm.setString(4, corretor.getCpf());
 			pstm.setString(5, corretor.getEmail());
-			pstm.setString(6, corretor.getPassword()); // TODO add bcrypt
+			pstm.setString(6, bcryptHashString);
 			pstm.setString(7, corretor.getTelefone());
-
 			log.info("Cadastrando usuario :: " + pstm);
-
 			//Executa a sql para inserção dos dados
 			pstm.execute();
-
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			return false;
 		}
-
 		return true;
 	}
-
 	@Override
 	public Corretor get(int id) {
 		String selectString = "SELECT * FROM corretor WHERE id = ?";
-
 		ResultSet rs = null;
 		PreparedStatement pstm = null;
-
 		String nome = null;
 		String idade = null;
 		String sexo = null;
 		String cpf = null;
 		String telefone = null;
-
 		try {
-
 			//Cria um PreparedStatment, classe usada para executar a query
 			pstm = conn.prepareStatement(selectString);
-
 			pstm.setInt(1, id);
 			log.info("Getting Corretor :: " + pstm);
-
 			//Executa a sql para inserção dos dados
 			rs = pstm.executeQuery();
-
 			nome = rs.getString("nome");
 			idade = rs.getString("idade");
 			sexo = rs.getString("sexo");
@@ -101,7 +81,6 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
 			telefone = rs.getString("telefone");
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
-//            return false;
 		} finally {
 			if (pstm != null) {
 				try {
@@ -111,19 +90,19 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
 				}
 			}
 		}
-
-
 		// Criando um novo corretor com os dados encontrados na base de dados
 		Corretor corretor = new Corretor(id, nome, idade, sexo, cpf, telefone);
-
 		return corretor;
-
 	}
-
 	@Override
 	public boolean update(Corretor corretor, int id) throws SQLException {
 
-		String insertString = "UPDATE corretor SET nome = ?, idade = ?, sexo = ?, cpf = ?, email = ?, password = ?, telefone = ?" + " WHERE id = ?";
+		String password = corretor.getPassword();
+		String bcryptHashString = BCrypt.withDefaults().hashToString(12, password.toCharArray());
+
+
+		String insertString = "UPDATE corretor SET nome = ?, idade = ?, sexo = ?, cpf = ?, email = ?, password = ?, telefone = ?" +
+				" WHERE id = ?";
 
 		try (PreparedStatement pstm = conn.prepareStatement(insertString)) {
 			//Cria um PreparedStatment, classe usada para executar a query
@@ -133,7 +112,7 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
 			pstm.setString(3, corretor.getSexo());
 			pstm.setString(4, corretor.getCpf());
 			pstm.setString(5, corretor.getEmail());
-			pstm.setString(6, corretor.getPassword()); // TODO add bcrypt
+			pstm.setString(6, bcryptHashString);
 			pstm.setString(7, corretor.getTelefone());
 			pstm.setInt(8, id);
 
@@ -180,5 +159,3 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
 			}
 		}
 	}
-
-}
