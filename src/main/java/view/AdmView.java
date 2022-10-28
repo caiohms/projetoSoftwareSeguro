@@ -1,6 +1,9 @@
 package view;
 
 import model.Adm;
+import model.Comprador;
+import model.Corretor;
+import model.Vendedor;
 
 import java.util.Scanner;
 

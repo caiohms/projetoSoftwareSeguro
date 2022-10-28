@@ -5,9 +5,7 @@ import dao.CompradorDAO;
 import dao.CorretorDAO;
 import dao.VendedorDAO;
 import lombok.extern.slf4j.Slf4j;
-import model.Adm;
-import model.Corretor;
-import model.Usuario;
+import model.*;
 import view.AdmView;
 import view.CorretorView;
 
@@ -92,8 +90,7 @@ public class AdmController {
 		//save to db
 
 		try {
-			if (corretorDAO.save(novoCadastro))
-				corretorView.cadastroSuccess();
+			if (corretorDAO.save(novoCadastro)) corretorView.cadastroSuccess();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -104,8 +101,7 @@ public class AdmController {
 		int id = admView.getIdCorretor();
 		Corretor corretor = corretorView.atualizaCorretor();
 		try {
-			if (corretorDAO.update(corretor, id))
-				corretorView.atualizacaoSuccess();
+			if (corretorDAO.update(corretor, id)) corretorView.atualizacaoSuccess();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
