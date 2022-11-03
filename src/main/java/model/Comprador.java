@@ -15,12 +15,12 @@ public class Comprador extends Usuario implements Serializable {
 	private String sexo;
 	private String cpf;
 	private String telefone;
-
 //	private String idEndereco;
 
 	public Comprador() { /* empty constructor */ }
 
-	public Comprador(int id, String nome, String idade, String sexo, String cpf, String telefone) {
+	public Comprador(String email, int id, String nome, String idade, String sexo, String cpf, String telefone) {
+		this.setEmail(email);
 		this.id = id;
 		this.nome = nome;
 		this.idade = idade;

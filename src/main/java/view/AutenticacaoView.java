@@ -2,16 +2,7 @@ package view;
 
 import model.Usuario;
 
-import java.util.List;
-import java.util.Scanner;
-
-public class AutenticacaoView {
-
-	private final Scanner sc;
-
-	public AutenticacaoView() {
-		this.sc = new Scanner(System.in);
-	}
+public class AutenticacaoView extends View {
 
 	public Usuario login() {
 
@@ -32,10 +23,6 @@ public class AutenticacaoView {
 
 	public void usuarioNaoAutenticado() {
 		System.out.println("Usuario não autenticado, deseja tentar novamente? [y/n]");
-	}
-
-	public boolean retryMenu() {
-		return List.of("y", "yes").contains(sc.nextLine());
 	}
 
 }

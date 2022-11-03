@@ -2,14 +2,7 @@ package view;
 
 import model.Comprador;
 
-import java.util.Scanner;
-
-public class CompradorView {
-	private final Scanner sc;
-
-	public CompradorView() {
-		this.sc = new Scanner(System.in);
-	}
+public class CompradorView extends View {
 
 	public Integer getCompradorOption() {
 		showOptionsComprador();
@@ -25,7 +18,7 @@ public class CompradorView {
 		System.out.println("| Opcao 4 - Excluir Dados     |");
 		System.out.println("| Opcao 5 - Sair              |");
 		System.out.println("|-----------------------------|");
-		System.out.println("Digite uma opcao: ");
+		System.out.print("Digite uma opcao: ");
 	}
 
 	public Comprador realizarCadastro() {

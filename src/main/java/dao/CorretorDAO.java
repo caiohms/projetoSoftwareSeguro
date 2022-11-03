@@ -78,7 +78,7 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
 	public Corretor get(int id) {
 		String selectString = "SELECT * FROM " + getTableName() + " WHERE id = ?";
 
-		ResultSet rs = null;
+		ResultSet rs;
 		PreparedStatement pstm = null;
 
 		String nome = null;
@@ -97,6 +97,10 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
 
 			//Executa a sql para inserção dos dados
 			rs = pstm.executeQuery();
+
+			if (!rs.next()) {
+				return null;
+			}
 
 			nome = rs.getString("nome");
 			idade = rs.getString("idade");

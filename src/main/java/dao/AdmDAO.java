@@ -1,6 +1,5 @@
 package dao;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import dao.helper.DatabaseConverter;
 import lombok.extern.slf4j.Slf4j;
 import model.Adm;

@@ -1,54 +1,61 @@
 package controller;
 
+import dao.PropriedadeDAO;
 import dao.VendedorDAO;
 import lombok.extern.slf4j.Slf4j;
+import model.Propriedade;
 import model.Usuario;
 import model.Vendedor;
 import view.VendedorView;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Slf4j
 public class VendedorController {
 
-	private final VendedorView vendedorView;
-	private final VendedorDAO vendedorDAO;
+	private final VendedorView vendedorView = new VendedorView();
+	private final VendedorDAO vendedorDAO = new VendedorDAO();
 	private final Vendedor vendedorAutenticado;
 
 	public VendedorController() {
-		vendedorView = new VendedorView();
-		vendedorDAO = new VendedorDAO();
 		vendedorAutenticado = null;
 	}
 
 	private VendedorController(Vendedor vendedor) {
-
-		log.info("Vendedor autenticado :: " + vendedor.toString());
-
 		// chamar apenas para vendedores autenticados
-		vendedorView = new VendedorView();
-		vendedorDAO = new VendedorDAO();
+		log.info("Vendedor autenticado :: " + vendedor.toString());
 		this.vendedorAutenticado = vendedor;
-		int idSaved = vendedorAutenticado.getId();
-		int option = vendedorView.getVendedorOption();
 
-		switch (option) {
-			case 1:
-//                Vender Imóvel
-				break;
-			case 2:
-//                Atualizar Dados do vendedor
-				new VendedorController().atualizarDados(idSaved);
-				break;
-			case 3:
-//                Consultar Dados do vendedor
-				break;
-			case 4:
+		boolean exit = false;
+		while (!exit) {
+			int option = vendedorView.getVendedorOption();
+			switch (option) {
+				case 1:
+//                Consultar minhas propriedades a venda
+					List<Propriedade> propriedades = PropriedadeDAO.getPropriedadesOfVendedor(vendedorAutenticado);
+					break;
+				case 2:
+//                Vender nova propriedade
+					new PropriedadeController().venderPropriedade(vendedorAutenticado);
+					break;
+				case 3:
+//                Alterar cadastro do vendedor
+					atualizarDados();
+					break;
+				case 4:
+//                Consultar cadastro do vendedor
+					consultarDados();
+
+					break;
+				case 5:
 //                Excluir Dados do vendedor
-				new VendedorController().deletarComprador(idSaved);
-				break;
-			default:
-				break;
+					deletarComprador();
+					break;
+				default:
+					exit = true;
+					break;
+			}
 		}
 	}
 
@@ -69,25 +76,30 @@ public class VendedorController {
 		}
 	}
 
-	public void atualizarDados(int idVendedor) {
+	private void consultarDados() {
+		vendedorView.exibirDados(this.vendedorAutenticado);
+		vendedorView.confirmToContinue();
+	}
+
+	public void atualizarDados() {
 		//update to db
 		Vendedor vendedor = vendedorView.atualizarVendedor();
 		try {
-			if (vendedorDAO.update(vendedor, idVendedor))
+			if (vendedorDAO.update(vendedor, vendedorAutenticado.getId()))
 				vendedorView.atualizacaoSuccess();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void deletarComprador(int idVendedor) {
+	public void deletarComprador() {
 		//update to db
 		int decision = vendedorView.getDeleteOption();
 		try {
 			if (decision == 1) {
-				vendedorDAO.delete(idVendedor);
+				vendedorDAO.delete(vendedorAutenticado.getId());
 			} else {
-				new MainController();
+				vendedorView.noChangesWereMade();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
