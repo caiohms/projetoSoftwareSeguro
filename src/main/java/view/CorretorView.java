@@ -2,14 +2,7 @@ package view;
 
 import model.Corretor;
 
-import java.util.Scanner;
-
-public class CorretorView {
-	private final Scanner sc;
-
-	public CorretorView() {
-		this.sc = new Scanner(System.in);
-	}
+public class CorretorView extends View {
 
 	public Integer getCompradorOption() {
 		showOptionsComprador();

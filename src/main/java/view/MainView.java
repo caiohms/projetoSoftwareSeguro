@@ -1,15 +1,8 @@
 package view;
 
 import java.util.InputMismatchException;
-import java.util.Scanner;
 
-public class MainView {
-
-	private final Scanner sc;
-
-	public MainView() {
-		this.sc = new Scanner(System.in);
-	}
+public class MainView extends View {
 
 	public Integer getOption() {
 		showOptionsMenu();
@@ -35,7 +28,7 @@ public class MainView {
 		System.out.print("|-------------------------------|\n");
 		System.out.print("| Opcao 1 - Login Comprador     |\n");
 		System.out.print("| Opcao 2 - Login Vendedor      |\n");
-		System.out.print("| Opcao 3 - Cadastrar Uusario   |\n");
+		System.out.print("| Opcao 3 - Cadastrar Usuario   |\n");
 		System.out.print("| Opcao 4 - Login Administrador |\n");
 		System.out.print("| Opcao 5 - Sair                |\n");
 		System.out.print("|-------------------------------|\n");
@@ -45,16 +38,16 @@ public class MainView {
 	private void printSelectedOption(int option) {
 		switch (option) {
 			case 1:
-				System.out.println("Login como Comprador");
+				System.out.println("Login como Comprador selecionado");
 				break;
 			case 2:
-				System.out.println("Opcao de Login como Vendedor Selecionado");
+				System.out.println("Login como Vendedor selecionado");
 				break;
 			case 3:
 				System.out.println("Opcao de Cadastro de Usuario");
 				break;
 			case 4:
-				System.out.println();
+				System.out.println("Login como Administrador selecionado");
 				break;
 			default:
 				break;

@@ -1,5 +1,7 @@
 package controller;
 
+import controller.helper.MenuOption;
+import controller.helper.OptionsMenu;
 import dao.AdmDAO;
 import dao.CompradorDAO;
 import dao.CorretorDAO;
@@ -14,66 +16,16 @@ import java.sql.SQLException;
 @Slf4j
 public class AdmController {
 
-	private final AdmView admView;
-	private final AdmDAO admDAO;
+	private final AdmView admView = new AdmView();
+	private final AdmDAO admDAO = new AdmDAO();
 	private final Adm admAutenticado;
-	private final CorretorView corretorView;
-	private final CorretorDAO corretorDAO;
+	private final CorretorView corretorView = new CorretorView();
+	private final CorretorDAO corretorDAO = new CorretorDAO();
 	private final VendedorDAO vendedorDao = new VendedorDAO();
 	private final CompradorDAO compradorDao = new CompradorDAO();
 
 	public AdmController() {
-		admView = new AdmView();
-		admDAO = new AdmDAO();
-		corretorView = new CorretorView();
-		corretorDAO = new CorretorDAO();
 		admAutenticado = null;
-	}
-
-	private AdmController(Adm adm) {
-
-		log.info("Adm autenticado :: " + adm.toString());
-
-		// chamar apenas para compradores autenticados
-		admView = new AdmView();
-		admDAO = new AdmDAO();
-		corretorView = new CorretorView();
-		corretorDAO = new CorretorDAO();
-		this.admAutenticado = adm;
-		int idSaved = admAutenticado.getId();
-		int option = admView.getAdmOption();
-
-		switch (option) {
-			case 1:
-//                Cadastrar Corretor
-				new AdmController().realizarCadastro();
-				break;
-			case 2:
-//                Atualizar Dados do corretor
-				new AdmController().atualizarDados();
-				break;
-			case 3:
-//                Consultar Dados do corretor
-				new AdmController().consultarCorretor();
-				break;
-			case 4:
-//                Consultar Dados do comprador
-				new AdmController().consultarComprador();
-				break;
-			case 5:
-//                Consultar Dados do vendedor
-				new AdmController().consultarVendedor();
-				break;
-			case 6:
-//                Excluir Corretor
-				new AdmController().deletarCorretor();
-				break;
-			case 7:
-//                Consultar Dados do comprador
-				break;
-			default:
-				break;
-		}
 	}
 
 	public AdmController autenticado(Usuario user) {
@@ -81,11 +33,80 @@ public class AdmController {
 		return new AdmController(ad);
 	}
 
-	public void insertOfAdm() {
-		int decision = corretorView.getDeleteOption();
+	private AdmController(Adm adm) {
+		// adm autenticado
+		this.admAutenticado = adm;
+		log.info("Adm autenticado :: " + admAutenticado.toString());
+
+		new OptionsMenu()
+				.withTitle("Menu do Administrador")
+				.withOptions(
+						new MenuOption(1, "Painel compradores", this::painelCompradores),
+						new MenuOption(2, "Painel vendedores", this::painelVendedores)
+//						new MenuOption(3, "Painel corretores", this::painelCorretores),
+//						new MenuOption(4, "Painel propriedades", this::painelPropriedades)
+				)
+				.runLoopInView(admView);
 	}
 
-	public void realizarCadastro() {
+	private void painelCompradores() {
+		new OptionsMenu()
+				.withTitle("Painel Compradores")
+				.withOptions(
+						new MenuOption(1, "Listar Compradores", this::exibirListaCompradores),
+						new MenuOption(2, "Buscar por id", this::buscarCompradorPorId)
+				)
+				.runLoopInView(admView);
+	}
+
+	private void painelVendedores() {
+		new OptionsMenu()
+				.withTitle("Painel Vendedores")
+				.withOptions(
+						new MenuOption(1, "Listar Vendedores", this::exibirListaVendedores),
+						new MenuOption(2, "Buscar por id", this::buscarCompradorPorId)
+				)
+				.runLoopInView(admView);
+	}
+
+
+	private void painelCorretores() {
+		new OptionsMenu()
+				.withTitle("Painel Corretores")
+				.withOptions(
+						new MenuOption(1, "1. Listar Corretores", this::exibirListaCorretores),
+						new MenuOption(2, "2. Buscar por id", this::buscarCorretorPorId),
+						new MenuOption(3, "3. Cadastrar corretor", this::cadastrarCorretor)
+				);
+	}
+
+	private void exibirListaCompradores() {
+		//TODO
+	}
+
+	private void exibirListaVendedores() {
+		//TODO
+	}
+
+	private void exibirListaCorretores() {
+		//TODO
+	}
+
+	public void buscarCompradorPorId() {
+		admView.solicitarIdParaConsulta();
+		int id = admView.getInt();
+		Comprador comprador = compradorDao.get(id);
+		admView.exibirComprador(comprador);
+	}
+
+	private void buscarCorretorPorId() {
+		admView.solicitarIdParaConsulta();
+		int id = admView.getInt();
+		Corretor corretor = corretorDAO.get(id);
+		admView.exibirCorretor(corretor);
+	}
+
+	public void cadastrarCorretor() {
 		Corretor novoCadastro = corretorView.realizarCadastro();
 		//save to db
 
@@ -98,7 +119,7 @@ public class AdmController {
 
 	public void atualizarDados() {
 		//update to db
-		int id = admView.getIdCorretor();
+		int id = admView.getInt();
 		Corretor corretor = corretorView.atualizaCorretor();
 		try {
 			if (corretorDAO.update(corretor, id)) corretorView.atualizacaoSuccess();
@@ -109,7 +130,7 @@ public class AdmController {
 
 	public void deletarCorretor() {
 		//update to db
-		int id = admView.getIdCorretor();
+		int id = admView.getInt();
 		int decision = corretorView.getDeleteOption();
 		try {
 			if (decision == 1) {
@@ -120,18 +141,6 @@ public class AdmController {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public void consultarCorretor() {
-		int id = admView.getIdCorretor();
-		Corretor corretor = corretorDAO.get(id);
-		admView.consultarCorretor(corretor);
-	}
-
-	public void consultarComprador() {
-		int id = admView.getIdComprador();
-		Comprador comprador = compradorDao.get(id);
-		admView.consultarComprador(comprador);
 	}
 
 	public void consultarVendedor() {

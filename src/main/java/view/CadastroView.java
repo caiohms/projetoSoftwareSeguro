@@ -1,21 +1,14 @@
 package view;
 
 import java.util.InputMismatchException;
-import java.util.Scanner;
 
-public class CadastroView {
-	private final Scanner sc;
-
-	public CadastroView() {
-		this.sc = new Scanner(System.in);
-	}
+public class CadastroView extends View {
 
 	public Integer getCadastroOption() {
 		boolean validOption = false;
 		Integer option = null;
 
-		while (!validOption)
-		{
+		while (!validOption) {
 			showOptionsCadastro();
 
 			try {

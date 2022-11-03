@@ -2,14 +2,7 @@ package view;
 
 import model.Vendedor;
 
-import java.util.Scanner;
-
-public class VendedorView {
-	private final Scanner sc;
-
-	public VendedorView() {
-		this.sc = new Scanner(System.in);
-	}
+public class VendedorView extends View {
 
 	public Integer getVendedorOption() {
 		showOptionsVendedor();
@@ -18,14 +11,15 @@ public class VendedorView {
 
 	private void showOptionsVendedor() {
 		System.out.println("\n##--Menu do Vendedor--##\n");
-		System.out.println("|-----------------------------|");
-		System.out.println("| Opcao 1 - Vender um Imóvel  |");
-		System.out.println("| Opcao 2 - Alterar Dados     |");
-		System.out.println("| Opcao 3 - Consultar Dados   |");
-		System.out.println("| Opcao 4 - Excluir Dados     |");
-		System.out.println("| Opcao 5 - Sair              |");
-		System.out.println("|-----------------------------|");
-		System.out.println("Digite uma opcao: ");
+		System.out.println("|-----------------------------------------------------|");
+		System.out.println("| Opcao 1 - Consultar minhas propriedades cadastradas |");
+		System.out.println("| Opcao 2 - Anunciar nova propriedade                 |");
+		System.out.println("| Opcao 3 - Alterar meus dados                        |");
+		System.out.println("| Opcao 4 - Consultar meus dados                      |");
+		System.out.println("| Opcao 5 - Excluir meu cadastro                      |");
+		System.out.println("| Outro - Sair                                        |");
+		System.out.println("|-----------------------------------------------------|");
+		System.out.print("Digite uma opcao: ");
 	}
 
 	public Vendedor realizarCadastro() {
@@ -107,7 +101,7 @@ public class VendedorView {
 		System.out.println("| Opcao 1 - Sim, quero deletar     |");
 		System.out.println("| Opcao 2 - Não, não quero deletar |");
 		System.out.println("|----------------------------------|");
-		System.out.println("Digite uma opcao: ");
+		System.out.print("Digite uma opcao: ");
 	}
 
 	public void cadastroSuccess() {
@@ -116,5 +110,17 @@ public class VendedorView {
 
 	public void atualizacaoSuccess() {
 		System.out.println("Atualização de dados efetuada com sucesso.");
+	}
+
+	public void exibirDados(Vendedor vendedorAutenticado) {
+
+		System.out.println("\n##-- Dados do vendedor autenticado --##\n");
+		System.out.println("|-----------------------------|");
+		System.out.println("| E-mail: " + vendedorAutenticado.getEmail());
+		System.out.println("| Nome Completo: " + vendedorAutenticado.getNome());
+		System.out.println("| Idade: " + vendedorAutenticado.getIdade());
+		System.out.println("| Sexo: " + vendedorAutenticado.getSexo());
+		System.out.println("| CPF: " + vendedorAutenticado.getCpf());
+		System.out.println("| Telefone: " + vendedorAutenticado.getTelefone());
 	}
 }
