@@ -1,5 +1,7 @@
 package controller;
 
+import controller.helper.MenuOption;
+import controller.helper.OptionsMenu;
 import view.CadastroView;
 
 public class CadastroController {
@@ -7,22 +9,14 @@ public class CadastroController {
 	public CadastroController() {
 
 		CadastroView cadastroView = new CadastroView();
-		int option = cadastroView.getCadastroOption();
 
-		switch (option) {
-			case 1:
-//                Opcao 1 - Cadastrar como Comprador
-				new CompradorController().realizarCadastro();
-				break;
-			case 2:
-//                Opcao 2 - Cadastrar como Vendedor
-				new VendedorController().realizarCadastro();
-				break;
-			default:
-				break;
-		}
-
-
+		new OptionsMenu()
+				.withTitle("Realizar cadastro")
+				.withOptions(
+						new MenuOption("Cadastrar como Comprador", () -> new CompradorController().realizarCadastro()),
+						new MenuOption("Cadastrar como Vendedor", () -> new VendedorController().realizarCadastro())
+				)
+				.runOnceInView(cadastroView);
 	}
 }
 

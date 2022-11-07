@@ -1,11 +1,14 @@
 package controller;
 
+import controller.helper.MenuOption;
+import controller.helper.OptionsMenu;
 import dao.PropriedadeDAO;
 import dao.VendedorDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.Propriedade;
 import model.Usuario;
 import model.Vendedor;
+import view.PropriedadeView;
 import view.VendedorView;
 
 import java.sql.SQLException;
@@ -15,6 +18,7 @@ import java.util.List;
 public class VendedorController {
 
 	private final VendedorView vendedorView = new VendedorView();
+	private final PropriedadeView propriedadeView = new PropriedadeView();
 	private final VendedorDAO vendedorDAO = new VendedorDAO();
 	private final Vendedor vendedorAutenticado;
 
@@ -27,36 +31,20 @@ public class VendedorController {
 		log.info("Vendedor autenticado :: " + vendedor.toString());
 		this.vendedorAutenticado = vendedor;
 
-		boolean exit = false;
-		while (!exit) {
-			int option = vendedorView.getVendedorOption();
-			switch (option) {
-				case 1:
-//                Consultar minhas propriedades a venda
-					List<Propriedade> propriedades = PropriedadeDAO.getPropriedadesOfVendedor(vendedorAutenticado);
-					break;
-				case 2:
-//                Vender nova propriedade
-					new PropriedadeController().venderPropriedade(vendedorAutenticado);
-					break;
-				case 3:
-//                Alterar cadastro do vendedor
-					atualizarDados();
-					break;
-				case 4:
-//                Consultar cadastro do vendedor
-					consultarDados();
+		new OptionsMenu()
+				.withTitle("Menu do Vendedor")
+				.withOptions(
+						new MenuOption("Consultar minhas propriedades cadastradas", this::consultarMinhasPropriedades),
+						new MenuOption("Anunciar nova propriedade", () -> new PropriedadeController().venderPropriedade(vendedorAutenticado)),
+						new MenuOption("Alterar meus dados", this::atualizarDados),
+						new MenuOption("Consultar meus dados", this::consultarDados),
+						new MenuOption("Excluir meu cadastro", this::deletarComprador)
+				).runLoopInView(vendedorView);
+	}
 
-					break;
-				case 5:
-//                Excluir Dados do vendedor
-					deletarComprador();
-					break;
-				default:
-					exit = true;
-					break;
-			}
-		}
+	private void consultarMinhasPropriedades() {
+		List<Propriedade> propriedades = PropriedadeDAO.getPropriedadesOfVendedor(vendedorAutenticado);
+		propriedadeView.listarPropriedades(propriedades);
 	}
 
 	public VendedorController autenticado(Usuario user) {

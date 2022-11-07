@@ -2,24 +2,10 @@ package view;
 
 import model.Comprador;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class CompradorView extends View {
-
-	public Integer getCompradorOption() {
-		showOptionsComprador();
-		return sc.nextInt();
-	}
-
-	private void showOptionsComprador() {
-		System.out.println("##--Menu do Comprador--##");
-		System.out.println("|-----------------------------|");
-		System.out.println("| Opcao 1 - Ver Propriedades  |");
-		System.out.println("| Opcao 2 - Alterar Dados     |");
-		System.out.println("| Opcao 3 - Consultar Dados   |");
-		System.out.println("| Opcao 4 - Excluir Dados     |");
-		System.out.println("| Opcao 5 - Sair              |");
-		System.out.println("|-----------------------------|");
-		System.out.print("Digite uma opcao: ");
-	}
 
 	public Comprador realizarCadastro() {
 		Comprador novoComprador = new Comprador();
@@ -117,5 +103,34 @@ public class CompradorView extends View {
 
 	public void sendInvalidAge() {
 		System.out.println("A idade digitada é inválida");
+	}
+
+	public void listarCompradores(List<Comprador> compradores) {
+
+		List<Object[]> columns = List.of(
+				new Object[]{"id", 5},
+				new Object[]{"nome", 20},
+				new Object[]{"idade", 8},
+				new Object[]{"sexo", 6},
+				new Object[]{"cpf", 14},
+				new Object[]{"email", 40},
+				new Object[]{"telefone", 20}
+//				new Object[]{"endereco", 10}
+		);
+
+		List<List<?>> data = compradores
+				.stream()
+				.map(c -> List.of(
+						c.getId(),
+						c.getNome(),
+						c.getIdade(),
+						c.getSexo(),
+						c.getCpf(),
+						c.getEmail(),
+						c.getTelefone()))
+//				c.get
+				.collect(Collectors.toList());
+
+		tabelarDados(columns, data);
 	}
 }

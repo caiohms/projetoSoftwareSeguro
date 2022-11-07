@@ -1,9 +1,6 @@
 package controller;
 
-import dao.AdmDAO;
-import dao.AutenticacaoDAO;
-import dao.CompradorDAO;
-import dao.VendedorDAO;
+import dao.*;
 import model.Usuario;
 import view.AutenticacaoView;
 
@@ -25,6 +22,11 @@ public class AutenticacaoController {
 		return doAuth(aDao);
 	}
 
+	public Usuario authCorretor() {
+		AutenticacaoDAO<CorretorDAO> aDao = new AutenticacaoDAO<>(CorretorDAO.class);
+		return doAuth(aDao);
+	}
+
 	public Usuario authAdministrator() {
 		AutenticacaoDAO<AdmDAO> aDao = new AutenticacaoDAO<>(AdmDAO.class);
 		return doAuth(aDao);
@@ -34,7 +36,7 @@ public class AutenticacaoController {
 		Usuario u = null;
 
 		while (u == null) {
-			u = aView.login();
+			u = aView.loginForm();
 
 			if (aDao.autenticarUsuario(u)) {
 				aView.usuarioAutenticado();

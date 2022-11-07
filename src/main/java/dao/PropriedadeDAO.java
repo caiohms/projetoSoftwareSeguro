@@ -1,27 +1,33 @@
 package dao;
 
+import dao.helper.DatabaseConverter;
 import lombok.extern.slf4j.Slf4j;
 import model.Propriedade;
 import model.Vendedor;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Slf4j
 public class PropriedadeDAO extends GenericDaoImpl<Propriedade> {
 
-	public static List<Propriedade> getPropriedadesOfVendedor(Vendedor vendedorAutenticado) {
+	public PropriedadeDAO() {
+		super(Propriedade.class);
+	}
+
+	public static List<Propriedade> getPropriedadesOfVendedor(Vendedor vendedor) {
 		//TODO
-		return null;
+		return List.of();
 	}
 
 	@Override
 	public boolean save(Propriedade propriedade) throws SQLException {
-		String insertString = "INSERT INTO propriedade" + //+ getTableName() +
-				"(id,fk_Vendedor,fk_Corretor,fk_status,fk_tipo,descricao,area_total,area_util,quartos,banheiros,vagas_garagem,preco,valor_cond,logradouro,numero,complemento,cep,bairro,uf,created_at,updated_at)" +
-				" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		String insertString = "INSERT INTO " + getTableName() +
+				"(id,fk_Vendedor,fk_Corretor,fk_status,fk_tipo,descricao,area_total,area_util,quartos,banheiros,vagas_garagem,preco,valor_cond,logradouro,numero,complemento,cep,bairro,uf,created_at,updated_at)" + " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 		try (PreparedStatement pstm = conn.prepareStatement(insertString)) {
 			pstm.setObject(1, null);
@@ -58,7 +64,7 @@ public class PropriedadeDAO extends GenericDaoImpl<Propriedade> {
 	}
 
 	@Override
-	public Propriedade get(int id) throws SQLException {
+	public Propriedade get(int id)  {
 		//TODO
 		return null;
 	}
@@ -78,5 +84,26 @@ public class PropriedadeDAO extends GenericDaoImpl<Propriedade> {
 	@Override
 	protected String setTableName() {
 		return "propriedade";
+	}
+
+	@Override
+	public List<Propriedade> getAll() {
+		ResultSet rs;
+
+		List<Propriedade> list = new ArrayList<>();
+
+		String selectStr = "SELECT * FROM " + getTableName();
+
+		try (PreparedStatement ps = conn.prepareStatement(selectStr)) {
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				list.add(DatabaseConverter.convertPropriedade(rs));
+			}
+
+		} catch (SQLException e) {
+			log.error(e.getMessage(), e);
+		}
+		return list;
 	}
 }

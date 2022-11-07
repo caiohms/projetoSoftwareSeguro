@@ -11,11 +11,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 public class CompradorDAO extends GenericDaoImpl<Comprador> {
 
 	private static final Connection conn = DatabaseConSingleton.getConn();
+
+	public CompradorDAO() {
+		super(Comprador.class);
+	}
 
 	public Comprador getCompradorFromUsuario(Usuario user) {
 
@@ -42,6 +48,23 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 	@Override
 	protected String setTableName() {
 		return "comprador";
+	}
+
+	@Override
+	public List<Comprador> getAll() {
+		ResultSet rs;
+		List<Comprador> list = new ArrayList<>();
+		String selectStr = "SELECT * FROM " + getTableName();
+
+		try (PreparedStatement ps = conn.prepareStatement(selectStr)) {
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				list.add(DatabaseConverter.convertComprador(rs));
+			}
+		} catch (SQLException e) {
+			log.error(e.getMessage(), e);
+		}
+		return list;
 	}
 
 	@Override
@@ -82,8 +105,6 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 		String selectString = "SELECT * FROM " + getTableName() + " WHERE id = ?";
 
 		ResultSet rs;
-		PreparedStatement pstm = null;
-
 		String email = null;
 		String nome = null;
 		String idade = null;
@@ -91,11 +112,7 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 		String cpf = null;
 		String telefone = null;
 
-		try {
-
-			//Cria um PreparedStatment, classe usada para executar a query
-			pstm = conn.prepareStatement(selectString);
-
+		try (PreparedStatement pstm = conn.prepareStatement(selectString)) {
 			pstm.setInt(1, id);
 			log.info("Getting Comprador :: " + pstm);
 
@@ -115,15 +132,6 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
-//            return false;
-		} finally {
-			if (pstm != null) {
-				try {
-					pstm.close();
-				} catch (SQLException e) {
-					throw new RuntimeException(e);
-				}
-			}
 		}
 
 		// Criando um novo corretor com os dados encontrados na base de dados
@@ -136,12 +144,11 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 		String password = comprador.getPassword();
 		String bcryptHashString = BCrypt.withDefaults().hashToString(6, password.toCharArray());
 
-		String insertString = "UPDATE comprador SET nome = ?, idade = ?, sexo = ?, cpf = ?, email = ?, password = ?, telefone = ?" +
-				" WHERE id = ?";
+		String insertString = "UPDATE " + getTableName() + " " +
+				"SET nome = ?, idade = ?, sexo = ?, cpf = ?, email = ?, password = ?, telefone = ? " +
+				"WHERE id = ?";
 
 		try (PreparedStatement pstm = conn.prepareStatement(insertString)) {
-			//Cria um PreparedStatment, classe usada para executar a query
-
 			pstm.setString(1, comprador.getNome());
 			pstm.setString(2, comprador.getIdade());
 			pstm.setString(3, comprador.getSexo());
@@ -168,28 +175,14 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 	@Override
 	public void delete(int id) throws SQLException {
 		//TODO
-		String deleteQuery = "DELETE FROM comprador WHERE id = ?";
+		String deleteQuery = "DELETE FROM " + getTableName() + " WHERE id = ?";
 
-		PreparedStatement pstm = null;
-
-		try {
-			pstm = conn.prepareStatement(deleteQuery);
+		try (PreparedStatement pstm = conn.prepareStatement(deleteQuery)) {
 			pstm.setInt(1, id);
 			pstm.execute();
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-
-			try {
-				if (pstm != null) {
-					pstm.close();
-				}
-				conn.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			log.error(e.getMessage(), e);
 		}
 	}
 

@@ -8,9 +8,15 @@ import model.Usuario;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.List;
 
 @Slf4j
 public class AdmDAO extends GenericDaoImpl<Adm> {
+
+	public AdmDAO() {
+		super(Adm.class);
+	}
 
 	public Adm getAdmFromUsuario(Usuario user) {
 
@@ -37,6 +43,11 @@ public class AdmDAO extends GenericDaoImpl<Adm> {
 	@Override
 	protected String setTableName() {
 		return "adm";
+	}
+
+	@Override
+	public List<Adm> getAll() {
+		return Collections.emptyList();
 	}
 
 	public boolean save(Adm adm) throws SQLException {

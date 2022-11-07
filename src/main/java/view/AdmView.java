@@ -1,28 +1,36 @@
 package view;
 
-import model.Comprador;
-import model.Corretor;
-import model.Vendedor;
+import model.*;
+
+import java.util.List;
 
 public class AdmView extends View {
 
-	public Integer getIdVendedor() {
-		showInsertVendedor();
-		return sc.nextInt();
-	}
+	public void exibirComprador(Comprador comprador) {
 
-	public void showInsertVendedor() {
-		System.out.print("\n##--Menu do Administrador--##\n\n");
-		System.out.print("|-------------------|\n");
-		System.out.print("| Id do Vendedor    |\n");
-		System.out.print("|-------------------|\n");
-		System.out.print("Digite o Id: ");
+		if (comprador == null) {
+			idNotFound();
+			confirmToContinue();
+			return;
+		}
+
+		System.out.println("##   Visualizar Comprador   ##");
+		System.out.println("|----------------------------|");
+		System.out.println("ID:       " + comprador.getId());
+		System.out.println("Email:    " + comprador.getEmail());
+		System.out.println("Nome:     " + comprador.getNome());
+		System.out.println("Idade:    " + comprador.getIdade());
+		System.out.println("Sexo:     " + comprador.getSexo());
+		System.out.println("Cpf:      " + comprador.getCpf());
+		System.out.println("Telefone: " + comprador.getTelefone());
+		System.out.println("|----------------------------|");
 	}
 
 	public void exibirCorretor(Corretor corretor) {
 
 		if (corretor == null) {
-			System.out.println("Corretor não encontrado.");
+			idNotFound();
+			confirmToContinue();
 			return;
 		}
 
@@ -37,20 +45,14 @@ public class AdmView extends View {
 		System.out.println("|-------------------|");
 	}
 
-	public void exibirComprador(Comprador comprador) {
-		System.out.println("##   Visualizar Comprador   ##");
-		System.out.println("|----------------------------|");
-		System.out.println("ID:       " + comprador.getId());
-		System.out.println("Email:    " + comprador.getEmail());
-		System.out.println("Nome:     " + comprador.getNome());
-		System.out.println("Idade:    " + comprador.getIdade());
-		System.out.println("Sexo:     " + comprador.getSexo());
-		System.out.println("Cpf:      " + comprador.getCpf());
-		System.out.println("Telefone: " + comprador.getTelefone());
-		System.out.println("|----------------------------|");
-	}
+	public void exibirVendedor(Vendedor vendedor) {
 
-	public void consultarVendedor(Vendedor vendedor) {
+		if (vendedor == null) {
+			idNotFound();
+			confirmToContinue();
+			return;
+		}
+
 		System.out.println("##   Visualizar Vendedor   ##");
 		System.out.println("|-------------------|");
 		System.out.println("ID:       " + vendedor.getId());
@@ -62,4 +64,19 @@ public class AdmView extends View {
 		System.out.println("|-------------------|");
 	}
 
+	public void exibirPropriedade(Propriedade propriedade) {
+
+		if (propriedade == null) {
+			idNotFound();
+			confirmToContinue();
+			return;
+		}
+
+		//TODO
+
+	}
+
+	public void exibirHistoricoBuscaComprador(List<HistoricoBusca> historico) {
+		//todo
+	}
 }

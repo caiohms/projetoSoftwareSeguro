@@ -9,9 +9,14 @@ import model.Usuario;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 @Slf4j
 public class CorretorDAO extends GenericDaoImpl<Corretor> {
+
+	public CorretorDAO() {
+		super(Corretor.class);
+	}
 
 	public Corretor getCorretorFromUsuario(Usuario user) {
 
@@ -38,6 +43,11 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
 	@Override
 	protected String setTableName() {
 		return "corretor";
+	}
+
+	@Override
+	public List<Corretor> getAll() {
+		return null;
 	}
 
 	@Override
@@ -79,19 +89,13 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
 		String selectString = "SELECT * FROM " + getTableName() + " WHERE id = ?";
 
 		ResultSet rs;
-		PreparedStatement pstm = null;
-
 		String nome = null;
 		String idade = null;
 		String sexo = null;
 		String cpf = null;
 		String telefone = null;
 
-		try {
-
-			//Cria um PreparedStatment, classe usada para executar a query
-			pstm = conn.prepareStatement(selectString);
-
+		try (PreparedStatement pstm = conn.prepareStatement(selectString)) {
 			pstm.setInt(1, id);
 			log.info("Getting Corretor :: " + pstm);
 
@@ -109,14 +113,6 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
 			telefone = rs.getString("telefone");
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
-//            return false;
-		} finally {
-			if (pstm != null) {
-				try {
-					pstm.close();
-				} catch (SQLException ignored) {
-				}
-			}
 		}
 
 		// Criando um novo corretor com os dados encontrados na base de dados
@@ -125,9 +121,6 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
 
 	@Override
 	public boolean update(Corretor corretor, int id) throws SQLException {
-
-		String password = corretor.getPassword();
-		String bcryptHashString = BCrypt.withDefaults().hashToString(6, password.toCharArray());
 
 		String insertString = "UPDATE " + getTableName() + " " +
 				"SET nome = ?, idade = ?, sexo = ?, cpf = ?, email = ?, password = ?, telefone = ? " +
@@ -141,7 +134,11 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
 			pstm.setString(3, corretor.getSexo());
 			pstm.setString(4, corretor.getCpf());
 			pstm.setString(5, corretor.getEmail());
+
+			String password = corretor.getPassword();
+			String bcryptHashString = BCrypt.withDefaults().hashToString(6, password.toCharArray());
 			pstm.setString(6, bcryptHashString);
+
 			pstm.setString(7, corretor.getTelefone());
 			pstm.setInt(8, id);
 
@@ -162,28 +159,14 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
 	@Override
 	public void delete(int id) throws SQLException {
 		//TODO
-		String deleteQuery = "DELETE FROM corretor WHERE id = ?";
+		String deleteQuery = "DELETE FROM " + getTableName() + " WHERE id = ?";
 
-		PreparedStatement pstm = null;
-
-		try {
-			pstm = conn.prepareStatement(deleteQuery);
+		try (PreparedStatement pstm = conn.prepareStatement(deleteQuery)) {
 			pstm.setInt(1, id);
 			pstm.execute();
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-
-			try {
-				if (pstm != null) {
-					pstm.close();
-				}
-				conn.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			log.error(e.getMessage(), e);
 		}
 	}
 }
