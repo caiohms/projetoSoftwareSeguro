@@ -9,7 +9,11 @@ import java.util.stream.Collectors;
 
 public abstract class View {
 
-	protected final Scanner sc = new Scanner(System.in);
+	protected Scanner sc = new Scanner(System.in);
+
+	protected void clearSystemIn() {
+		sc = new Scanner(System.in);
+	}
 
 	public void solicitarIdParaConsulta() {
 		System.out.print("Digite o id a ser consultado: ");
@@ -111,6 +115,8 @@ public abstract class View {
 				}
 			} catch (InputMismatchException e) {
 				System.out.println("Opcao invalida, tente novamente.");
+				System.out.println("Digite uma opcao: ");
+				sc.next();
 			}
 		}
 

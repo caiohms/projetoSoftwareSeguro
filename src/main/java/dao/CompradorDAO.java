@@ -2,12 +2,10 @@ package dao;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import dao.helper.DatabaseConverter;
-import database.DatabaseConSingleton;
 import lombok.extern.slf4j.Slf4j;
 import model.Comprador;
 import model.Usuario;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,8 +14,6 @@ import java.util.List;
 
 @Slf4j
 public class CompradorDAO extends GenericDaoImpl<Comprador> {
-
-	private static final Connection conn = DatabaseConSingleton.getConn();
 
 	public CompradorDAO() {
 		super(Comprador.class);

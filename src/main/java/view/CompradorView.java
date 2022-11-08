@@ -41,7 +41,11 @@ public class CompradorView extends View {
 		return novoComprador;
 	}
 
-	public Comprador atualizaComprador() {
+	public Comprador atualizaComprador(Comprador compradorAutenticado) {
+		// todo apertar enter para que nenhuma alteracao seja feita
+
+		clearSystemIn();
+
 		Comprador comprador = new Comprador();
 
 		System.out.println("##--Atualizar dados do Comprador--##");
@@ -132,5 +136,18 @@ public class CompradorView extends View {
 				.collect(Collectors.toList());
 
 		tabelarDados(columns, data);
+	}
+
+	public void exibirMeusDados(Comprador comprador) {
+		System.out.println("##   Meu perfil de comprador   ##");
+		System.out.println("|---------------------------------------");
+		System.out.println("| Email:    " + comprador.getEmail());
+		System.out.println("| Nome:     " + comprador.getNome());
+		System.out.println("| Idade:    " + comprador.getIdade());
+		System.out.println("| Sexo:     " + comprador.getSexo());
+		System.out.println("| Cpf:      " + comprador.getCpf());
+		System.out.println("| Telefone: " + comprador.getTelefone());
+//		System.out.println("| Endereco: " + comprador.getEndereco());
+		System.out.println("|---------------------------------------");
 	}
 }

@@ -43,7 +43,8 @@ public class VendedorController {
 	}
 
 	private void consultarMinhasPropriedades() {
-		List<Propriedade> propriedades = PropriedadeDAO.getPropriedadesOfVendedor(vendedorAutenticado);
+		PropriedadeDAO propriedadeDAO = new PropriedadeDAO();
+		List<Propriedade> propriedades = propriedadeDAO.getPropriedadesOfVendedor(vendedorAutenticado.getId());
 		propriedadeView.listarPropriedades(propriedades);
 	}
 

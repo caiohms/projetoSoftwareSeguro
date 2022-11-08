@@ -3,48 +3,96 @@ package controller;
 import controller.helper.MenuOption;
 import controller.helper.OptionsMenu;
 import dao.CompradorDAO;
+import dao.PropriedadeDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.Comprador;
+import model.Propriedade;
 import model.Usuario;
 import view.CompradorView;
+import view.PropriedadeView;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Slf4j
 public class CompradorController {
 
 	private final CompradorView compradorView = new CompradorView();
-	private final CompradorDAO compradorDAO = new CompradorDAO();
+
+	private final PropriedadeDAO propriedadeDao = new PropriedadeDAO();
+	private final CompradorDAO compradorDao = new CompradorDAO();
 	private final Comprador compradorAutenticado;
 
 	public CompradorController() {
 		compradorAutenticado = null;
 	}
 
-	public CompradorController autenticado(Usuario user) {
-		Comprador c = compradorDAO.getCompradorFromUsuario(user);
-		return new CompradorController(c);
-	}
-
 	private CompradorController(Comprador comprador) {
-
 		log.info("Comprador autenticado :: " + comprador.toString());
-
 		this.compradorAutenticado = comprador;
-		int idSaved = compradorAutenticado.getId();
 
 		new OptionsMenu()
 				.withTitle("Menu do Comprador")
 				.withOptions(
-						new MenuOption("Ver Propriedades", () -> {
-							//TODO
-						}),
-						new MenuOption("Alterar Dados", () -> atualizarDados(idSaved)),
-						new MenuOption("Consultar Dados", () -> {
-							//TODO
-						}),
-						new MenuOption("Excluir Dados", () -> deletarComprador(idSaved))
-				).runLoopInView(compradorView);
+						new MenuOption("Consultar Propriedades", this::consultarPropriedades),
+						new MenuOption("Consultar Vendedores", this::consultarVendedores),
+						new MenuOption("Alterar Dados", this::atualizarDados),
+						new MenuOption("Consultar Dados", this::consultarDados),
+						new MenuOption("Excluir Dados", this::deletarComprador))
+				.runLoopInView(compradorView);
+	}
+
+
+	public void autenticado(Usuario user) {
+		Comprador c = compradorDao.getCompradorFromUsuario(user);
+		new CompradorController(c);
+	}
+
+	private void consultarDados() {
+		compradorView.exibirMeusDados(this.compradorAutenticado);
+	}
+
+	private void consultarPropriedades() {
+		new OptionsMenu()
+				.withTitle("Consulta de propriedades")
+				.withOptions(
+						new MenuOption("Realizar busca", this::realizarBuscaPropriedades),
+						new MenuOption("Consultar por ID", this::consultarPropriedadePorId),
+						new MenuOption("Consultar por vendedor", this::consultarPropriedadePorVendedor),
+						new MenuOption("Exibir todas", this::exibirTodasPropriedades))
+				.runLoopInView(compradorView);
+	}
+
+	private void realizarBuscaPropriedades() {
+//todo
+	}
+
+	private void consultarPropriedadePorId() {
+//todo
+	}
+
+	private void consultarPropriedadePorVendedor() {
+		compradorView.solicitarIdParaConsulta();
+		int vendedorId = compradorView.getInt();
+		List<Propriedade> propriedades = propriedadeDao.getPropriedadesOfVendedor(vendedorId);
+		new PropriedadeView().listarPropriedades(propriedades);
+	}
+
+	private void exibirTodasPropriedades() {
+		PropriedadeDAO propriedadeDAO = new PropriedadeDAO();
+		List<Propriedade> propriedades = propriedadeDAO.getAll();
+		new PropriedadeView().listarPropriedades(propriedades);
+	}
+
+	private void consultarVendedores() {
+		new OptionsMenu()
+				.withTitle("Consulta de vendedores")
+				.withOptions(
+						new MenuOption("Realizar busca", this::realizarBuscaPropriedades),
+						new MenuOption("Consultar por ID", this::consultarPropriedadePorId),
+						new MenuOption("Consultar por vendedor", this::consultarPropriedadePorVendedor),
+						new MenuOption("Exibir todas", this::exibirTodasPropriedades))
+				.runLoopInView(compradorView);
 	}
 
 	public void realizarCadastro() {
@@ -55,7 +103,7 @@ public class CompradorController {
 		}
 
 		try {
-			if (compradorDAO.save(novoCadastro)) compradorView.cadastroSuccess();
+			if (compradorDao.save(novoCadastro)) compradorView.cadastroSuccess();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -66,7 +114,7 @@ public class CompradorController {
 			return false;
 		}
 
-		if (compradorDAO.checkTakenEmail(novoCadastro.getEmail())) {
+		if (compradorDao.checkTakenEmail(novoCadastro.getEmail())) {
 			compradorView.sendEmailAlreadyExists();
 			return false;
 		}
@@ -81,22 +129,20 @@ public class CompradorController {
 		return true;
 	}
 
-	public void atualizarDados(int idComprador) {
-		//update to db
-		Comprador comprador = compradorView.atualizaComprador();
+	public void atualizarDados() {
+		Comprador comprador = compradorView.atualizaComprador(this.compradorAutenticado);
 		try {
-			if (compradorDAO.update(comprador, idComprador)) compradorView.atualizacaoSuccess();
+			if (compradorDao.update(comprador, this.compradorAutenticado.getId())) compradorView.atualizacaoSuccess();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void deletarComprador(int idComprador) {
-		//update to db
+	public void deletarComprador() {
 		int decision = compradorView.getDeleteOption();
 		try {
 			if (decision == 1) {
-				compradorDAO.delete(idComprador);
+				compradorDao.delete(this.compradorAutenticado.getId());
 			} else {
 				new MainController();
 			}

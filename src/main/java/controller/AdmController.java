@@ -102,7 +102,8 @@ public class AdmController {
 	}
 
 	private void exibirListaVendedores() {
-		//TODO
+		List<Vendedor> vendedores = vendedorDao.getAll();
+		//todo
 	}
 
 	private void exibirListaCorretores() {
@@ -118,7 +119,7 @@ public class AdmController {
 		admView.solicitarIdParaConsulta();
 		int id = admView.getInt();
 		Comprador comprador = compradorDao.get(id);
-		admView.exibirComprador(comprador);
+		admView.admExibirComprador(comprador);
 
 		opcoesDoComprador(comprador);
 	}
@@ -129,8 +130,8 @@ public class AdmController {
 				.withOptions(
 						new MenuOption("Exibir dados", () -> exibirComprador(comprador)),
 						new MenuOption("Exibir historico de busca", () -> exibirHistoricoBuscaComprador(comprador)),
-						new MenuOption("Editar dados", () -> admView.exibirComprador(comprador)),
-						new MenuOption("Excluir", () -> admView.exibirComprador(comprador))
+						new MenuOption("Editar dados", () -> admView.admExibirComprador(comprador)),
+						new MenuOption("Excluir", () -> admView.admExibirComprador(comprador))
 				)
 				.runLoopInView(admView);
 	}
@@ -141,7 +142,7 @@ public class AdmController {
 	}
 
 	private void exibirComprador(Comprador comprador) {
-		admView.exibirComprador(comprador);
+		admView.admExibirComprador(comprador);
 	}
 
 	public void consultarVendedor() {

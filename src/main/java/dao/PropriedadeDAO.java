@@ -3,7 +3,6 @@ package dao;
 import dao.helper.DatabaseConverter;
 import lombok.extern.slf4j.Slf4j;
 import model.Propriedade;
-import model.Vendedor;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,9 +18,24 @@ public class PropriedadeDAO extends GenericDaoImpl<Propriedade> {
 		super(Propriedade.class);
 	}
 
-	public static List<Propriedade> getPropriedadesOfVendedor(Vendedor vendedor) {
-		//TODO
-		return List.of();
+	public List<Propriedade> getPropriedadesOfVendedor(int vendedorId) {
+		ResultSet rs;
+		List<Propriedade> list = new ArrayList<>();
+		String selectStr = "SELECT * FROM " + getTableName() + " WHERE fk_vendedor = ? ORDER BY id";
+
+		try (PreparedStatement ps = conn.prepareStatement(selectStr)) {
+			ps.setInt(1, vendedorId);
+
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				list.add(DatabaseConverter.convertPropriedade(rs));
+			}
+
+		} catch (SQLException e) {
+			log.error(e.getMessage(), e);
+		}
+		return list;
 	}
 
 	@Override
@@ -64,7 +78,7 @@ public class PropriedadeDAO extends GenericDaoImpl<Propriedade> {
 	}
 
 	@Override
-	public Propriedade get(int id)  {
+	public Propriedade get(int id) {
 		//TODO
 		return null;
 	}
