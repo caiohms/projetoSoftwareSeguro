@@ -9,9 +9,14 @@ import model.Vendedor;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 @Slf4j
 public class VendedorDAO extends GenericDaoImpl<Vendedor> {
+
+	public VendedorDAO() {
+		super(Vendedor.class);
+	}
 
 	public Vendedor getVendedorFromUsuario(Usuario user) {
 
@@ -38,6 +43,14 @@ public class VendedorDAO extends GenericDaoImpl<Vendedor> {
 	@Override
 	protected String setTableName() {
 		return "vendedor";
+	}
+
+	@Override
+	public List<Vendedor> getAll() {
+
+		//todo
+
+		return null;
 	}
 
 	@Override
@@ -78,10 +91,9 @@ public class VendedorDAO extends GenericDaoImpl<Vendedor> {
 
 	@Override
 	public Vendedor get(int id) {
-		String selectString = "SELECT * FROM corretor WHERE id = ?";
+		String selectString = "SELECT * FROM " + getTableName() + " WHERE id = ?";
 
-		ResultSet rs = null;
-		PreparedStatement pstm = null;
+		ResultSet rs;
 
 		String nome = null;
 		String idade = null;
@@ -89,11 +101,7 @@ public class VendedorDAO extends GenericDaoImpl<Vendedor> {
 		String cpf = null;
 		String telefone = null;
 
-		try {
-
-			//Cria um PreparedStatment, classe usada para executar a query
-			pstm = conn.prepareStatement(selectString);
-
+		try (PreparedStatement pstm = conn.prepareStatement(selectString)) {
 			pstm.setInt(1, id);
 			log.info("Getting Vendedor :: " + pstm);
 
@@ -107,22 +115,10 @@ public class VendedorDAO extends GenericDaoImpl<Vendedor> {
 			telefone = rs.getString("telefone");
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
-//            return false;
-		} finally {
-			if (pstm != null) {
-				try {
-					pstm.close();
-				} catch (SQLException e) {
-					throw new RuntimeException(e);
-				}
-			}
 		}
 
-
 		// Criando um novo corretor com os dados encontrados na base de dados
-		Vendedor vendedor = new Vendedor(id, nome, idade, sexo, cpf, telefone);
-
-		return vendedor;
+		return new Vendedor(id, nome, idade, sexo, cpf, telefone);
 	}
 
 	@Override
@@ -132,8 +128,9 @@ public class VendedorDAO extends GenericDaoImpl<Vendedor> {
 		String bcryptHashString = BCrypt.withDefaults().hashToString(6, password.toCharArray());
 
 
-		String insertString = "UPDATE vendedor SET nome = ?, idade = ?, sexo = ?, cpf = ?, email = ?, password = ?, telefone = ?" +
-				" WHERE id = ?";
+		String insertString = "UPDATE " + getTableName() + " " +
+				"SET nome = ?, idade = ?, sexo = ?, cpf = ?, email = ?, password = ?, telefone = ? " +
+				"WHERE id = ?";
 
 		try (PreparedStatement pstm = conn.prepareStatement(insertString)) {
 			//Cria um PreparedStatment, classe usada para executar a query
@@ -143,7 +140,7 @@ public class VendedorDAO extends GenericDaoImpl<Vendedor> {
 			pstm.setString(3, vendedor.getSexo());
 			pstm.setString(4, vendedor.getCpf());
 			pstm.setString(5, vendedor.getEmail());
-			pstm.setString(6, vendedor.getPassword()); // TODO add bcrypt
+			pstm.setString(6, bcryptHashString);
 			pstm.setString(7, vendedor.getTelefone());
 			pstm.setInt(8, id);
 
@@ -163,30 +160,16 @@ public class VendedorDAO extends GenericDaoImpl<Vendedor> {
 	@Override
 	public void delete(int id) throws SQLException {
 		//TODO
-		String deleteQuery = "DELETE FROM vendedor WHERE id = ?";
+		String deleteQuery = "DELETE FROM " + getTableName() + " WHERE id = ?";
 
-		PreparedStatement pstm = null;
-
-		try {
-			pstm = conn.prepareStatement(deleteQuery);
+		try (PreparedStatement pstm = conn.prepareStatement(deleteQuery)) {
 			pstm.setInt(1, id);
 			pstm.execute();
 
+			// todo check if successful
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			log.error(e.getMessage(), e);
 			e.printStackTrace();
-		} finally {
-
-			try {
-				if (pstm != null) {
-					pstm.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 		}
 	}
 }

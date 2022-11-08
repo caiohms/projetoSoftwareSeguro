@@ -2,6 +2,9 @@ package view;
 
 import model.Propriedade;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class PropriedadeView extends View {
 
 	public Propriedade cadastrar() {
@@ -47,5 +50,60 @@ public class PropriedadeView extends View {
 
 	public void cadastroSuccess() {
 		System.out.println("Propriedade cadastrada com sucesso.");
+	}
+
+	public void listarPropriedades(List<Propriedade> propriedades) {
+
+		List<Object[]> columns = List.of(
+				new Object[]{"id", 5},
+				new Object[]{"vendedor", 10},
+				new Object[]{"corretor", 10},
+				new Object[]{"status", 10},
+				new Object[]{"tipo", 6},
+				new Object[]{"descricao", 40},
+				new Object[]{"a. total", 10},
+				new Object[]{"a. util", 10},
+				new Object[]{"quartos", 10},
+				new Object[]{"banheiros", 10},
+				new Object[]{"vagas", 10},
+				new Object[]{"preco", 10},
+				new Object[]{"valor cond.", 10},
+				new Object[]{"logradouro", 30},
+				new Object[]{"numero", 10},
+				new Object[]{"compl", 10},
+				new Object[]{"cep", 10},
+				new Object[]{"bairro", 15},
+				new Object[]{"uf", 5},
+				new Object[]{"created", 11},
+				new Object[]{"updated", 11}
+		);
+
+		List<List<?>> data = propriedades
+				.stream()
+				.map(p -> List.of(
+						p.getId(),
+						p.getVendedor(),
+						p.getCorretor(),
+						p.getStatus(),
+						p.getTipo(),
+						p.getDescricao(),
+						p.getATotal(),
+						p.getAUtil(),
+						p.getQuartos(),
+						p.getBanheiros(),
+						p.getVagasGaragem(),
+						p.getPreco(),
+						p.getValorCond(),
+						p.getLogradouro(),
+						p.getNumero(),
+						p.getComplemento(),
+						p.getCep(),
+						p.getBairro(),
+						p.getEstado(),
+						p.getCreatedAt(),
+						p.getUpdatedAt()))
+				.collect(Collectors.toList());
+
+		tabelarDados(columns, data);
 	}
 }

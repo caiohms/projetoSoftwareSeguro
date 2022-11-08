@@ -1,11 +1,11 @@
 package view;
 
-import controller.helper.MenuOption;
 import controller.helper.OptionsMenu;
 
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public abstract class View {
 
@@ -74,6 +74,10 @@ public abstract class View {
 		confirmToContinue();
 	}
 
+	public void idNotFound() {
+		System.out.println("ID não encontrado. Tente novamente...");
+	}
+
 	public void confirmToContinue() {
 		System.out.print("Digite qualquer tecla para continuar...");
 		sc.nextLine();
@@ -84,8 +88,8 @@ public abstract class View {
 		System.out.println("##          " + optionsMenu.getTitle() + "         ##");
 		System.out.println("|-----------" + "-".repeat(optionsMenu.getTitle().length()) + "-----------");
 
-		for (MenuOption option : optionsMenu.getOptionsList()) {
-			System.out.println("| Opcao " + option.getIndex() + " - " + option.getOptionName());
+		for (int i = 0; i < optionsMenu.getOptionsList().length; i++) {
+			System.out.println("| Opcao " + (i + 1) + " - " + optionsMenu.getOptionsList()[i].getOptionName());
 		}
 
 		System.out.println("| Opcao " + (optionsMenu.getOptionsList().length + 1) + " - Sair ");
@@ -111,5 +115,29 @@ public abstract class View {
 		}
 
 		return option;
+	}
+
+	protected void tabelarDados(List<Object[]> columns, List<List<?>> data) {
+		List<Integer> columnLenghts = columns.stream().map(o -> (Integer) o[1]).collect(Collectors.toList());
+		Object[] columnTitles = columns.stream().map(o -> (String) o[0]).toArray();
+
+		int colCount = columns.size();
+		String formattedDivisor = "+-%s-".repeat(colCount) + "+%n";
+		Object[] divisorElements = columnLenghts.stream().map("-"::repeat).toArray();
+
+		StringBuilder formattedRow = new StringBuilder();
+		for (Integer c : columnLenghts) {
+			formattedRow.append(String.format("| %%%d.%ds ", c, c - 2));
+		}
+		formattedRow.append("|%n");
+
+		System.out.printf(formattedDivisor, divisorElements);
+		System.out.printf(formattedRow.toString(), columnTitles);
+		System.out.printf(formattedDivisor, divisorElements);
+
+		for (List<?> o : data) {
+			System.out.printf(formattedRow.toString(), o.toArray());
+			System.out.printf(formattedDivisor, divisorElements);
+		}
 	}
 }

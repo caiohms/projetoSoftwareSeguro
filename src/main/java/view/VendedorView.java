@@ -4,24 +4,6 @@ import model.Vendedor;
 
 public class VendedorView extends View {
 
-	public Integer getVendedorOption() {
-		showOptionsVendedor();
-		return sc.nextInt();
-	}
-
-	private void showOptionsVendedor() {
-		System.out.println("\n##--Menu do Vendedor--##\n");
-		System.out.println("|-----------------------------------------------------|");
-		System.out.println("| Opcao 1 - Consultar minhas propriedades cadastradas |");
-		System.out.println("| Opcao 2 - Anunciar nova propriedade                 |");
-		System.out.println("| Opcao 3 - Alterar meus dados                        |");
-		System.out.println("| Opcao 4 - Consultar meus dados                      |");
-		System.out.println("| Opcao 5 - Excluir meu cadastro                      |");
-		System.out.println("| Outro - Sair                                        |");
-		System.out.println("|-----------------------------------------------------|");
-		System.out.print("Digite uma opcao: ");
-	}
-
 	public Vendedor realizarCadastro() {
 		Vendedor novoVendedor = new Vendedor();
 

@@ -7,15 +7,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 @Slf4j
 public abstract class GenericDaoImpl<T> implements GenericDAO<T> {
 
 	protected static final Connection conn = DatabaseConSingleton.getConn();
-
 	private final String tableName;
+	private final Class<T> type;
 
-	protected GenericDaoImpl() {
+	protected GenericDaoImpl(Class<T> type) {
+		this.type = type;
 		tableName = setTableName();
 	}
 
@@ -38,4 +40,6 @@ public abstract class GenericDaoImpl<T> implements GenericDAO<T> {
 		}
 		return false;
 	}
+
+	public abstract List<T> getAll();
 }

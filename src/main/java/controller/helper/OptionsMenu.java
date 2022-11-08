@@ -1,7 +1,7 @@
 package controller.helper;
 
 import lombok.Getter;
-import view.AdmView;
+import view.View;
 
 import java.util.Scanner;
 
@@ -21,17 +21,25 @@ public class OptionsMenu {
 		return this;
 	}
 
-	public void runLoopInView(AdmView admView) {
+	public void runLoopInView(View view) {
 		boolean quit = false;
 
 		while (!quit) {
-			admView.displayOptionsMenu(this);
-			int option = admView.getLimitedOption(1, optionsList.length + 1);
+			view.displayOptionsMenu(this);
+			int option = view.getLimitedOption(1, optionsList.length + 1);
 			if (option == optionsList.length + 1) {
 				quit = true;
 			} else {
 				optionsList[option - 1].getR().run();
 			}
+		}
+	}
+
+	public void runOnceInView(View view) {
+		view.displayOptionsMenu(this);
+		int option = view.getLimitedOption(1, optionsList.length + 1);
+		if (option != optionsList.length + 1) {
+			optionsList[option - 1].getR().run();
 		}
 	}
 

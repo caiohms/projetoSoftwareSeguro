@@ -1,5 +1,7 @@
 package controller;
 
+import controller.helper.MenuOption;
+import controller.helper.OptionsMenu;
 import dao.CompradorDAO;
 import lombok.extern.slf4j.Slf4j;
 import model.Comprador;
@@ -11,50 +13,38 @@ import java.sql.SQLException;
 @Slf4j
 public class CompradorController {
 
-	private final CompradorView compradorView;
-	private final CompradorDAO compradorDAO;
+	private final CompradorView compradorView = new CompradorView();
+	private final CompradorDAO compradorDAO = new CompradorDAO();
 	private final Comprador compradorAutenticado;
 
 	public CompradorController() {
-		compradorView = new CompradorView();
-		compradorDAO = new CompradorDAO();
 		compradorAutenticado = null;
+	}
+
+	public CompradorController autenticado(Usuario user) {
+		Comprador c = compradorDAO.getCompradorFromUsuario(user);
+		return new CompradorController(c);
 	}
 
 	private CompradorController(Comprador comprador) {
 
 		log.info("Comprador autenticado :: " + comprador.toString());
 
-		// chamar apenas para compradores autenticados
-		compradorView = new CompradorView();
-		compradorDAO = new CompradorDAO();
 		this.compradorAutenticado = comprador;
 		int idSaved = compradorAutenticado.getId();
-		int option = compradorView.getCompradorOption();
 
-		switch (option) {
-			case 1:
-//                Ver propriedades
-				break;
-			case 2:
-//                Atualizar Dados do comprador
-				new CompradorController().atualizarDados(idSaved);
-				break;
-			case 3:
-//                Consultar Dados do comprador
-				break;
-			case 4:
-//                Excluir Dados do comprador
-				new CompradorController().deletarComprador(idSaved);
-				break;
-			default:
-				break;
-		}
-	}
-
-	public CompradorController autenticado(Usuario user) {
-		Comprador c = compradorDAO.getCompradorFromUsuario(user);
-		return new CompradorController(c);
+		new OptionsMenu()
+				.withTitle("Menu do Comprador")
+				.withOptions(
+						new MenuOption("Ver Propriedades", () -> {
+							//TODO
+						}),
+						new MenuOption("Alterar Dados", () -> atualizarDados(idSaved)),
+						new MenuOption("Consultar Dados", () -> {
+							//TODO
+						}),
+						new MenuOption("Excluir Dados", () -> deletarComprador(idSaved))
+				).runLoopInView(compradorView);
 	}
 
 	public void realizarCadastro() {
@@ -115,4 +105,3 @@ public class CompradorController {
 		}
 	}
 }
-

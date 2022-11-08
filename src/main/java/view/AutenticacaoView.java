@@ -4,7 +4,7 @@ import model.Usuario;
 
 public class AutenticacaoView extends View {
 
-	public Usuario login() {
+	public Usuario loginForm() {
 
 		Usuario usuario = new Usuario();
 

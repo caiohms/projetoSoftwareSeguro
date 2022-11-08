@@ -2,6 +2,8 @@ package model;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class Propriedade {
 
@@ -24,5 +26,7 @@ public class Propriedade {
 	private String cep;
 	private String bairro;
 	private Integer estado;
+	private Date createdAt;
+	private Date updatedAt;
 
 }

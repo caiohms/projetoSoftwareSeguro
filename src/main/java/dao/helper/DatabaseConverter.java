@@ -1,10 +1,7 @@
 package dao.helper;
 
 import lombok.extern.slf4j.Slf4j;
-import model.Adm;
-import model.Comprador;
-import model.Corretor;
-import model.Vendedor;
+import model.*;
 
 import java.sql.ResultSet;
 
@@ -29,7 +26,7 @@ public class DatabaseConverter {
 			//		 TODO: convert endereco
 
 		} catch (Exception e) {
-			log.error("Failed to convert Comprador.");
+			log.error("Failed to convert.");
 			return null;
 		}
 
@@ -51,7 +48,7 @@ public class DatabaseConverter {
 			//		 TODO: convert endereco
 
 		} catch (Exception e) {
-			log.error("Failed to convert Comprador.");
+			log.error("Failed to convert.");
 			return null;
 		}
 
@@ -73,7 +70,7 @@ public class DatabaseConverter {
 			//		 TODO: convert endereco
 
 		} catch (Exception e) {
-			log.error("Failed to convert Corretor.");
+			log.error("Failed to convert.");
 			return null;
 		}
 
@@ -90,11 +87,44 @@ public class DatabaseConverter {
 			//		 TODO: convert endereco
 
 		} catch (Exception e) {
-			log.error("Failed to convert Administrator.");
+			log.error("Failed to convert.");
 			return null;
 		}
 
 		return converted;
 	}
 
+	public static Propriedade convertPropriedade(ResultSet resultSet) {
+
+		Propriedade converted = new Propriedade();
+
+		try {
+			converted.setId(resultSet.getInt("id"));
+			converted.setVendedor(resultSet.getInt("fk_vendedor"));
+			converted.setCorretor(resultSet.getInt("fk_corretor"));
+			converted.setStatus(resultSet.getInt("fk_status"));
+			converted.setTipo(resultSet.getInt("fk_tipo"));
+			converted.setDescricao(resultSet.getString("descricao"));
+			converted.setATotal(resultSet.getDouble("area_total"));
+			converted.setAUtil(resultSet.getDouble("area_util"));
+			converted.setQuartos(resultSet.getInt("quartos"));
+			converted.setBanheiros(resultSet.getInt("banheiros"));
+			converted.setVagasGaragem(resultSet.getInt("vagas_garagem"));
+			converted.setPreco(resultSet.getDouble("preco"));
+			converted.setValorCond(resultSet.getDouble("valor_cond"));
+			converted.setLogradouro(resultSet.getString("logradouro"));
+			converted.setNumero(resultSet.getString("numero"));
+			converted.setComplemento(resultSet.getString("complemento"));
+			converted.setCep(resultSet.getString("cep"));
+			converted.setBairro(resultSet.getString("bairro"));
+			converted.setEstado(resultSet.getInt("uf"));
+			converted.setCreatedAt(resultSet.getDate("created_at"));
+			converted.setUpdatedAt(resultSet.getDate("updated_at"));
+		} catch (Exception e) {
+			log.error("Failed to convert.", e);
+			return null;
+		}
+
+		return converted;
+	}
 }
