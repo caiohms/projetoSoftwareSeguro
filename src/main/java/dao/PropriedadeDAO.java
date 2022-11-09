@@ -79,7 +79,20 @@ public class PropriedadeDAO extends GenericDaoImpl<Propriedade> {
 
 	@Override
 	public Propriedade get(int id) {
-		//TODO
+		String selectString = "SELECT * FROM " + getTableName() + " WHERE id = ?";
+		try (PreparedStatement pstm = conn.prepareStatement(selectString)) {
+			pstm.setInt(1, id);
+			log.info("Getting Propriedade :: " + pstm);
+
+			ResultSet rs = pstm.executeQuery();
+			if (!rs.next()) {
+				return null;
+			}
+			return DatabaseConverter.convertPropriedade(rs);
+
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+		}
 		return null;
 	}
 
@@ -87,12 +100,6 @@ public class PropriedadeDAO extends GenericDaoImpl<Propriedade> {
 	public boolean update(Propriedade propriedade, int id) throws SQLException {
 		//TODO
 		return false;
-	}
-
-	@Override
-	public void delete(int id) throws SQLException {
-		//TODO
-		return;
 	}
 
 	@Override

@@ -106,4 +106,26 @@ public class PropriedadeView extends View {
 
 		tabelarDados(columns, data);
 	}
+
+	public void showPropriedade(Propriedade propriedade) {
+		System.out.println("##   Consulta de Propriedade   ##");
+		System.out.println("|---------------------------------------");
+		if (propriedade.getDescricao() != null) System.out.println("| Descricao: " + propriedade.getDescricao());
+		if (propriedade.getATotal() != null) System.out.println("| Area total (m2): " + propriedade.getATotal());
+		if (propriedade.getAUtil() != null) System.out.println("| Area util (m2): " + propriedade.getAUtil());
+		if (propriedade.getQuartos() != null) System.out.println("| Quartos: " + propriedade.getQuartos());
+		if (propriedade.getBanheiros() != null) System.out.println("| Banheiros: " + propriedade.getBanheiros());
+		if (propriedade.getVagasGaragem() != null)
+			System.out.println("| Vagas garagem: " + propriedade.getVagasGaragem());
+		if (propriedade.getPreco() != null) System.out.println("| Preco: " + propriedade.getPreco());
+		if (propriedade.getValorCond() != null) System.out.println("| Valor condominio: " + propriedade.getValorCond());
+		if (propriedade.getTipo() != null) System.out.println("| Tipo: " + propriedade.getTipo());
+		if (propriedade.getLogradouro() != null) System.out.println("| Logradouro: " + propriedade.getLogradouro());
+		if (propriedade.getNumero() != null) System.out.println("| Numero: " + propriedade.getNumero());
+		if (propriedade.getComplemento() != null) System.out.println("| Complemento: " + propriedade.getComplemento());
+		if (propriedade.getCep() != null) System.out.println("| CEP (somente numeros): " + propriedade.getCep());
+		if (propriedade.getBairro() != null) System.out.println("| Bairro: " + propriedade.getBairro());
+		if (propriedade.getEstado() != null) System.out.println("| Estado (sigla): " + propriedade.getEstado());
+		System.out.println("|---------------------------------------");
+	}
 }

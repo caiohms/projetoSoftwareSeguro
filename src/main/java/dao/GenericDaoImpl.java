@@ -42,4 +42,17 @@ public abstract class GenericDaoImpl<T> implements GenericDAO<T> {
 	}
 
 	public abstract List<T> getAll();
+
+	@Override
+	public void delete(int id) throws SQLException {
+		String deleteQuery = "DELETE FROM " + getTableName() + " WHERE id = ?";
+
+		try (PreparedStatement pstm = conn.prepareStatement(deleteQuery)) {
+			pstm.setInt(1, id);
+			pstm.execute();
+
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+		}
+	}
 }

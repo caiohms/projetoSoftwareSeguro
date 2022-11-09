@@ -68,7 +68,10 @@ public class CompradorController {
 	}
 
 	private void consultarPropriedadePorId() {
-//todo
+		compradorView.solicitarIdParaConsulta();
+		int id = compradorView.getInt();
+		Propriedade propriedade = propriedadeDao.get(id);
+		new PropriedadeView().showPropriedade(propriedade);
 	}
 
 	private void consultarPropriedadePorVendedor() {

@@ -167,19 +167,4 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 		return true;
 	}
 
-
-	@Override
-	public void delete(int id) throws SQLException {
-		//TODO
-		String deleteQuery = "DELETE FROM " + getTableName() + " WHERE id = ?";
-
-		try (PreparedStatement pstm = conn.prepareStatement(deleteQuery)) {
-			pstm.setInt(1, id);
-			pstm.execute();
-
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-		}
-	}
-
 }
