@@ -66,9 +66,8 @@ public class AdmDAO extends GenericDaoImpl<Adm> {
 		return false;
 	}
 
-
 	@Override
-	public void delete(int id) throws SQLException {
+	public void delete(int id) {
 		// Admins cannot be deleted
 	}
 

@@ -26,7 +26,7 @@ public class DatabaseConverter {
 			//		 TODO: convert endereco
 
 		} catch (Exception e) {
-			log.error("Failed to convert.");
+			log.error("Failed to convert.", e);
 			return null;
 		}
 
@@ -48,7 +48,7 @@ public class DatabaseConverter {
 			//		 TODO: convert endereco
 
 		} catch (Exception e) {
-			log.error("Failed to convert.");
+			log.error("Failed to convert.", e);
 			return null;
 		}
 
@@ -70,7 +70,7 @@ public class DatabaseConverter {
 			//		 TODO: convert endereco
 
 		} catch (Exception e) {
-			log.error("Failed to convert.");
+			log.error("Failed to convert.", e);
 			return null;
 		}
 
@@ -87,7 +87,7 @@ public class DatabaseConverter {
 			//		 TODO: convert endereco
 
 		} catch (Exception e) {
-			log.error("Failed to convert.");
+			log.error("Failed to convert.", e);
 			return null;
 		}
 
