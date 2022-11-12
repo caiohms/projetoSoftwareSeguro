@@ -42,7 +42,7 @@ public class DatabaseConverter {
 			converted.setPassword(resultSet.getString("password"));
 			converted.setNome(resultSet.getString("nome"));
 			converted.setIdade(resultSet.getString("idade"));
-			converted.setSexo(resultSet.getString("sexo"));
+			converted.setGenero(resultSet.getString("sexo"));
 			converted.setCpf(resultSet.getString("cpf"));
 			converted.setTelefone(resultSet.getString("telefone"));
 			//		 TODO: convert endereco

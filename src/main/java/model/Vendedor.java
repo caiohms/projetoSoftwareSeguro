@@ -11,7 +11,7 @@ public class Vendedor extends Usuario implements Serializable {
 	private int id;
 	private String nome;
 	private String idade;
-	private String sexo;
+	private String genero;
 	private String cpf;
 	private String telefone;
 
@@ -19,11 +19,11 @@ public class Vendedor extends Usuario implements Serializable {
 
 	public Vendedor() { /* empty constructor */ }
 
-	public Vendedor(int id, String nome, String idade, String sexo, String cpf, String telefone) {
+	public Vendedor(int id, String nome, String idade, String genero, String cpf, String telefone) {
 		this.id = id;
 		this.nome = nome;
 		this.idade = idade;
-		this.sexo = sexo;
+		this.genero = genero;
 		this.cpf = cpf;
 		this.telefone = telefone;
 	}

@@ -2,6 +2,9 @@ package view;
 
 import model.Vendedor;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class VendedorView extends View {
 
 	public Vendedor realizarCadastro() {
@@ -23,7 +26,7 @@ public class VendedorView extends View {
 		novoVendedor.setIdade(sc.nextLine());
 
 		System.out.println("| Sexo: ");
-		novoVendedor.setSexo(sc.nextLine());
+		novoVendedor.setGenero(sc.nextLine());
 
 		System.out.println("| CPF: ");
 		novoVendedor.setCpf(sc.nextLine());
@@ -57,7 +60,7 @@ public class VendedorView extends View {
 		vendedor.setIdade(sc.nextLine());
 
 		System.out.print("| Sexo: \n");
-		vendedor.setSexo(sc.nextLine());
+		vendedor.setGenero(sc.nextLine());
 
 		System.out.print("| CPF: \n");
 		vendedor.setCpf(sc.nextLine());
@@ -101,8 +104,31 @@ public class VendedorView extends View {
 		System.out.println("| E-mail: " + vendedorAutenticado.getEmail());
 		System.out.println("| Nome Completo: " + vendedorAutenticado.getNome());
 		System.out.println("| Idade: " + vendedorAutenticado.getIdade());
-		System.out.println("| Sexo: " + vendedorAutenticado.getSexo());
+		System.out.println("| Sexo: " + vendedorAutenticado.getGenero());
 		System.out.println("| CPF: " + vendedorAutenticado.getCpf());
 		System.out.println("| Telefone: " + vendedorAutenticado.getTelefone());
+	}
+
+	public void listarVendedores(List<Vendedor> vendedores) {
+
+		List<Object[]> columns = List.of(
+				new Object[]{"id", 5},
+				new Object[]{"nome", 40},
+				new Object[]{"idade", 8},
+				new Object[]{"genero", 10},
+				new Object[]{"telefone", 15}
+		);
+
+		List<List<?>> data = vendedores
+				.stream()
+				.map(v -> List.of(
+						v.getId(),
+						v.getNome(),
+						v.getIdade(),
+						v.getGenero(),
+						v.getTelefone()))
+				.collect(Collectors.toList());
+
+		tabelarDados(columns, data);
 	}
 }

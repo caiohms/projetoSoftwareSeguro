@@ -9,6 +9,7 @@ import model.Vendedor;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -47,10 +48,17 @@ public class VendedorDAO extends GenericDaoImpl<Vendedor> {
 
 	@Override
 	public List<Vendedor> getAll() {
-
-		//todo
-
-		return null;
+		List<Vendedor> list = new ArrayList<>();
+		String selectStr = "SELECT * FROM " + getTableName();
+		try (PreparedStatement ps = conn.prepareStatement(selectStr)) {
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				list.add(DatabaseConverter.convertVendedor(rs));
+			}
+		} catch (SQLException e) {
+			log.error(e.getMessage(), e);
+		}
+		return list;
 	}
 
 	@Override
@@ -69,7 +77,7 @@ public class VendedorDAO extends GenericDaoImpl<Vendedor> {
 
 			pstm.setString(1, vendedor.getNome());
 			pstm.setString(2, vendedor.getIdade());
-			pstm.setString(3, vendedor.getSexo());
+			pstm.setString(3, vendedor.getGenero());
 			pstm.setString(4, vendedor.getCpf());
 			pstm.setString(5, vendedor.getEmail());
 			pstm.setString(6, bcryptHashString);
@@ -121,7 +129,7 @@ public class VendedorDAO extends GenericDaoImpl<Vendedor> {
 
 			pstm.setString(1, vendedor.getNome());
 			pstm.setString(2, vendedor.getIdade());
-			pstm.setString(3, vendedor.getSexo());
+			pstm.setString(3, vendedor.getGenero());
 			pstm.setString(4, vendedor.getCpf());
 			pstm.setString(5, vendedor.getEmail());
 			pstm.setString(6, bcryptHashString);

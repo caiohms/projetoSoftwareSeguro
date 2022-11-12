@@ -5,10 +5,7 @@ import controller.helper.OptionsMenu;
 import dao.*;
 import lombok.extern.slf4j.Slf4j;
 import model.*;
-import view.AdmView;
-import view.CompradorView;
-import view.CorretorView;
-import view.PropriedadeView;
+import view.*;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -20,6 +17,7 @@ public class AdmController {
 
 	private final AdmView admView = new AdmView();
 	private final CompradorView compradorView = new CompradorView();
+	private final VendedorView vendedorView = new VendedorView();
 	private final CorretorView corretorView = new CorretorView();
 	private final PropriedadeView propriedadeView = new PropriedadeView();
 
@@ -103,7 +101,7 @@ public class AdmController {
 
 	private void exibirListaVendedores() {
 		List<Vendedor> vendedores = vendedorDao.getAll();
-		//todo
+		vendedorView.listarVendedores(vendedores);
 	}
 
 	private void exibirListaCorretores() {

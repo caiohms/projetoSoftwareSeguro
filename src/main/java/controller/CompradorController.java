@@ -4,13 +4,16 @@ import controller.helper.MenuOption;
 import controller.helper.OptionsMenu;
 import dao.CompradorDAO;
 import dao.PropriedadeDAO;
+import dao.VendedorDAO;
 import dao.helper.SearchEngine;
 import lombok.extern.slf4j.Slf4j;
 import model.Comprador;
 import model.Propriedade;
 import model.Usuario;
+import model.Vendedor;
 import view.CompradorView;
 import view.PropriedadeView;
+import view.VendedorView;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -66,7 +69,7 @@ public class CompradorController {
 
 	private void realizarBuscaPropriedades() {
 		String searchString = compradorView.requestSearchString();
-		List<Propriedade> propriedades = new SearchEngine().getPropriedades(searchString);
+		List<Propriedade> propriedades = new SearchEngine().getPropriedadesPorDescricao(searchString);
 		if (propriedades.isEmpty())
 			compradorView.noResults();
 		else
@@ -102,20 +105,27 @@ public class CompradorController {
 				.withOptions(
 						new MenuOption("Buscar por nome", this::buscarVendedorPorNome),
 						new MenuOption("Consultar por ID", this::consultarVendedorPorId),
-						new MenuOption("Listar todos", this::listarVendedores))
+						new MenuOption("Listar todos", this::listarTodosVendedores))
 				.runLoopInView(compradorView);
 	}
 
 	private void buscarVendedorPorNome() {
-		//todo
+		String searchString = compradorView.requestSearchString();
+		List<Vendedor> vendedores = new SearchEngine().getVendedorPorNome(searchString);
+		if (vendedores.isEmpty())
+			compradorView.noResults();
+		else
+			new VendedorView().listarVendedores(vendedores);
 	}
 
 	private void consultarVendedorPorId() {
 		//todo
 	}
 
-	private void listarVendedores() {
-		//todo
+	private void listarTodosVendedores() {
+		VendedorDAO vendedorDAO = new VendedorDAO();
+		List<Vendedor> vendedores = vendedorDAO.getAll();
+		new VendedorView().listarVendedores(vendedores);
 	}
 
 	public void realizarCadastro() {
