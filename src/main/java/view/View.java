@@ -146,4 +146,8 @@ public abstract class View {
 			System.out.printf(formattedDivisor, divisorElements);
 		}
 	}
+
+	public void noResults() {
+		System.out.println("Nenhum resultado encontrado.");
+	}
 }

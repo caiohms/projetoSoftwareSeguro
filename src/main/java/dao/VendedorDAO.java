@@ -93,32 +93,16 @@ public class VendedorDAO extends GenericDaoImpl<Vendedor> {
 	public Vendedor get(int id) {
 		String selectString = "SELECT * FROM " + getTableName() + " WHERE id = ?";
 
-		ResultSet rs;
-
-		String nome = null;
-		String idade = null;
-		String sexo = null;
-		String cpf = null;
-		String telefone = null;
-
 		try (PreparedStatement pstm = conn.prepareStatement(selectString)) {
 			pstm.setInt(1, id);
 			log.info("Getting Vendedor :: " + pstm);
-
-			//Executa a sql para inserção dos dados
-			rs = pstm.executeQuery();
-
-			nome = rs.getString("nome");
-			idade = rs.getString("idade");
-			sexo = rs.getString("sexo");
-			cpf = rs.getString("cpf");
-			telefone = rs.getString("telefone");
+			ResultSet rs = pstm.executeQuery();
+			return DatabaseConverter.convertVendedor(rs);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		}
 
-		// Criando um novo corretor com os dados encontrados na base de dados
-		return new Vendedor(id, nome, idade, sexo, cpf, telefone);
+		return null;
 	}
 
 	@Override

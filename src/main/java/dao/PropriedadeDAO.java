@@ -109,19 +109,17 @@ public class PropriedadeDAO extends GenericDaoImpl<Propriedade> {
 
 	@Override
 	public List<Propriedade> getAll() {
-		ResultSet rs;
 
 		List<Propriedade> list = new ArrayList<>();
 
 		String selectStr = "SELECT * FROM " + getTableName();
 
 		try (PreparedStatement ps = conn.prepareStatement(selectStr)) {
-			rs = ps.executeQuery();
+			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
 				list.add(DatabaseConverter.convertPropriedade(rs));
 			}
-
 		} catch (SQLException e) {
 			log.error(e.getMessage(), e);
 		}

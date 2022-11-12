@@ -150,4 +150,10 @@ public class CompradorView extends View {
 //		System.out.println("| Endereco: " + comprador.getEndereco());
 		System.out.println("|---------------------------------------");
 	}
+
+	public String requestSearchString() {
+		clearSystemIn();
+		System.out.println("Digite a string de busca: ");
+		return sc.nextLine();
+	}
 }

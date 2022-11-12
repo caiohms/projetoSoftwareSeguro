@@ -4,6 +4,7 @@ import controller.helper.MenuOption;
 import controller.helper.OptionsMenu;
 import dao.CompradorDAO;
 import dao.PropriedadeDAO;
+import dao.helper.SearchEngine;
 import lombok.extern.slf4j.Slf4j;
 import model.Comprador;
 import model.Propriedade;
@@ -64,7 +65,12 @@ public class CompradorController {
 	}
 
 	private void realizarBuscaPropriedades() {
-//todo
+		String searchString = compradorView.requestSearchString();
+		List<Propriedade> propriedades = new SearchEngine().getPropriedades(searchString);
+		if (propriedades.isEmpty())
+			compradorView.noResults();
+		else
+			new PropriedadeView().listarPropriedades(propriedades);
 	}
 
 	private void consultarPropriedadePorId() {
@@ -78,7 +84,10 @@ public class CompradorController {
 		compradorView.solicitarIdParaConsulta();
 		int vendedorId = compradorView.getInt();
 		List<Propriedade> propriedades = propriedadeDao.getPropriedadesOfVendedor(vendedorId);
-		new PropriedadeView().listarPropriedades(propriedades);
+		if (propriedades.isEmpty())
+			compradorView.noResults();
+		else
+			new PropriedadeView().listarPropriedades(propriedades);
 	}
 
 	private void exibirTodasPropriedades() {
@@ -91,11 +100,22 @@ public class CompradorController {
 		new OptionsMenu()
 				.withTitle("Consulta de vendedores")
 				.withOptions(
-						new MenuOption("Realizar busca", this::realizarBuscaPropriedades),
-						new MenuOption("Consultar por ID", this::consultarPropriedadePorId),
-						new MenuOption("Consultar por vendedor", this::consultarPropriedadePorVendedor),
-						new MenuOption("Exibir todas", this::exibirTodasPropriedades))
+						new MenuOption("Buscar por nome", this::buscarVendedorPorNome),
+						new MenuOption("Consultar por ID", this::consultarVendedorPorId),
+						new MenuOption("Listar todos", this::listarVendedores))
 				.runLoopInView(compradorView);
+	}
+
+	private void buscarVendedorPorNome() {
+		//todo
+	}
+
+	private void consultarVendedorPorId() {
+		//todo
+	}
+
+	private void listarVendedores() {
+		//todo
 	}
 
 	public void realizarCadastro() {

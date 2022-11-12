@@ -100,38 +100,18 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 	public Comprador get(int id) {
 		String selectString = "SELECT * FROM " + getTableName() + " WHERE id = ?";
 
-		ResultSet rs;
-		String email = null;
-		String nome = null;
-		String idade = null;
-		String sexo = null;
-		String cpf = null;
-		String telefone = null;
-
 		try (PreparedStatement pstm = conn.prepareStatement(selectString)) {
 			pstm.setInt(1, id);
 			log.info("Getting Comprador :: " + pstm);
-
-			//Executa a sql para inserção dos dados
-			rs = pstm.executeQuery();
-
+			ResultSet rs = pstm.executeQuery();
 			if (!rs.next()) {
 				return null;
 			}
-
-			email = rs.getString("email");
-			nome = rs.getString("nome");
-			idade = rs.getString("idade");
-			sexo = rs.getString("sexo");
-			cpf = rs.getString("cpf");
-			telefone = rs.getString("telefone");
-
+			return DatabaseConverter.convertComprador(rs);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		}
-
-		// Criando um novo corretor com os dados encontrados na base de dados
-		return new Comprador(email, id, nome, idade, sexo, cpf, telefone);
+		return null;
 	}
 
 	@Override
