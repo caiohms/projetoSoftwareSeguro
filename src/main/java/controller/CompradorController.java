@@ -78,14 +78,14 @@ public class CompradorController {
 
 	private void consultarPropriedadePorId() {
 		compradorView.solicitarIdParaConsulta();
-		int id = compradorView.getInt();
+		int id = compradorView.getNextInt();
 		Propriedade propriedade = propriedadeDao.get(id);
 		new PropriedadeView().showPropriedade(propriedade);
 	}
 
 	private void consultarPropriedadePorVendedor() {
 		compradorView.solicitarIdParaConsulta();
-		int vendedorId = compradorView.getInt();
+		int vendedorId = compradorView.getNextInt();
 		List<Propriedade> propriedades = propriedadeDao.getPropriedadesOfVendedor(vendedorId);
 		if (propriedades.isEmpty())
 			compradorView.noResults();
@@ -165,16 +165,18 @@ public class CompradorController {
 	public void atualizarDados() {
 		Comprador comprador = compradorView.atualizaComprador(this.compradorAutenticado);
 		try {
-			if (compradorDao.update(comprador, this.compradorAutenticado.getId())) compradorView.atualizacaoSuccess();
+			if (compradorDao.update(this.compradorAutenticado.getId(), comprador)) {
+				compradorView.atualizacaoSuccess();
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public void deletarComprador() {
-		int decision = compradorView.getDeleteOption();
+		boolean confirm = compradorView.confirmarAcao("Excluir sua conta. Essa ação é irreversível.");
 		try {
-			if (decision == 1) {
+			if (confirm) {
 				compradorDao.delete(this.compradorAutenticado.getId());
 			} else {
 				new MainController();

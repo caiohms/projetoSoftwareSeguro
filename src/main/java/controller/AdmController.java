@@ -42,15 +42,15 @@ public class AdmController {
 				.withOptions(
 						new MenuOption("Painel compradores", this::painelCompradores),
 						new MenuOption("Painel vendedores", this::painelVendedores),
-						new MenuOption("Painel corretores", this::painelCorretores),
+//						new MenuOption("Painel corretores", this::painelCorretores),
 						new MenuOption("Painel propriedades", this::painelPropriedades)
 				)
 				.runLoopInView(admView);
 	}
 
-	public AdmController autenticado(Usuario user) {
+	public void autenticado(Usuario user) {
 		Adm adm = admDAO.getAdmFromUsuario(user);
-		return new AdmController(adm);
+		new AdmController(adm);
 	}
 
 	private void painelCompradores() {
@@ -73,16 +73,16 @@ public class AdmController {
 				.runLoopInView(admView);
 	}
 
-	private void painelCorretores() {
-		new OptionsMenu()
-				.withTitle("Painel Corretores")
-				.withOptions(
-						new MenuOption("Listar Corretores", this::exibirListaCorretores),
-						new MenuOption("Buscar por id", this::buscarCorretorPorId),
-						new MenuOption("Cadastrar corretor", this::cadastrarCorretor)
-				)
-				.runLoopInView(admView);
-	}
+//	private void painelCorretores() {
+//		new OptionsMenu()
+//				.withTitle("Painel Corretores")
+//				.withOptions(
+//						new MenuOption("Listar Corretores", this::exibirListaCorretores),
+//						new MenuOption("Buscar por id", this::buscarCorretorPorId),
+//						new MenuOption("Cadastrar corretor", this::cadastrarCorretor)
+//				)
+//				.runLoopInView(admView);
+//	}
 
 	private void painelPropriedades() {
 		new OptionsMenu()
@@ -104,9 +104,9 @@ public class AdmController {
 		vendedorView.listarVendedores(vendedores);
 	}
 
-	private void exibirListaCorretores() {
-		//TODO
-	}
+//	private void exibirListaCorretores() {
+//		//TODO
+//	}
 
 	private void exibirListaPropriedades() {
 		List<Propriedade> propriedades = propriedadeDAO.getAll();
@@ -115,11 +115,13 @@ public class AdmController {
 
 	public void buscarCompradorPorId() {
 		admView.solicitarIdParaConsulta();
-		int id = admView.getInt();
+		int id = admView.getNextInt();
 		Comprador comprador = compradorDao.get(id);
 		admView.admExibirComprador(comprador);
 
-		opcoesDoComprador(comprador);
+		if (comprador != null) {
+			opcoesDoComprador(comprador);
+		}
 	}
 
 	private void opcoesDoComprador(Comprador comprador) {
@@ -129,9 +131,15 @@ public class AdmController {
 						new MenuOption("Exibir dados", () -> exibirComprador(comprador)),
 						new MenuOption("Exibir historico de busca", () -> exibirHistoricoBuscaComprador(comprador)),
 						new MenuOption("Editar dados", () -> admView.admExibirComprador(comprador)),
-						new MenuOption("Excluir", () -> admView.admExibirComprador(comprador))
+						new MenuOption("Excluir", () -> deletarComprador(comprador))
 				)
 				.runLoopInView(admView);
+	}
+
+	// ===== COMPRADOR ===================
+
+	private void exibirComprador(Comprador comprador) {
+		admView.admExibirComprador(comprador);
 	}
 
 	private void exibirHistoricoBuscaComprador(Comprador comprador) {
@@ -139,74 +147,83 @@ public class AdmController {
 		admView.exibirHistoricoBuscaComprador(historico);
 	}
 
-	private void exibirComprador(Comprador comprador) {
-		admView.admExibirComprador(comprador);
+	private void deletarComprador(Comprador comprador) {
+		boolean confirm = admView.confirmarAcao("Deletar comprador " + comprador.getId() + "(" + comprador.getNome() + "). Essa ação é irreversível.");
+		try {
+			if (confirm) {
+				compradorDao.delete(comprador.getId());
+			}
+		} catch (SQLException e) {
+			log.error(e.getMessage(), e);
+		}
 	}
 
+	//================================
+
 	public void consultarVendedor() {
-		int id = admView.getInt();
+		int id = admView.getNextInt();
 		Vendedor vendedor = vendedorDao.get(id);
 		admView.exibirVendedor(vendedor);
 	}
 
 	private void buscarCorretorPorId() {
 		admView.solicitarIdParaConsulta();
-		int id = admView.getInt();
+		int id = admView.getNextInt();
 		Corretor corretor = corretorDao.get(id);
 		admView.exibirCorretor(corretor);
 	}
 
 	private void buscarVendedorPorId() {
 		admView.solicitarIdParaConsulta();
-		int id = admView.getInt();
+		int id = admView.getNextInt();
 		Vendedor vendedor = vendedorDao.get(id);
 		admView.exibirVendedor(vendedor);
 	}
 
 	private void buscarPropriedadePorId() {
 		admView.solicitarIdParaConsulta();
-		int id = admView.getInt();
+		int id = admView.getNextInt();
 		Propriedade propriedade = propriedadeDAO.get(id);
 		admView.exibirPropriedade(propriedade);
 	}
 
-	public void cadastrarCorretor() {
-		Corretor novoCadastro = corretorView.realizarCadastro();
-		//save to db
+//	public void cadastrarCorretor() {
+//		Corretor novoCadastro = corretorView.realizarCadastro();
+//		//save to db
+//
+//		try {
+//			if (corretorDao.save(novoCadastro)) {
+//				corretorView.cadastroSuccess();
+//			}
+//		} catch (SQLException e) {
+//			log.error(e.getMessage(), e);
+//		}
+//	}
 
-		try {
-			if (corretorDao.save(novoCadastro)) {
-				corretorView.cadastroSuccess();
-			}
-		} catch (SQLException e) {
-			log.error(e.getMessage(), e);
-		}
-	}
+//	public void atualizarDadosCorretor() {
+//		//todo revisar
+//		int id = admView.getInt();
+//		Corretor corretor = corretorView.atualizaCorretor();
+//		try {
+//			if (corretorDao.update(corretor, id)) corretorView.atualizacaoSuccess();
+//		} catch (SQLException e) {
+//			log.error(e.getMessage(), e);
+//		}
+//	}
 
-	public void atualizarDados() {
-		//todo revisar
-		int id = admView.getInt();
-		Corretor corretor = corretorView.atualizaCorretor();
-		try {
-			if (corretorDao.update(corretor, id)) corretorView.atualizacaoSuccess();
-		} catch (SQLException e) {
-			log.error(e.getMessage(), e);
-		}
-	}
-
-	public void deletarCorretor() {
-		//todo revisar
-		int id = admView.getInt();
-		int decision = corretorView.getDeleteOption();
-		try {
-			if (decision == 1) {
-				corretorDao.delete(id);
-			} else {
-				new MainController();
-			}
-		} catch (SQLException e) {
-			log.error(e.getMessage(), e);
-		}
-	}
+//	public void deletarCorretor() {
+//		//todo revisar
+//		int id = admView.getInt();
+//		int decision = corretorView.getDeleteOption();
+//		try {
+//			if (decision == 1) {
+//				corretorDao.delete(id);
+//			} else {
+//				new MainController();
+//			}
+//		} catch (SQLException e) {
+//			log.error(e.getMessage(), e);
+//		}
+//	}
 
 }

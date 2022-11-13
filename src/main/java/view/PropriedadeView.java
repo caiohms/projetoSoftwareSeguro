@@ -13,6 +13,13 @@ public class PropriedadeView extends View {
 		System.out.println("##-- Cadastro de Propriedade --##");
 		System.out.println("|-------------------------------|");
 
+		System.out.println("| Tipos disponiveis: ");
+		System.out.println("|    (1) Casa residencial ");
+		System.out.println("|    (2) Apartamento ");
+		System.out.println("|    (3) Terreno ");
+		System.out.println("|    (4) Comercial ");
+		System.out.println("|    (5) Industrial ");
+		Integer tipo = validatedLimitedIntegerOption("| Tipo: ", 1, 5);
 		String descricao = lengthLimitedStringInput("| Descricao: ", 1024);
 		Double aTotal = validatedDoubleInput("| Metragem total (m2): ");
 		Double aUtil = validatedDoubleInput("| Area util(m2): ");
@@ -21,7 +28,6 @@ public class PropriedadeView extends View {
 		Integer vagasGaragem = validatedIntegerInput("| Vagas de garagem: ");
 		Double preco = validatedDoubleInput("| Preco: ");
 		Double valorCond = validatedDoubleInput("| Valor condominio: ");
-//		Integer tipo = validatedIntegerInput("| Tipo: ");
 		String logradouro = lengthLimitedStringInput("| Logradouro: ", 255);
 		String numero = lengthLimitedStringInput("| Numero: ", 10);
 		String compl = lengthLimitedStringInput("| Complemento: ", 255);
@@ -37,7 +43,7 @@ public class PropriedadeView extends View {
 		p.setVagasGaragem(vagasGaragem);
 		p.setPreco(preco);
 		p.setValorCond(valorCond);
-		p.setTipo(1); // a venda
+		p.setTipo(tipo);
 		p.setLogradouro(logradouro);
 		p.setNumero(numero);
 		p.setComplemento(compl);

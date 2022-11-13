@@ -105,7 +105,9 @@ public class VendedorDAO extends GenericDaoImpl<Vendedor> {
 			pstm.setInt(1, id);
 			log.info("Getting Vendedor :: " + pstm);
 			ResultSet rs = pstm.executeQuery();
-			return DatabaseConverter.convertVendedor(rs);
+			if (rs.next()) {
+				return DatabaseConverter.convertVendedor(rs);
+			}
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		}
@@ -114,9 +116,8 @@ public class VendedorDAO extends GenericDaoImpl<Vendedor> {
 	}
 
 	@Override
-	public boolean update(Vendedor vendedor, int id) throws SQLException {
-
-		String password = vendedor.getPassword();
+	public boolean update(int idToUpdate, Vendedor updatedVendedor) throws SQLException {
+		String password = updatedVendedor.getPassword();
 		String bcryptHashString = BCrypt.withDefaults().hashToString(6, password.toCharArray());
 
 
@@ -125,16 +126,14 @@ public class VendedorDAO extends GenericDaoImpl<Vendedor> {
 				"WHERE id = ?";
 
 		try (PreparedStatement pstm = conn.prepareStatement(insertString)) {
-			//Cria um PreparedStatment, classe usada para executar a query
-
-			pstm.setString(1, vendedor.getNome());
-			pstm.setString(2, vendedor.getIdade());
-			pstm.setString(3, vendedor.getGenero());
-			pstm.setString(4, vendedor.getCpf());
-			pstm.setString(5, vendedor.getEmail());
+			pstm.setString(1, updatedVendedor.getNome());
+			pstm.setString(2, updatedVendedor.getIdade());
+			pstm.setString(3, updatedVendedor.getGenero());
+			pstm.setString(4, updatedVendedor.getCpf());
+			pstm.setString(5, updatedVendedor.getEmail());
 			pstm.setString(6, bcryptHashString);
-			pstm.setString(7, vendedor.getTelefone());
-			pstm.setInt(8, id);
+			pstm.setString(7, updatedVendedor.getTelefone());
+			pstm.setInt(8, idToUpdate);
 
 			log.info("Atualizando dados do usuario :: " + pstm);
 

@@ -19,6 +19,8 @@ public class VendedorController {
 
 	private final VendedorView vendedorView = new VendedorView();
 	private final PropriedadeView propriedadeView = new PropriedadeView();
+
+	private final PropriedadeDAO propriedadeDAO = new PropriedadeDAO();
 	private final VendedorDAO vendedorDAO = new VendedorDAO();
 	private final Vendedor vendedorAutenticado;
 
@@ -34,18 +36,29 @@ public class VendedorController {
 		new OptionsMenu()
 				.withTitle("Menu do Vendedor")
 				.withOptions(
-						new MenuOption("Consultar minhas propriedades cadastradas", this::consultarMinhasPropriedades),
+						new MenuOption("Listar minhas propriedades cadastradas", this::listarMinhasPropriedades),
+						new MenuOption("Editar propriedade cadastrada", this::editarPropriedadeCadastrada),
 						new MenuOption("Anunciar nova propriedade", () -> new PropriedadeController().venderPropriedade(vendedorAutenticado)),
 						new MenuOption("Alterar meus dados", this::atualizarDados),
 						new MenuOption("Consultar meus dados", this::consultarDados),
-						new MenuOption("Excluir meu cadastro", this::deletarComprador)
-				).runLoopInView(vendedorView);
+						new MenuOption("Excluir meu cadastro", this::deletarVendedor))
+				.runLoopInView(vendedorView);
 	}
 
-	private void consultarMinhasPropriedades() {
-		PropriedadeDAO propriedadeDAO = new PropriedadeDAO();
+	private void listarMinhasPropriedades() {
 		List<Propriedade> propriedades = propriedadeDAO.getPropriedadesOfVendedor(vendedorAutenticado.getId());
 		propriedadeView.listarPropriedades(propriedades);
+	}
+
+	private void editarPropriedadeCadastrada() {
+		vendedorView.solicitarIdParaConsulta();
+		int id = vendedorView.getNextInt();
+		Propriedade propriedade = propriedadeDAO.get(id);
+
+		Propriedade propriedadeEditada = vendedorView.editarPropriedadeCadastrada(propriedade);
+
+		if (propriedadeDAO.update(id, propriedadeEditada))
+			vendedorView.atualizacaoSuccess();
 	}
 
 	public VendedorController autenticado(Usuario user) {
@@ -74,18 +87,17 @@ public class VendedorController {
 		//update to db
 		Vendedor vendedor = vendedorView.atualizarVendedor();
 		try {
-			if (vendedorDAO.update(vendedor, vendedorAutenticado.getId()))
+			if (vendedorDAO.update(vendedorAutenticado.getId(), vendedor))
 				vendedorView.atualizacaoSuccess();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void deletarComprador() {
-		//update to db
-		int decision = vendedorView.getDeleteOption();
+	public void deletarVendedor() {
+		boolean confirm = vendedorView.confirmarAcao("Excluir sua conta. Essa ação é irreversível.");
 		try {
-			if (decision == 1) {
+			if (confirm) {
 				vendedorDAO.delete(vendedorAutenticado.getId());
 			} else {
 				vendedorView.noChangesWereMade();

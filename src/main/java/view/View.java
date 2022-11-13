@@ -11,50 +11,84 @@ public abstract class View {
 
 	protected Scanner sc = new Scanner(System.in);
 
-	protected void clearSystemIn() {
-		sc = new Scanner(System.in);
-	}
-
 	public void solicitarIdParaConsulta() {
 		System.out.print("Digite o id a ser consultado: ");
-	}
-
-	public Integer getInt() {
-		return sc.nextInt();
 	}
 
 	public boolean retryMenu() {
 		return List.of("y", "yes").contains(sc.nextLine());
 	}
 
-	protected Double validatedDoubleInput(String out) {
+	public int getNextInt() {
+		return getNextInt("", "Entrada inválida para tipo inteiro. Tente novamente.");
+	}
+
+	public int getNextInt(String outMessage, String failMessage) {
 		boolean valid = false;
-		Double val = null;
+		int val = 0;
 		do {
-			System.out.println(out);
 			try {
-				val = Double.parseDouble(sc.nextLine());
+				if (outMessage.length() > 0) {
+					System.out.println(outMessage);
+				}
+				val = Integer.parseInt(sc.nextLine());
 				valid = true;
 			} catch (NumberFormatException nfe) {
-				System.err.println("Entrada inválida para tipo Decimal. Tente novamente.");
+				System.err.println(failMessage);
 			}
 		} while (!valid);
 		return val;
 	}
 
-	protected Integer validatedIntegerInput(String out) {
+	public double getNextDouble(String outMessage, String failMessage) {
 		boolean valid = false;
-		Integer val = null;
+		double val = 0;
 		do {
-			System.out.println(out);
 			try {
-				val = Integer.parseInt(sc.nextLine());
+				if (outMessage.length() > 0) {
+					System.out.println(outMessage);
+				}
+				val = Double.parseDouble(sc.nextLine());
 				valid = true;
 			} catch (NumberFormatException nfe) {
-				System.err.println("Entrada inválida para tipo Decimal. Tente novamente.");
+				System.err.println(failMessage);
 			}
 		} while (!valid);
 		return val;
+	}
+
+	public boolean getNextBoolean(String outMessage) {
+		System.out.println(outMessage);
+		String nextline = sc.nextLine();
+		return List.of("yes", "y", "YES", "1").contains(nextline);
+	}
+
+	protected Integer validatedIntegerInput(String out) {
+		return getNextInt(out, "Entrada inválida para tipo inteiro. Tente novamente.");
+	}
+
+	protected Integer validatedLimitedIntegerOption(String out, int min, int max) {
+		boolean valid = false;
+		int val = 0;
+		do try {
+			if (out.length() > 0) {
+				System.out.println(out);
+			}
+			String nextLine = sc.nextLine();
+			val = Integer.parseInt(nextLine);
+			if (val < min || val > max) {
+				throw new InputMismatchException("");
+			} else {
+				valid = true;
+			}
+		} catch (InputMismatchException | NumberFormatException e) {
+			System.out.println("Opcao invalida, tente novamente.");
+		} while (!valid);
+		return val;
+	}
+
+	protected Double validatedDoubleInput(String out) {
+		return getNextDouble(out, "Entrada inválida para tipo decimal. Tente novamente.");
 	}
 
 	protected String lengthLimitedStringInput(String out, int maxLen) {
@@ -101,13 +135,20 @@ public abstract class View {
 		System.out.print("Digite uma opcao: ");
 	}
 
+	/**
+	 * Retorna o valor em formato Integer, que deve ser entre min e max.
+	 *
+	 * @param min O parametro minimo, inclusivo.
+	 * @param max O parametro maximo, inclusivo.
+	 * @return O integer parsed.
+	 */
 	public Integer getLimitedOption(int min, int max) {
 		boolean validOption = false;
 		Integer option = null;
 
 		while (!validOption) {
 			try {
-				option = sc.nextInt();
+				option = getNextInt();
 				if (option < min || option > max) {
 					throw new InputMismatchException("");
 				} else {
@@ -116,7 +157,6 @@ public abstract class View {
 			} catch (InputMismatchException e) {
 				System.out.println("Opcao invalida, tente novamente.");
 				System.out.println("Digite uma opcao: ");
-				sc.next();
 			}
 		}
 
@@ -150,4 +190,88 @@ public abstract class View {
 	public void noResults() {
 		System.out.println("Nenhum resultado encontrado.");
 	}
+
+	public boolean confirmarAcao(String acao) {
+		System.out.println("##      !  Confirmar ação  !      ##");
+		System.out.println("|----------------------------------");
+		System.out.println("| Você está prestes a: " + acao);
+		System.out.println("| Opcao 1 - Confirmar");
+		System.out.println("| Opcao 2 - Voltar atrás");
+		System.out.println("|----------------------------------");
+		return getNextBoolean("Digite uma opcao: ");
+	}
+
+	protected Integer getEditingLimitedIntegerOption(String param, Integer originalValue, int min, int max) {
+		boolean valid = false;
+		int val = 0;
+		do try {
+			System.out.println("| " + param + ": (" + originalValue.toString() + ") ");
+			String nextLine = sc.nextLine();
+			if (nextLine.equals("")) {
+				return originalValue;
+			}
+			val = Integer.parseInt(nextLine);
+			if (val < min || val > max) {
+				throw new InputMismatchException("");
+			} else {
+				valid = true;
+			}
+		} catch (InputMismatchException | NumberFormatException e) {
+			System.out.println("Opcao invalida, tente novamente.");
+		} while (!valid);
+		return val;
+	}
+
+	protected Integer getEditingIntegerOption(String param, Integer originalValue) {
+		boolean valid = false;
+		int val = 0;
+		do try {
+			System.out.println("| " + param + ": (" + originalValue.toString() + ") ");
+			String nextLine = sc.nextLine();
+			if (nextLine.equals("")) {
+				return originalValue;
+			}
+			val = Integer.parseInt(nextLine);
+			valid = true;
+		} catch (InputMismatchException | NumberFormatException e) {
+			System.out.println("Opcao invalida, tente novamente.");
+		} while (!valid);
+		return val;
+	}
+
+	protected Double getEditingDoubleValue(String param, Double originalValue) {
+		boolean valid = false;
+		double val = 0;
+		do try {
+			System.out.println("| " + param + ": (" + originalValue.toString() + ") ");
+			String nextLine = sc.nextLine();
+			if (nextLine.equals("")) {
+				return originalValue;
+			}
+			val = Double.parseDouble(nextLine);
+			valid = true;
+		} catch (NumberFormatException nfe) {
+			System.err.println("Parametro invalido, tente novamente.");
+		} while (!valid);
+		return val;
+	}
+
+	protected String getEditingStringValue(String param, String originalValue, int maxLen) {
+		boolean valid = false;
+		String in = "";
+		while (!valid) {
+			System.out.println("| " + param + ": ('" + originalValue + "') ");
+			in = sc.nextLine();
+			if (in.length() > maxLen) {
+				System.err.println("Excedeu tamanho máximo de caracteres. (" + maxLen + "). Tente novamente.");
+			} else if (in.equals("")) {
+				return originalValue;
+			} else {
+				valid = true;
+			}
+		}
+		return in;
+	}
+
+
 }

@@ -97,9 +97,52 @@ public class PropriedadeDAO extends GenericDaoImpl<Propriedade> {
 	}
 
 	@Override
-	public boolean update(Propriedade propriedade, int id) throws SQLException {
-		//TODO
-		return false;
+	public boolean update(int idToUpdate, Propriedade updatedPropriedade) {
+		String updateString = "UPDATE " + getTableName() +
+				" SET " +
+				"fk_tipo=?," +
+				"descricao=?," +
+				"area_total=?," +
+				"area_util=?," +
+				"quartos=?," +
+				"banheiros=?," +
+				"vagas_garagem=?," +
+				"preco=?," +
+				"valor_cond=?," +
+				"logradouro=?," +
+				"numero=?," +
+				"complemento=?," +
+				"cep=?," +
+				"bairro=?," +
+				"updated_at=?" +
+				" WHERE id = ?";
+
+		try (PreparedStatement pstm = conn.prepareStatement(updateString)) {
+			pstm.setObject(1, updatedPropriedade.getTipo());
+			pstm.setObject(2, updatedPropriedade.getDescricao());
+			pstm.setObject(3, updatedPropriedade.getATotal());
+			pstm.setObject(4, updatedPropriedade.getAUtil());
+			pstm.setObject(5, updatedPropriedade.getQuartos());
+			pstm.setObject(6, updatedPropriedade.getBanheiros());
+			pstm.setObject(7, updatedPropriedade.getVagasGaragem());
+			pstm.setObject(8, updatedPropriedade.getPreco());
+			pstm.setObject(9, updatedPropriedade.getValorCond());
+			pstm.setObject(10, updatedPropriedade.getLogradouro());
+			pstm.setObject(11, updatedPropriedade.getNumero());
+			pstm.setObject(12, updatedPropriedade.getComplemento());
+			pstm.setObject(13, updatedPropriedade.getCep());
+			pstm.setObject(14, updatedPropriedade.getBairro());
+			pstm.setObject(15, updatedPropriedade.getUpdatedAt());
+			pstm.setInt(16, idToUpdate);
+
+			log.info("Atualizando propriedade :: " + pstm);
+			pstm.execute();
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return false;
+		}
+
+		return true;
 	}
 
 	@Override

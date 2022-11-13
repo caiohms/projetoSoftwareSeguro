@@ -61,7 +61,7 @@ public class AdmDAO extends GenericDaoImpl<Adm> {
 	}
 
 	@Override
-	public boolean update(Adm adm, int id) {
+	public boolean update(int idToUpdate, Adm adm) {
 		// Admins cannot be updated
 		return false;
 	}

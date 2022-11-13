@@ -4,23 +4,6 @@ import model.Corretor;
 
 public class CorretorView extends View {
 
-	public Integer getCompradorOption() {
-		showOptionsComprador();
-		return sc.nextInt();
-	}
-
-	private void showOptionsComprador() {
-		System.out.print("\n##--Menu do Comprador--##\n\n");
-		System.out.print("|-----------------------------|\n");
-		System.out.print("| Opcao 1 - Ver Propriedades  |\n");
-		System.out.print("| Opcao 2 - Alterar Dados     |\n");
-		System.out.print("| Opcao 3 - Consultar Dados   |\n");
-		System.out.print("| Opcao 4 - Excluir Dados     |\n");
-		System.out.print("| Opcao 5 - Sair              |\n");
-		System.out.print("|-----------------------------|\n");
-		System.out.print("Digite uma opcao: ");
-	}
-
 	public Corretor realizarCadastro() {
 		Corretor novoCorretor = new Corretor();
 
@@ -90,11 +73,6 @@ public class CorretorView extends View {
 		return corretor;
 	}
 
-	public Integer getDeleteOption() {
-		deletaCorretor();
-		return sc.nextInt();
-	}
-
 	public void deletaCorretor() {
 		System.out.println("\n##--Voce deseja deletar o usuario --##");
 		System.out.println("|----------------------------------|");
@@ -102,7 +80,6 @@ public class CorretorView extends View {
 		System.out.println("| Opcao 2 - Não, não quero deletar |");
 		System.out.println("|----------------------------------|");
 		System.out.print("Digite uma opcao: ");
-
 	}
 
 	public void cadastroSuccess() {

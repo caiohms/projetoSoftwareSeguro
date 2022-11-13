@@ -115,24 +115,24 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 	}
 
 	@Override
-	public boolean update(Comprador comprador, int id) throws SQLException {
+	public boolean update(int idToUpdate, Comprador updatedComprador) throws SQLException {
 
-		String password = comprador.getPassword();
+		String password = updatedComprador.getPassword();
 		String bcryptHashString = BCrypt.withDefaults().hashToString(6, password.toCharArray());
 
-		String insertString = "UPDATE " + getTableName() + " " +
-				"SET nome = ?, idade = ?, sexo = ?, cpf = ?, email = ?, password = ?, telefone = ? " +
-				"WHERE id = ?";
+		String updateString = "UPDATE " + getTableName() +
+				" SET nome = ?, idade = ?, sexo = ?, cpf = ?, email = ?, password = ?, telefone = ?" +
+				" WHERE id = ?";
 
-		try (PreparedStatement pstm = conn.prepareStatement(insertString)) {
-			pstm.setString(1, comprador.getNome());
-			pstm.setString(2, comprador.getIdade());
-			pstm.setString(3, comprador.getSexo());
-			pstm.setString(4, comprador.getCpf());
-			pstm.setString(5, comprador.getEmail());
+		try (PreparedStatement pstm = conn.prepareStatement(updateString)) {
+			pstm.setString(1, updatedComprador.getNome());
+			pstm.setString(2, updatedComprador.getIdade());
+			pstm.setString(3, updatedComprador.getSexo());
+			pstm.setString(4, updatedComprador.getCpf());
+			pstm.setString(5, updatedComprador.getEmail());
 			pstm.setString(6, bcryptHashString);
-			pstm.setString(7, comprador.getTelefone());
-			pstm.setInt(8, id);
+			pstm.setString(7, updatedComprador.getTelefone());
+			pstm.setInt(8, idToUpdate);
 
 			log.info("Atualizando dados do usuario :: " + pstm);
 

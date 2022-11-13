@@ -43,9 +43,6 @@ public class CompradorView extends View {
 
 	public Comprador atualizaComprador(Comprador compradorAutenticado) {
 		// todo apertar enter para que nenhuma alteracao seja feita
-
-		clearSystemIn();
-
 		Comprador comprador = new Comprador();
 
 		System.out.println("##--Atualizar dados do Comprador--##");
@@ -77,20 +74,6 @@ public class CompradorView extends View {
 //		novoComprador.setPassword(sc.nextLine());
 
 		return comprador;
-	}
-
-	public Integer getDeleteOption() {
-		deletaComprador();
-		return sc.nextInt();
-	}
-
-	public void deletaComprador() {
-		System.out.println("## Deseja mesmo deletar o usuario? ##");
-		System.out.println("|----------------------------------|");
-		System.out.println("| Opcao 1 - Sim, quero deletar     |");
-		System.out.println("| Opcao 2 - Não, não quero deletar |");
-		System.out.println("|----------------------------------|");
-		System.out.print("Digite uma opcao: ");
 	}
 
 	public void cadastroSuccess() {
@@ -152,7 +135,6 @@ public class CompradorView extends View {
 	}
 
 	public String requestSearchString() {
-		clearSystemIn();
 		System.out.println("Digite a string de busca: ");
 		return sc.nextLine();
 	}

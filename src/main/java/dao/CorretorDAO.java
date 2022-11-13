@@ -120,7 +120,7 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
 	}
 
 	@Override
-	public boolean update(Corretor corretor, int id) throws SQLException {
+	public boolean update(int idToUpdate, Corretor updatedCorretor) throws SQLException {
 
 		String insertString = "UPDATE " + getTableName() + " " +
 				"SET nome = ?, idade = ?, sexo = ?, cpf = ?, email = ?, password = ?, telefone = ? " +
@@ -129,18 +129,18 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
 		try (PreparedStatement pstm = conn.prepareStatement(insertString)) {
 			//Cria um PreparedStatment, classe usada para executar a query
 
-			pstm.setString(1, corretor.getNome());
-			pstm.setString(2, corretor.getIdade());
-			pstm.setString(3, corretor.getSexo());
-			pstm.setString(4, corretor.getCpf());
-			pstm.setString(5, corretor.getEmail());
+			pstm.setString(1, updatedCorretor.getNome());
+			pstm.setString(2, updatedCorretor.getIdade());
+			pstm.setString(3, updatedCorretor.getSexo());
+			pstm.setString(4, updatedCorretor.getCpf());
+			pstm.setString(5, updatedCorretor.getEmail());
 
-			String password = corretor.getPassword();
+			String password = updatedCorretor.getPassword();
 			String bcryptHashString = BCrypt.withDefaults().hashToString(6, password.toCharArray());
 			pstm.setString(6, bcryptHashString);
 
-			pstm.setString(7, corretor.getTelefone());
-			pstm.setInt(8, id);
+			pstm.setString(7, updatedCorretor.getTelefone());
+			pstm.setInt(8, idToUpdate);
 
 			log.info("Atualizando dados do usuario :: " + pstm);
 
