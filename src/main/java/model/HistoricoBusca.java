@@ -6,8 +6,8 @@ import java.util.Date;
 
 @Data
 public class HistoricoBusca {
-	private final Integer id;
-	private final Integer comprador;
-	private final String busca;
-	private final Date datetime;
+	private Integer id;
+	private Integer comprador;
+	private String busca;
+	private Date datetime;
 }

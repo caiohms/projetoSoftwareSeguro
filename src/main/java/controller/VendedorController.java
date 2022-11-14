@@ -74,7 +74,7 @@ public class VendedorController {
 		}
 
 		try {
-			if (vendedorDAO.save(novoCadastro)) {
+			if (vendedorDAO.save(novoCadastro) != null) {
 				vendedorView.cadastroSuccess();
 			}
 		} catch (SQLException e) {

@@ -20,7 +20,7 @@ public class AdmView extends View {
 		System.out.println("Email:    " + comprador.getEmail());
 		System.out.println("Nome:     " + comprador.getNome());
 		System.out.println("Idade:    " + comprador.getIdade());
-		System.out.println("Sexo:     " + comprador.getSexo());
+		System.out.println("Genero:   " + comprador.getGenero());
 		System.out.println("Cpf:      " + comprador.getCpf());
 		System.out.println("Telefone: " + comprador.getTelefone());
 		System.out.println("|---------------------------------------");

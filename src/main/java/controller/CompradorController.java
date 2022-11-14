@@ -5,10 +5,7 @@ import controller.helper.OptionsMenu;
 import dao.*;
 import dao.helper.SearchEngine;
 import lombok.extern.slf4j.Slf4j;
-import model.Comprador;
-import model.Propriedade;
-import model.Usuario;
-import model.Vendedor;
+import model.*;
 import view.CompradorView;
 import view.PropriedadeView;
 import view.VendedorView;
@@ -24,6 +21,8 @@ public class CompradorController {
 	private final HistoricoBuscaDAO historicoBuscaDao = new HistoricoBuscaDAO();
 	private final PropriedadeDAO propriedadeDao = new PropriedadeDAO();
 	private final CompradorDAO compradorDao = new CompradorDAO();
+	private final VendedorDAO vendedorDao = new VendedorDAO();
+	private final EnderecoDAO enderecoDao = new EnderecoDAO();
 	private final Comprador compradorAutenticado;
 
 	public CompradorController() {
@@ -118,26 +117,47 @@ public class CompradorController {
 	}
 
 	private void consultarVendedorPorId() {
-		//todo
+		compradorView.solicitarIdParaConsulta();
+		int id = compradorView.getNextInt();
+		Vendedor vendedor = vendedorDao.get(id);
+		compradorView.showVendedor(vendedor);
 	}
 
 	private void listarTodosVendedores() {
 		VendedorDAO vendedorDAO = new VendedorDAO();
 		List<Vendedor> vendedores = vendedorDAO.getAll();
-		new VendedorView().listarVendedores(vendedores);
+		compradorView.listarVendedores(vendedores);
 	}
 
 	public void realizarCadastro() {
-		Comprador novoCadastro = null;
+		Comprador novoCadastroComprador = null;
 
-		while (!verificarCadastroValido(novoCadastro)) {
-			novoCadastro = compradorView.realizarCadastro();
+		while (!verificarCadastroValido(novoCadastroComprador)) {
+			novoCadastroComprador = compradorView.realizarCadastro();
 		}
 
 		try {
-			if (compradorDao.save(novoCadastro)) compradorView.cadastroSuccess();
+			if (compradorDao.save(novoCadastroComprador) != null) compradorView.cadastroSuccess();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+
+		oferecerCadastroEndereco(novoCadastroComprador);
+	}
+
+	private void oferecerCadastroEndereco(Comprador novoCadastroComprador) {
+		compradorView.oferecerCadastroEndereco();
+		boolean yes = compradorView.getNextBoolean("");
+		if (yes) {
+			Endereco endereco = compradorView.realizarCadastroEndereco();
+			try {
+				endereco = enderecoDao.save(endereco);
+				novoCadastroComprador.setEndereco(endereco.getId());
+				boolean success = compradorDao.update(novoCadastroComprador.getId(), novoCadastroComprador);
+				if (success) compradorView.cadastroSuccess();
+			} catch (SQLException e) {
+				log.error(e.getMessage(), e);
+			}
 		}
 	}
 

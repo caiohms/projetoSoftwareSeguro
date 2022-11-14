@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -41,7 +42,9 @@ public abstract class GenericDaoImpl<T> implements GenericDAO<T> {
 		return false;
 	}
 
-	public abstract List<T> getAll();
+	public List<T> getAll() {
+		return Collections.emptyList();
+	};
 
 	@Override
 	public void delete(int id) throws SQLException {

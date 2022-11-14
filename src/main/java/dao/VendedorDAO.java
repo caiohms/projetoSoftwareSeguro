@@ -9,6 +9,7 @@ import model.Vendedor;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,17 +61,14 @@ public class VendedorDAO extends GenericDaoImpl<Vendedor> {
 	}
 
 	@Override
-	public boolean save(Vendedor vendedor) throws SQLException {
-
+	public Vendedor save(Vendedor vendedor) throws SQLException {
 		String password = vendedor.getPassword();
 		String bcryptHashString = BCrypt.withDefaults().hashToString(6, password.toCharArray());
-
-
 		String insertString = "INSERT INTO " + getTableName() +
 				"(nome,idade,sexo,cpf,email,password,telefone)" +
 				" VALUES(?,?,?,?,?,?,?)";
 
-		try (PreparedStatement pstm = conn.prepareStatement(insertString)) {
+		try (PreparedStatement pstm = conn.prepareStatement(insertString, Statement.RETURN_GENERATED_KEYS)) {
 			//Cria um PreparedStatment, classe usada para executar a query
 
 			pstm.setString(1, vendedor.getNome());
@@ -82,16 +80,16 @@ public class VendedorDAO extends GenericDaoImpl<Vendedor> {
 			pstm.setString(7, vendedor.getTelefone());
 
 			log.info("Cadastrando usuario :: " + pstm);
-
-			//Executa a sql para inserção dos dados
 			pstm.execute();
-
+			ResultSet rs = pstm.getGeneratedKeys();
+			while (rs.next()) {
+				vendedor.setId(rs.getInt(1));
+			}
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
-			return false;
+			return null;
 		}
-
-		return true;
+		return vendedor;
 	}
 
 

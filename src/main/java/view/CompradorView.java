@@ -1,6 +1,8 @@
 package view;
 
 import model.Comprador;
+import model.Endereco;
+import model.Vendedor;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,37 +10,25 @@ import java.util.stream.Collectors;
 public class CompradorView extends View {
 
 	public Comprador realizarCadastro() {
-		Comprador novoComprador = new Comprador();
+		Comprador c = new Comprador();
 
-		System.out.println("##--Cadastro do Comprador--##");
-		System.out.println("|-----------------------------|");
-
-		System.out.print("| E-mail: ");
-		novoComprador.setEmail(sc.nextLine());
-
-		System.out.print("| Senha: ");
-		novoComprador.setPassword(sc.nextLine());
-
-		System.out.print("| Nome Completo: ");
-		novoComprador.setNome(sc.nextLine());
-
-		System.out.print("| Idade: ");
-		novoComprador.setIdade(sc.nextLine());
-
-		System.out.print("| Sexo: ");
-		novoComprador.setSexo(sc.nextLine());
-
-		System.out.print("| CPF: ");
-		novoComprador.setCpf(sc.nextLine());
-
-		System.out.print("| Telefone: ");
-		novoComprador.setTelefone(sc.nextLine());
-
-//		System.out.print("| Endereco: \n");
-//		String endereco = sc.nextLine();
-//		novoComprador.setPassword(sc.nextLine());
-
-		return novoComprador;
+		System.out.println("##   Cadastro do Comprador   ##");
+		System.out.println("|-----------------------------");
+		String email = lengthLimitedStringInput("| E-mail: ", 100);
+		String senha = lengthLimitedStringInput("| Senha: ", 255);
+		String nome = lengthLimitedStringInput("| Nome Completo: ", 50);
+		String idade = lengthLimitedStringInput("| Idade: ", 2);
+		String genero = lengthLimitedStringInput("| Genero: ", 1);
+		String cpf = lengthLimitedStringInput("| CPF: ", 11);
+		String telefone = lengthLimitedStringInput("| Telefone: ", 13);
+		c.setEmail(email);
+		c.setPassword(senha);
+		c.setNome(nome);
+		c.setIdade(idade);
+		c.setGenero(genero);
+		c.setCpf(cpf);
+		c.setTelefone(telefone);
+		return c;
 	}
 
 	public Comprador atualizaComprador(Comprador compradorAutenticado) {
@@ -60,8 +50,8 @@ public class CompradorView extends View {
 		System.out.print("| Idade: ");
 		comprador.setIdade(sc.nextLine());
 
-		System.out.print("| Sexo: ");
-		comprador.setSexo(sc.nextLine());
+		System.out.print("| Genero: ");
+		comprador.setGenero(sc.nextLine());
 
 		System.out.print("| CPF: ");
 		comprador.setCpf(sc.nextLine());
@@ -82,7 +72,7 @@ public class CompradorView extends View {
 				new Object[]{"id", 5},
 				new Object[]{"nome", 20},
 				new Object[]{"idade", 8},
-				new Object[]{"sexo", 6},
+				new Object[]{"genero", 6},
 				new Object[]{"cpf", 14},
 				new Object[]{"email", 40},
 				new Object[]{"telefone", 20}
@@ -95,7 +85,7 @@ public class CompradorView extends View {
 						c.getId(),
 						c.getNome(),
 						c.getIdade(),
-						c.getSexo(),
+						c.getGenero(),
 						c.getCpf(),
 						c.getEmail(),
 						c.getTelefone()))
@@ -111,7 +101,7 @@ public class CompradorView extends View {
 		System.out.println("| Email:    " + comprador.getEmail());
 		System.out.println("| Nome:     " + comprador.getNome());
 		System.out.println("| Idade:    " + comprador.getIdade());
-		System.out.println("| Sexo:     " + comprador.getSexo());
+		System.out.println("| Genero:   " + comprador.getGenero());
 		System.out.println("| Cpf:      " + comprador.getCpf());
 		System.out.println("| Telefone: " + comprador.getTelefone());
 //		System.out.println("| Endereco: " + comprador.getEndereco());
@@ -121,5 +111,50 @@ public class CompradorView extends View {
 	public String requestSearchString() {
 		System.out.println("Digite a string de busca: ");
 		return sc.nextLine();
+	}
+
+	public void showVendedor(Vendedor vendedor) {
+		System.out.println("##   Dados do vendedor: " + vendedor.getId() + "   ##");
+		System.out.println("|---------------------------------------");
+		System.out.println("| Nome:     " + vendedor.getNome());
+		System.out.println("| Genero: " + vendedor.getGenero());
+		System.out.println("| Telefone: " + vendedor.getTelefone());
+		System.out.println("|---------------------------------------");
+	}
+
+	public void listarVendedores(List<Vendedor> vendedores) {
+		List<Object[]> columns = List.of(
+				new Object[]{"id", 5},
+				new Object[]{"nome", 40}
+		);
+
+		List<List<?>> data = vendedores
+				.stream()
+				.map(v -> List.of(
+						v.getId(),
+						v.getNome()))
+				.collect(Collectors.toList());
+
+		tabelarDados(columns, data);
+	}
+
+	public Endereco realizarCadastroEndereco() {
+		Endereco endereco = new Endereco();
+
+		System.out.println("##   Cadastro de endereco   ##");
+		System.out.print("| Logradouro: ");
+		String logradouro = sc.nextLine();
+		endereco.setLogradouro(logradouro);
+
+		System.out.print("| Numero: ");
+		String numero = sc.nextLine();
+		endereco.setNumero(numero);
+
+		System.out.print("| Complemento: ");
+		String complemento = sc.nextLine();
+		endereco.setComplemento(complemento);
+		endereco.setFkCidade(1);
+
+		return endereco;
 	}
 }

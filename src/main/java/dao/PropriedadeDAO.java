@@ -7,6 +7,7 @@ import model.Propriedade;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,11 +40,11 @@ public class PropriedadeDAO extends GenericDaoImpl<Propriedade> {
 	}
 
 	@Override
-	public boolean save(Propriedade propriedade) throws SQLException {
+	public Propriedade save(Propriedade propriedade) throws SQLException {
 		String insertString = "INSERT INTO " + getTableName() +
 				"(id,fk_Vendedor,fk_Corretor,fk_status,fk_tipo,descricao,area_total,area_util,quartos,banheiros,vagas_garagem,preco,valor_cond,logradouro,numero,complemento,cep,bairro,uf,created_at,updated_at)" + " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-		try (PreparedStatement pstm = conn.prepareStatement(insertString)) {
+		try (PreparedStatement pstm = conn.prepareStatement(insertString, Statement.RETURN_GENERATED_KEYS)) {
 			pstm.setObject(1, null);
 			pstm.setObject(2, propriedade.getVendedor());
 			pstm.setObject(3, propriedade.getCorretor());
@@ -67,14 +68,16 @@ public class PropriedadeDAO extends GenericDaoImpl<Propriedade> {
 			pstm.setObject(21, new Date());
 
 			log.info("Persistindo propriedade :: " + pstm);
-
 			pstm.execute();
+			ResultSet rs = pstm.getGeneratedKeys();
+			while (rs.next()) {
+				propriedade.setId(rs.getInt(1));
+			}
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
-			return false;
+			return null;
 		}
-
-		return true;
+		return propriedade;
 	}
 
 	@Override

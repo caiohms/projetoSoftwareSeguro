@@ -137,6 +137,14 @@ public abstract class View {
 		System.out.println("A idade digitada é inválida");
 	}
 
+	public void noResults() {
+		System.out.println("Nenhum resultado encontrado.");
+	}
+
+	public void oferecerCadastroEndereco(){
+		System.out.println("Deseja cadastrar um endereco? [y/n]");
+	}
+
 	public void displayOptionsMenu(OptionsMenu optionsMenu) {
 		System.out.println();
 		System.out.println("##          " + optionsMenu.getTitle() + "         ##");
@@ -201,10 +209,6 @@ public abstract class View {
 			System.out.printf(formattedRow.toString(), o.toArray());
 			System.out.printf(formattedDivisor, divisorElements);
 		}
-	}
-
-	public void noResults() {
-		System.out.println("Nenhum resultado encontrado.");
 	}
 
 	public boolean confirmarAcao(String acao) {
@@ -288,5 +292,4 @@ public abstract class View {
 		}
 		return in;
 	}
-
 }

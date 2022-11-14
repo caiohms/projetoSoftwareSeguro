@@ -24,7 +24,7 @@ public class PropriedadeController {
 		novaPropriedade.setVendedor(vendedorAutenticado.getId());
 
 		try {
-			if (propriedadeDAO.save(novaPropriedade)) {
+			if (propriedadeDAO.save(novaPropriedade) != null) {
 				propriedadeView.cadastroSuccess();
 			}
 		} catch (SQLException e) {

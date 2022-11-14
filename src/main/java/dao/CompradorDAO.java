@@ -9,6 +9,7 @@ import model.Usuario;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,36 +65,35 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 	}
 
 	@Override
-	public boolean save(Comprador comprador) throws SQLException {
-
+	public Comprador save(Comprador comprador) throws SQLException {
 		String insertString = "INSERT INTO " + getTableName() +
 				"(nome,idade,sexo,cpf,email,password,telefone)" +
 				" VALUES(?,?,?,?,?,?,?)";
 
-		try (PreparedStatement pstm = conn.prepareStatement(insertString)) {
+		try (PreparedStatement pstm = conn.prepareStatement(insertString, Statement.RETURN_GENERATED_KEYS)) {
 			//Cria um PreparedStatment, classe usada para executar a query
 			String password = comprador.getPassword();
 			String bcryptHashString = BCrypt.withDefaults().hashToString(6, password.toCharArray());
 
 			pstm.setString(1, comprador.getNome());
 			pstm.setString(2, comprador.getIdade());
-			pstm.setString(3, comprador.getSexo());
+			pstm.setString(3, comprador.getGenero());
 			pstm.setString(4, comprador.getCpf());
 			pstm.setString(5, comprador.getEmail());
 			pstm.setString(6, bcryptHashString);
 			pstm.setString(7, comprador.getTelefone());
 
 			log.info("Cadastrando usuario :: " + pstm);
-
-			//Executa a sql para inserção dos dados
 			pstm.execute();
-
+			ResultSet rs = pstm.getGeneratedKeys();
+			while (rs.next()) {
+				comprador.setId(rs.getInt(1));
+			}
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
-			return false;
+			return null;
 		}
-
-		return true;
+		return comprador;
 	}
 
 	@Override
@@ -121,22 +121,21 @@ public class CompradorDAO extends GenericDaoImpl<Comprador> {
 		String bcryptHashString = BCrypt.withDefaults().hashToString(6, password.toCharArray());
 
 		String updateString = "UPDATE " + getTableName() +
-				" SET nome = ?, idade = ?, sexo = ?, cpf = ?, email = ?, password = ?, telefone = ?" +
+				" SET nome = ?, idade = ?, sexo = ?, cpf = ?, email = ?, password = ?, telefone = ?, fk_endereco = ?" +
 				" WHERE id = ?";
 
 		try (PreparedStatement pstm = conn.prepareStatement(updateString)) {
-			pstm.setString(1, updatedComprador.getNome());
-			pstm.setString(2, updatedComprador.getIdade());
-			pstm.setString(3, updatedComprador.getSexo());
-			pstm.setString(4, updatedComprador.getCpf());
-			pstm.setString(5, updatedComprador.getEmail());
-			pstm.setString(6, bcryptHashString);
-			pstm.setString(7, updatedComprador.getTelefone());
-			pstm.setInt(8, idToUpdate);
+			pstm.setObject(1, updatedComprador.getNome());
+			pstm.setObject(2, updatedComprador.getIdade());
+			pstm.setObject(3, updatedComprador.getGenero());
+			pstm.setObject(4, updatedComprador.getCpf());
+			pstm.setObject(5, updatedComprador.getEmail());
+			pstm.setObject(6, bcryptHashString);
+			pstm.setObject(7, updatedComprador.getTelefone());
+			pstm.setObject(8, updatedComprador.getEndereco());
+			pstm.setObject(9, idToUpdate);
 
 			log.info("Atualizando dados do usuario :: " + pstm);
-
-			//Executa a sql para inserção dos dados
 			pstm.execute();
 
 		} catch (Exception e) {

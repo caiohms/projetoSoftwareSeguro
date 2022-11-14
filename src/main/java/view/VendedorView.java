@@ -90,7 +90,6 @@ public class VendedorView extends View {
 	}
 
 	public void listarVendedores(List<Vendedor> vendedores) {
-
 		List<Object[]> columns = List.of(
 				new Object[]{"id", 5},
 				new Object[]{"nome", 40},

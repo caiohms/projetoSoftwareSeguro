@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 // CRUD operations
 public interface GenericDAO<T> {
-	boolean save(T t) throws SQLException;
+	T save(T t) throws SQLException;
 
 	T get(int id) throws SQLException;
 

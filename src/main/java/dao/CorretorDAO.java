@@ -9,6 +9,7 @@ import model.Usuario;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 @Slf4j
@@ -48,8 +49,7 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
 	}
 
 	@Override
-	public boolean save(Corretor corretor) throws SQLException {
-
+	public Corretor save(Corretor corretor) throws SQLException {
 		String password = corretor.getPassword();
 		String bcryptHashString = BCrypt.withDefaults().hashToString(6, password.toCharArray());
 
@@ -57,7 +57,7 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
 				"(nome,idade,sexo,cpf,email,password,telefone)" +
 				" VALUES(?,?,?,?,?,?,?)";
 
-		try (PreparedStatement pstm = conn.prepareStatement(insertString)) {
+		try (PreparedStatement pstm = conn.prepareStatement(insertString, Statement.RETURN_GENERATED_KEYS)) {
 			//Cria um PreparedStatment, classe usada para executar a query
 
 			pstm.setString(1, corretor.getNome());
@@ -69,16 +69,16 @@ public class CorretorDAO extends GenericDaoImpl<Corretor> {
 			pstm.setString(7, corretor.getTelefone());
 
 			log.info("Cadastrando usuario :: " + pstm);
-
-			//Executa a sql para inserção dos dados
 			pstm.execute();
-
+			ResultSet rs = pstm.getGeneratedKeys();
+			while (rs.next()) {
+				corretor.setId(rs.getInt(1));
+			}
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
-			return false;
+			return null;
 		}
-
-		return true;
+		return corretor;
 	}
 
 	@Override

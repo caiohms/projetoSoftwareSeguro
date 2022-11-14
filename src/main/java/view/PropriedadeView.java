@@ -10,8 +10,8 @@ public class PropriedadeView extends View {
 	public Propriedade cadastrar() {
 		Propriedade p = new Propriedade();
 
-		System.out.println("##-- Cadastro de Propriedade --##");
-		System.out.println("|-------------------------------|");
+		System.out.println("##   Cadastro de Propriedade   ##");
+		System.out.println("|-------------------------------");
 
 		System.out.println("| Tipos disponiveis: ");
 		System.out.println("|    (1) Casa residencial ");

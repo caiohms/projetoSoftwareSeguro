@@ -50,9 +50,9 @@ public class AdmDAO extends GenericDaoImpl<Adm> {
 		return Collections.emptyList();
 	}
 
-	public boolean save(Adm adm) throws SQLException {
+	public Adm save(Adm adm) throws SQLException {
 		// Admins cannot be added
-		return false;
+		return null;
 	}
 
 	public Adm get(int id) {
