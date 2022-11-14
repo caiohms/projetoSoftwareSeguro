@@ -67,15 +67,39 @@ public class VendedorController {
 	}
 
 	public void realizarCadastro() {
-		Vendedor novoCadastro = vendedorView.realizarCadastro();
-		//save to db
+		Vendedor novoCadastro = null;
+
+		while (verificarCadastroValido(novoCadastro)) {
+			novoCadastro = vendedorView.realizarCadastro();
+		}
 
 		try {
-			if (vendedorDAO.save(novoCadastro))
+			if (vendedorDAO.save(novoCadastro)) {
 				vendedorView.cadastroSuccess();
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private boolean verificarCadastroValido(Vendedor novoCadastro) {
+		if (novoCadastro == null) {
+			return true;
+		}
+
+		if (vendedorDAO.checkTakenEmail(novoCadastro.getEmail())) {
+			vendedorView.sendEmailAlreadyExists();
+			return true;
+		}
+
+		try {
+			Integer.parseInt(novoCadastro.getIdade());
+		} catch (NumberFormatException e) {
+			vendedorView.sendInvalidAge();
+			return true;
+		}
+
+		return false;
 	}
 
 	private void consultarDados() {

@@ -81,12 +81,4 @@ public class CorretorView extends View {
 		System.out.println("|----------------------------------|");
 		System.out.print("Digite uma opcao: ");
 	}
-
-	public void cadastroSuccess() {
-		System.out.println("Cadastro efetuado com sucesso.");
-	}
-
-	public void atualizacaoSuccess() {
-		System.out.println("Atualização de dados efetuada com sucesso.");
-	}
 }

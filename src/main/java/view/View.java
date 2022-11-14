@@ -121,6 +121,22 @@ public abstract class View {
 		sc.nextLine();
 	}
 
+	public void cadastroSuccess() {
+		System.out.println("Cadastro efetuado com sucesso.");
+	}
+
+	public void atualizacaoSuccess() {
+		System.out.println("Atualização de dados efetuada com sucesso.");
+	}
+
+	public void sendEmailAlreadyExists() {
+		System.out.println("Erro: O email digitado já foi cadastrado.");
+	}
+
+	public void sendInvalidAge() {
+		System.out.println("A idade digitada é inválida");
+	}
+
 	public void displayOptionsMenu(OptionsMenu optionsMenu) {
 		System.out.println();
 		System.out.println("##          " + optionsMenu.getTitle() + "         ##");

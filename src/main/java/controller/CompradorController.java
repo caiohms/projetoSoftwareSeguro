@@ -2,10 +2,7 @@ package controller;
 
 import controller.helper.MenuOption;
 import controller.helper.OptionsMenu;
-import dao.CompradorDAO;
-import dao.HistoricoBuscaDAO;
-import dao.PropriedadeDAO;
-import dao.VendedorDAO;
+import dao.*;
 import dao.helper.SearchEngine;
 import lombok.extern.slf4j.Slf4j;
 import model.Comprador;

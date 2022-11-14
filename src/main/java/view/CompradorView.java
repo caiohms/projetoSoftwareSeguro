@@ -76,22 +76,6 @@ public class CompradorView extends View {
 		return comprador;
 	}
 
-	public void cadastroSuccess() {
-		System.out.println("Cadastro efetuado com sucesso.");
-	}
-
-	public void atualizacaoSuccess() {
-		System.out.println("Atualização de dados efetuada com sucesso.");
-	}
-
-	public void sendEmailAlreadyExists() {
-		System.out.println("Erro: O email digitado já foi cadastrado.");
-	}
-
-	public void sendInvalidAge() {
-		System.out.println("A idade digitada é inválida");
-	}
-
 	public void listarCompradores(List<Comprador> compradores) {
 
 		List<Object[]> columns = List.of(

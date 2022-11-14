@@ -12,28 +12,28 @@ public class VendedorView extends View {
 	public Vendedor realizarCadastro() {
 		Vendedor novoVendedor = new Vendedor();
 
-		System.out.println("\n##--Cadastro do Vendedor--##\n");
-		System.out.println("|-----------------------------|");
+		System.out.println("##   Cadastro do Vendedor   ##");
+		System.out.println("|-----------------------------");
 
-		System.out.println("| E-mail: ");
+		System.out.print("| E-mail: ");
 		novoVendedor.setEmail(sc.nextLine());
 
-		System.out.println("| Senha: ");
+		System.out.print("| Senha: ");
 		novoVendedor.setPassword(sc.nextLine());
 
-		System.out.println("| Nome Completo: ");
+		System.out.print("| Nome Completo: ");
 		novoVendedor.setNome(sc.nextLine());
 
-		System.out.println("| Idade: ");
+		System.out.print("| Idade: ");
 		novoVendedor.setIdade(sc.nextLine());
 
-		System.out.println("| Sexo: ");
+		System.out.print("| Sexo: ");
 		novoVendedor.setGenero(sc.nextLine());
 
-		System.out.println("| CPF: ");
+		System.out.print("| CPF: ");
 		novoVendedor.setCpf(sc.nextLine());
 
-		System.out.println("| Telefone: ");
+		System.out.print("| Telefone: ");
 		novoVendedor.setTelefone(sc.nextLine());
 
 //		System.out.print("| Endereco: \n");
@@ -75,14 +75,6 @@ public class VendedorView extends View {
 //		novoComprador.setPassword(sc.nextLine());
 
 		return vendedor;
-	}
-
-	public void cadastroSuccess() {
-		System.out.println("Cadastro efetuado com sucesso.");
-	}
-
-	public void atualizacaoSuccess() {
-		System.out.println("Atualização de dados efetuada com sucesso.");
 	}
 
 	public void exibirDados(Vendedor vendedorAutenticado) {

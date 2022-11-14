@@ -54,10 +54,6 @@ public class PropriedadeView extends View {
 		return p;
 	}
 
-	public void cadastroSuccess() {
-		System.out.println("Propriedade cadastrada com sucesso.");
-	}
-
 	public void listarPropriedades(List<Propriedade> propriedades) {
 
 		List<Object[]> columns = List.of(
