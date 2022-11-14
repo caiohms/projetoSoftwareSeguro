@@ -23,11 +23,9 @@ public class VendedorDAO extends GenericDaoImpl<Vendedor> {
 
 		String selectionString = "SELECT * FROM " + getTableName() + " WHERE email = ?";
 
-		ResultSet rs;
-
 		try (PreparedStatement ps = conn.prepareStatement(selectionString)) {
 			ps.setString(1, user.getEmail());
-			rs = ps.executeQuery();
+			ResultSet rs = ps.executeQuery();
 
 			if (rs.next()) {
 				return DatabaseConverter.convertVendedor(rs);

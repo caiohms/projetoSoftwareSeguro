@@ -3,6 +3,7 @@ package controller;
 import controller.helper.MenuOption;
 import controller.helper.OptionsMenu;
 import dao.CompradorDAO;
+import dao.HistoricoBuscaDAO;
 import dao.PropriedadeDAO;
 import dao.VendedorDAO;
 import dao.helper.SearchEngine;
@@ -23,6 +24,7 @@ public class CompradorController {
 
 	private final CompradorView compradorView = new CompradorView();
 
+	private final HistoricoBuscaDAO historicoBuscaDao = new HistoricoBuscaDAO();
 	private final PropriedadeDAO propriedadeDao = new PropriedadeDAO();
 	private final CompradorDAO compradorDao = new CompradorDAO();
 	private final Comprador compradorAutenticado;
@@ -46,7 +48,6 @@ public class CompradorController {
 				.runLoopInView(compradorView);
 	}
 
-
 	public void autenticado(Usuario user) {
 		Comprador c = compradorDao.getCompradorFromUsuario(user);
 		new CompradorController(c);
@@ -69,6 +70,7 @@ public class CompradorController {
 
 	private void realizarBuscaPropriedades() {
 		String searchString = compradorView.requestSearchString();
+		historicoBuscaDao.registrarBusca(this.compradorAutenticado, searchString);
 		List<Propriedade> propriedades = new SearchEngine().getPropriedadesPorDescricao(searchString);
 		if (propriedades.isEmpty())
 			compradorView.noResults();

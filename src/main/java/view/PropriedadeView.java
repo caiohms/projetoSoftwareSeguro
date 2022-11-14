@@ -76,7 +76,7 @@ public class PropriedadeView extends View {
 				new Object[]{"valor cond.", 10},
 				new Object[]{"logradouro", 30},
 				new Object[]{"numero", 10},
-				new Object[]{"compl", 10},
+				new Object[]{"complemento", 20},
 				new Object[]{"cep", 10},
 				new Object[]{"bairro", 15},
 				new Object[]{"uf", 5},
