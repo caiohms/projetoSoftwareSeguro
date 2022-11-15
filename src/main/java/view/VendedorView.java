@@ -1,9 +1,7 @@
 package view;
 
-import model.Propriedade;
 import model.Vendedor;
 
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,74 +11,47 @@ public class VendedorView extends View {
 		Vendedor novoVendedor = new Vendedor();
 
 		System.out.println("##   Cadastro do Vendedor   ##");
-		System.out.println("|-----------------------------");
+		divisor();
 
-		System.out.print("| E-mail: ");
-		novoVendedor.setEmail(sc.nextLine());
-
-		System.out.print("| Senha: ");
-		novoVendedor.setPassword(sc.nextLine());
-
-		System.out.print("| Nome Completo: ");
-		novoVendedor.setNome(sc.nextLine());
-
-		System.out.print("| Idade: ");
-		novoVendedor.setIdade(sc.nextLine());
-
-		System.out.print("| Sexo: ");
-		novoVendedor.setGenero(sc.nextLine());
-
-		System.out.print("| CPF: ");
-		novoVendedor.setCpf(sc.nextLine());
-
-		System.out.print("| Telefone: ");
-		novoVendedor.setTelefone(sc.nextLine());
-
-//		System.out.print("| Endereco: \n");
-//		String endereco = sc.nextLine();
-//		novoComprador.setPassword(sc.nextLine());
-
+		String email = lengthLimitedStringInput("| E-mail: ", 100);
+		String senha = lengthLimitedStringInput("| Senha: ", 255);
+		String nome = lengthLimitedStringInput("| Nome Completo: ", 50);
+		String idade = lengthLimitedStringInput("| Idade: ", 2);
+		String genero = lengthLimitedStringInput("| Genero: ", 1);
+		String cpf = lengthLimitedStringInput("| CPF: ", 11);
+		String telefone = lengthLimitedStringInput("| Telefone: ", 13);
+		novoVendedor.setEmail(email);
+		novoVendedor.setPassword(senha);
+		novoVendedor.setNome(nome);
+		novoVendedor.setIdade(idade);
+		novoVendedor.setGenero(genero);
+		novoVendedor.setCpf(cpf);
+		novoVendedor.setTelefone(telefone);
 		return novoVendedor;
 	}
 
-	public Vendedor atualizarVendedor() {
-		Vendedor vendedor = new Vendedor();
+	public Vendedor atualizarVendedor(Vendedor vendedorAutenticado) {
+		Vendedor vModificado = new Vendedor();
 
-		System.out.println("\n##--Atualizar dados do Comprador--##\n");
-		System.out.println("|-----------------------------|");
+		System.out.println("##  Atualizar dados do Vendedor  ##");
+		divisor();
+		System.out.println("| Nota: deixe em branco para não realizar alterações no campo.");
 
-		System.out.print("| E-mail: \n");
-		vendedor.setEmail(sc.nextLine());
+		vModificado.setEmail(getEditingStringValue("Email", vendedorAutenticado.getEmail(), 100));
+		vModificado.setPassword(getEditingPasswordValue("Senha", vendedorAutenticado.getPassword(), 100));
+		vModificado.setNome(getEditingStringValue("Nome Completo", vendedorAutenticado.getNome(), 255));
+		vModificado.setIdade(getEditingStringValue("Idade", vendedorAutenticado.getIdade(), 2));
+		vModificado.setGenero(getEditingStringValue("Genero", vendedorAutenticado.getGenero(), 1));
+		vModificado.setCpf(getEditingStringValue("CPF", vendedorAutenticado.getCpf(), 11));
+		vModificado.setTelefone(getEditingStringValue("Telefone", vendedorAutenticado.getTelefone(), 13));
+		// endereco
 
-		System.out.print("| Senha: \n");
-		vendedor.setPassword(sc.nextLine());
-
-		System.out.print("| Nome Completo: \n");
-		vendedor.setNome(sc.nextLine());
-
-		System.out.print("| Idade: \n");
-		vendedor.setIdade(sc.nextLine());
-
-		System.out.print("| Sexo: \n");
-		vendedor.setGenero(sc.nextLine());
-
-		System.out.print("| CPF: \n");
-		vendedor.setCpf(sc.nextLine());
-
-		System.out.print("| Telefone: \n");
-		vendedor.setTelefone(sc.nextLine());
-
-//		System.out.print("| Endereco: \n");
-//		String endereco = sc.nextLine();
-//		novoComprador.setPassword(sc.nextLine());
-
-		return vendedor;
+		return vModificado;
 	}
 
 	public void exibirDados(Vendedor vendedorAutenticado) {
-
 		System.out.println("\n##-- Dados do vendedor autenticado --##\n");
-		System.out.println("|-----------------------------|");
+		divisor();
 		System.out.println("| E-mail: " + vendedorAutenticado.getEmail());
 		System.out.println("| Nome Completo: " + vendedorAutenticado.getNome());
 		System.out.println("| Idade: " + vendedorAutenticado.getIdade());

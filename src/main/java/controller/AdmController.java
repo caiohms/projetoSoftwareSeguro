@@ -130,14 +130,13 @@ public class AdmController {
 				.withOptions(
 						new MenuOption("Exibir dados", () -> exibirComprador(comprador)),
 						new MenuOption("Exibir historico de busca", () -> exibirHistoricoBuscaComprador(comprador)),
-						new MenuOption("Editar dados", () -> admView.admExibirComprador(comprador)),
+						new MenuOption("Editar dados", () -> new CompradorController().alterarDados(comprador)),
 						new MenuOption("Excluir", () -> deletarComprador(comprador))
 				)
 				.runLoopInView(admView);
 	}
 
 	// ===== COMPRADOR ===================
-
 	private void exibirComprador(Comprador comprador) {
 		admView.admExibirComprador(comprador);
 	}
@@ -157,20 +156,12 @@ public class AdmController {
 			log.error(e.getMessage(), e);
 		}
 	}
-
 	//================================
 
 	public void consultarVendedor() {
 		int id = admView.getNextInt();
 		Vendedor vendedor = vendedorDao.get(id);
 		admView.exibirVendedor(vendedor);
-	}
-
-	private void buscarCorretorPorId() {
-		admView.solicitarIdParaConsulta();
-		int id = admView.getNextInt();
-		Corretor corretor = corretorDao.get(id);
-		admView.exibirCorretor(corretor);
 	}
 
 	private void buscarVendedorPorId() {
@@ -198,6 +189,13 @@ public class AdmController {
 //		} catch (SQLException e) {
 //			log.error(e.getMessage(), e);
 //		}
+//	}
+
+//	private void buscarCorretorPorId() {
+//		admView.solicitarIdParaConsulta();
+//		int id = admView.getNextInt();
+//		Corretor corretor = corretorDao.get(id);
+//		admView.exibirCorretor(corretor);
 //	}
 
 //	public void atualizarDadosCorretor() {

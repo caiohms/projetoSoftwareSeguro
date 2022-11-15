@@ -24,14 +24,14 @@ public class MainView extends View {
 	}
 
 	private void showOptionsMenu() {
-		System.out.print("\n##-------LarDoceJar Menu-------##\n\n");
-		System.out.print("|-------------------------------|\n");
+		System.out.print("\n##      LarDoceJar Menu      ##\n\n");
+		divisor();
 		System.out.print("| Opcao 1 - Login Comprador     |\n");
 		System.out.print("| Opcao 2 - Login Vendedor      |\n");
 		System.out.print("| Opcao 3 - Cadastrar Usuario   |\n");
 		System.out.print("| Opcao 4 - Login Administrador |\n");
 		System.out.print("| Opcao 5 - Sair                |\n");
-		System.out.print("|-------------------------------|\n");
+		divisor();
 		System.out.print("Digite uma opção: ");
 	}
 

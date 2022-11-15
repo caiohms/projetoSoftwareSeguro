@@ -13,7 +13,7 @@ public class CompradorView extends View {
 		Comprador c = new Comprador();
 
 		System.out.println("##   Cadastro do Comprador   ##");
-		System.out.println("|-----------------------------");
+		divisor();
 		String email = lengthLimitedStringInput("| E-mail: ", 100);
 		String senha = lengthLimitedStringInput("| Senha: ", 255);
 		String nome = lengthLimitedStringInput("| Nome Completo: ", 50);
@@ -32,38 +32,21 @@ public class CompradorView extends View {
 	}
 
 	public Comprador atualizaComprador(Comprador compradorAutenticado) {
-		// todo apertar enter para que nenhuma alteracao seja feita
-		Comprador comprador = new Comprador();
+		Comprador cModificado = new Comprador();
 
-		System.out.println("##--Atualizar dados do Comprador--##");
-		System.out.println("|-----------------------------|");
+		System.out.println("##  Atualizar dados do Comprador  ##");
+		divisor();
+		System.out.println("| Nota: deixe em branco para não realizar alterações no campo.");
+		cModificado.setEmail(getEditingStringValue("Email", compradorAutenticado.getEmail(), 100));
+		cModificado.setPassword(getEditingPasswordValue("Senha", compradorAutenticado.getPassword(), 100));
+		cModificado.setNome(getEditingStringValue("Nome Completo", compradorAutenticado.getNome(), 255));
+		cModificado.setIdade(getEditingStringValue("Idade", compradorAutenticado.getIdade(), 2));
+		cModificado.setGenero(getEditingStringValue("Genero", compradorAutenticado.getGenero(), 1));
+		cModificado.setCpf(getEditingStringValue("CPF", compradorAutenticado.getCpf(), 11));
+		cModificado.setTelefone(getEditingStringValue("Telefone", compradorAutenticado.getTelefone(), 13));
+		// endereco
 
-		System.out.print("| E-mail: ");
-		comprador.setEmail(sc.nextLine());
-
-		System.out.print("| Senha: ");
-		comprador.setPassword(sc.nextLine());
-
-		System.out.print("| Nome Completo: ");
-		comprador.setNome(sc.nextLine());
-
-		System.out.print("| Idade: ");
-		comprador.setIdade(sc.nextLine());
-
-		System.out.print("| Genero: ");
-		comprador.setGenero(sc.nextLine());
-
-		System.out.print("| CPF: ");
-		comprador.setCpf(sc.nextLine());
-
-		System.out.print("| Telefone: ");
-		comprador.setTelefone(sc.nextLine());
-
-//		System.out.print("| Endereco: \n");
-//		String endereco = sc.nextLine();
-//		novoComprador.setPassword(sc.nextLine());
-
-		return comprador;
+		return cModificado;
 	}
 
 	public void listarCompradores(List<Comprador> compradores) {
@@ -97,7 +80,7 @@ public class CompradorView extends View {
 
 	public void exibirMeusDados(Comprador comprador) {
 		System.out.println("##   Meu perfil de comprador   ##");
-		System.out.println("|---------------------------------------");
+		divisor();
 		System.out.println("| Email:    " + comprador.getEmail());
 		System.out.println("| Nome:     " + comprador.getNome());
 		System.out.println("| Idade:    " + comprador.getIdade());
@@ -105,7 +88,7 @@ public class CompradorView extends View {
 		System.out.println("| Cpf:      " + comprador.getCpf());
 		System.out.println("| Telefone: " + comprador.getTelefone());
 //		System.out.println("| Endereco: " + comprador.getEndereco());
-		System.out.println("|---------------------------------------");
+		divisor();
 	}
 
 	public String requestSearchString() {
@@ -115,11 +98,11 @@ public class CompradorView extends View {
 
 	public void showVendedor(Vendedor vendedor) {
 		System.out.println("##   Dados do vendedor: " + vendedor.getId() + "   ##");
-		System.out.println("|---------------------------------------");
+		divisor();
 		System.out.println("| Nome:     " + vendedor.getNome());
 		System.out.println("| Genero: " + vendedor.getGenero());
 		System.out.println("| Telefone: " + vendedor.getTelefone());
-		System.out.println("|---------------------------------------");
+		divisor();
 	}
 
 	public void listarVendedores(List<Vendedor> vendedores) {

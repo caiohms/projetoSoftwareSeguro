@@ -8,7 +8,7 @@ public class CorretorView extends View {
 		Corretor novoCorretor = new Corretor();
 
 		System.out.println("\n##--Cadastro do Corretor--##\n");
-		System.out.println("|-----------------------------|");
+		divisor();
 
 		System.out.println("| E-mail: ");
 		novoCorretor.setEmail(sc.nextLine());
@@ -43,7 +43,7 @@ public class CorretorView extends View {
 
 		System.out.println();
 		System.out.println("##--Atualizar dados do Corretor--##");
-		System.out.println("|-----------------------------|");
+		divisor();
 
 		System.out.println("| E-mail: ");
 		corretor.setEmail(sc.nextLine());
@@ -75,10 +75,10 @@ public class CorretorView extends View {
 
 	public void deletaCorretor() {
 		System.out.println("\n##--Voce deseja deletar o usuario --##");
-		System.out.println("|----------------------------------|");
+		divisor();
 		System.out.println("| Opcao 1 - Sim, quero deletar     |");
 		System.out.println("| Opcao 2 - Não, não quero deletar |");
-		System.out.println("|----------------------------------|");
+		divisor();
 		System.out.print("Digite uma opcao: ");
 	}
 }

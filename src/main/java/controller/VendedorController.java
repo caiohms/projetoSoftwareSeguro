@@ -101,10 +101,12 @@ public class VendedorController {
 	}
 
 	public void atualizarDados() {
-		//update to db
-		Vendedor vendedor = vendedorView.atualizarVendedor();
+		this.atualizarDados(this.vendedorAutenticado);
+	}
+	public void atualizarDados(Vendedor v) {
+		Vendedor vendedorAtualizado = vendedorView.atualizarVendedor(v);
 		try {
-			if (vendedorDAO.update(vendedorAutenticado.getId(), vendedor))
+			if (vendedorDAO.update(v.getId(), vendedorAtualizado))
 				vendedorView.atualizacaoSuccess();
 		} catch (SQLException e) {
 			e.printStackTrace();

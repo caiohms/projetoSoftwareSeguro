@@ -82,7 +82,7 @@ public abstract class View {
 				valid = true;
 			}
 		} catch (InputMismatchException | NumberFormatException e) {
-			System.out.println("Opcao invalida, tente novamente.");
+			sendOpcaoInvalida();
 		} while (!valid);
 		return val;
 	}
@@ -137,12 +137,20 @@ public abstract class View {
 		System.out.println("A idade digitada é inválida");
 	}
 
+	public void sendOpcaoInvalida() {
+		System.out.println("Opcao invalida, tente novamente.");
+	}
+
 	public void noResults() {
 		System.out.println("Nenhum resultado encontrado.");
 	}
 
 	public void oferecerCadastroEndereco(){
 		System.out.println("Deseja cadastrar um endereco? [y/n]");
+	}
+
+	protected void divisor() {
+		System.out.println("|---------------------------------------");
 	}
 
 	public void displayOptionsMenu(OptionsMenu optionsMenu) {
@@ -179,7 +187,7 @@ public abstract class View {
 					validOption = true;
 				}
 			} catch (InputMismatchException e) {
-				System.out.println("Opcao invalida, tente novamente.");
+				sendOpcaoInvalida();
 				System.out.println("Digite uma opcao: ");
 			}
 		}
@@ -213,11 +221,11 @@ public abstract class View {
 
 	public boolean confirmarAcao(String acao) {
 		System.out.println("##      !  Confirmar ação  !      ##");
-		System.out.println("|----------------------------------");
+		divisor();
 		System.out.println("| Você está prestes a: " + acao);
 		System.out.println("| Opcao 1 - Confirmar");
 		System.out.println("| Opcao 2 - Voltar atrás");
-		System.out.println("|----------------------------------");
+		divisor();
 		return getNextBoolean("Digite uma opcao: ");
 	}
 
@@ -225,7 +233,7 @@ public abstract class View {
 		boolean valid = false;
 		int val = 0;
 		do try {
-			System.out.println("| " + param + ": (" + originalValue.toString() + ") ");
+			System.out.print("| " + param + " (" + originalValue.toString() + ") : ");
 			String nextLine = sc.nextLine();
 			if (nextLine.equals("")) {
 				return originalValue;
@@ -237,7 +245,7 @@ public abstract class View {
 				valid = true;
 			}
 		} catch (InputMismatchException | NumberFormatException e) {
-			System.out.println("Opcao invalida, tente novamente.");
+			sendOpcaoInvalida();
 		} while (!valid);
 		return val;
 	}
@@ -246,7 +254,7 @@ public abstract class View {
 		boolean valid = false;
 		int val = 0;
 		do try {
-			System.out.println("| " + param + ": (" + originalValue.toString() + ") ");
+			System.out.print("| " + param + " (" + originalValue.toString() + ") : ");
 			String nextLine = sc.nextLine();
 			if (nextLine.equals("")) {
 				return originalValue;
@@ -254,7 +262,7 @@ public abstract class View {
 			val = Integer.parseInt(nextLine);
 			valid = true;
 		} catch (InputMismatchException | NumberFormatException e) {
-			System.out.println("Opcao invalida, tente novamente.");
+			sendOpcaoInvalida();
 		} while (!valid);
 		return val;
 	}
@@ -263,7 +271,7 @@ public abstract class View {
 		boolean valid = false;
 		double val = 0;
 		do try {
-			System.out.println("| " + param + ": (" + originalValue.toString() + ") ");
+			System.out.print("| " + param + " (" + originalValue.toString() + ") : ");
 			String nextLine = sc.nextLine();
 			if (nextLine.equals("")) {
 				return originalValue;
@@ -280,10 +288,27 @@ public abstract class View {
 		boolean valid = false;
 		String in = "";
 		while (!valid) {
-			System.out.println("| " + param + ": ('" + originalValue + "') ");
+			System.out.print("| " + param + " ('" + originalValue + "') : ");
 			in = sc.nextLine();
 			if (in.length() > maxLen) {
-				System.err.println("Excedeu tamanho máximo de caracteres. (" + maxLen + "). Tente novamente.");
+				System.err.println("Excedeu tamanho máximo de caracteres (" + maxLen + "). Tente novamente.");
+			} else if (in.equals("")) {
+				return originalValue;
+			} else {
+				valid = true;
+			}
+		}
+		return in;
+	}
+
+	protected String getEditingPasswordValue(String param, String originalValue, int maxLen) {
+		boolean valid = false;
+		String in = "";
+		while (!valid) {
+			System.out.print("| " + param + " ('****') : ");
+			in = sc.nextLine();
+			if (in.length() > maxLen) {
+				System.err.println("Excedeu tamanho máximo de caracteres (" + maxLen + "). Tente novamente.");
 			} else if (in.equals("")) {
 				return originalValue;
 			} else {

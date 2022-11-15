@@ -23,7 +23,7 @@ public class CompradorController {
 	private final CompradorDAO compradorDao = new CompradorDAO();
 	private final VendedorDAO vendedorDao = new VendedorDAO();
 	private final EnderecoDAO enderecoDao = new EnderecoDAO();
-	private final Comprador compradorAutenticado;
+	private Comprador compradorAutenticado;
 
 	public CompradorController() {
 		compradorAutenticado = null;
@@ -38,7 +38,7 @@ public class CompradorController {
 				.withOptions(
 						new MenuOption("Consultar Propriedades", this::consultarPropriedades),
 						new MenuOption("Consultar Vendedores", this::consultarVendedores),
-						new MenuOption("Alterar Dados", this::atualizarDados),
+						new MenuOption("Alterar Dados", this::alterarDados),
 						new MenuOption("Consultar Dados", this::consultarDados),
 						new MenuOption("Excluir Dados", this::deletarComprador))
 				.runLoopInView(compradorView);
@@ -181,10 +181,14 @@ public class CompradorController {
 		return true;
 	}
 
-	public void atualizarDados() {
-		Comprador comprador = compradorView.atualizaComprador(this.compradorAutenticado);
+	public void alterarDados() {
+		this.alterarDados(this.compradorAutenticado);
+	}
+
+	public void alterarDados(Comprador c) {
+		Comprador compradorAtualizado = compradorView.atualizaComprador(c);
 		try {
-			if (compradorDao.update(this.compradorAutenticado.getId(), comprador)) {
+			if (compradorDao.update(c.getId(), compradorAtualizado)) {
 				compradorView.atualizacaoSuccess();
 			}
 		} catch (SQLException e) {

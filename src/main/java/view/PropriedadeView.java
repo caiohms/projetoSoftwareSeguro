@@ -12,14 +12,8 @@ public class PropriedadeView extends View {
 		Propriedade p = new Propriedade();
 
 		System.out.println("##   Cadastro de Propriedade   ##");
-		System.out.println("|-------------------------------");
-
-		System.out.println("| Tipos disponiveis: ");
-		System.out.println("|    (1) Casa residencial ");
-		System.out.println("|    (2) Apartamento ");
-		System.out.println("|    (3) Terreno ");
-		System.out.println("|    (4) Comercial ");
-		System.out.println("|    (5) Industrial ");
+		divisor();
+		exibirTiposDisponiveis();
 		Integer tipo = validatedLimitedIntegerOption("| Tipo: ", 1, 5);
 		String descricao = lengthLimitedStringInput("| Descricao: ", 1024);
 		Double aTotal = validatedDoubleInput("| Metragem total (m2): ");
@@ -112,7 +106,7 @@ public class PropriedadeView extends View {
 
 	public void showPropriedade(Propriedade propriedade) {
 		System.out.println("##   Consulta de Propriedade   ##");
-		System.out.println("|---------------------------------------");
+		divisor();
 		if (propriedade.getDescricao() != null) System.out.println("| Descricao: " + propriedade.getDescricao());
 		if (propriedade.getATotal() != null) System.out.println("| Area total (m2): " + propriedade.getATotal());
 		if (propriedade.getAUtil() != null) System.out.println("| Area util (m2): " + propriedade.getAUtil());
@@ -129,19 +123,14 @@ public class PropriedadeView extends View {
 		if (propriedade.getCep() != null) System.out.println("| CEP (somente numeros): " + propriedade.getCep());
 		if (propriedade.getBairro() != null) System.out.println("| Bairro: " + propriedade.getBairro());
 		if (propriedade.getEstado() != null) System.out.println("| Estado (sigla): " + propriedade.getEstado());
-		System.out.println("|---------------------------------------");
+		divisor();
 	}
 
 	public Propriedade editarPropriedadeCadastrada(Propriedade propriedadeOriginal) {
 		Propriedade pModificada = new Propriedade();
 		System.out.println("\n##    Atualizar proprieadade cadastrada    ##\n");
-		System.out.println("|-----------------------------");
-		System.out.println("| Tipos disponiveis: ");
-		System.out.println("|    (1) Casa residencial ");
-		System.out.println("|    (2) Apartamento ");
-		System.out.println("|    (3) Terreno ");
-		System.out.println("|    (4) Comercial ");
-		System.out.println("|    (5) Industrial ");
+		divisor();
+		exibirTiposDisponiveis();
 		pModificada.setTipo(getEditingLimitedIntegerOption("Tipo", propriedadeOriginal.getTipo(), 1, 5));
 		pModificada.setDescricao(getEditingStringValue("Descricao", propriedadeOriginal.getDescricao(), 1024));
 		pModificada.setATotal(getEditingDoubleValue("Area total", propriedadeOriginal.getATotal()));
@@ -158,6 +147,15 @@ public class PropriedadeView extends View {
 		pModificada.setBairro(getEditingStringValue("Bairro", propriedadeOriginal.getBairro(), 30));
 		pModificada.setUpdatedAt(new Date());
 		return pModificada;
+	}
+
+	private void exibirTiposDisponiveis() {
+		System.out.println("| Tipos disponiveis: ");
+		System.out.println("|    (1) Casa residencial ");
+		System.out.println("|    (2) Apartamento ");
+		System.out.println("|    (3) Terreno ");
+		System.out.println("|    (4) Comercial ");
+		System.out.println("|    (5) Industrial ");
 	}
 
 	public void modificarPropriedadeNaoAutorizado() {
