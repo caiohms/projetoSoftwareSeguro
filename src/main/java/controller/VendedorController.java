@@ -51,19 +51,12 @@ public class VendedorController {
 	}
 
 	private void editarPropriedadeCadastrada() {
-		vendedorView.solicitarIdParaConsulta();
-		int id = vendedorView.getNextInt();
-		Propriedade propriedade = propriedadeDAO.get(id);
-
-		Propriedade propriedadeEditada = vendedorView.editarPropriedadeCadastrada(propriedade);
-
-		if (propriedadeDAO.update(id, propriedadeEditada))
-			vendedorView.atualizacaoSuccess();
+		new PropriedadeController().editarPropriedadeVendedor(vendedorAutenticado);
 	}
 
-	public VendedorController autenticado(Usuario user) {
+	public void autenticado(Usuario user) {
 		Vendedor v = vendedorDAO.getVendedorFromUsuario(user);
-		return new VendedorController(v);
+		new VendedorController(v);
 	}
 
 	public void realizarCadastro() {

@@ -36,4 +36,19 @@ public class PropriedadeController {
 		// validacoes adicionais caso necessario
 		return p != null;
 	}
+
+	public void editarPropriedadeVendedor(Vendedor vendedorAutenticado) {
+		propriedadeView.solicitarIdParaConsulta();
+		int id = propriedadeView.getNextInt();
+		Propriedade propriedade = propriedadeDAO.get(id);
+		if (propriedade.getVendedor() != vendedorAutenticado.getId()) {
+			propriedadeView.modificarPropriedadeNaoAutorizado();
+			return;
+		}
+
+		Propriedade propriedadeEditada = propriedadeView.editarPropriedadeCadastrada(propriedade);
+
+		if (propriedadeDAO.update(id, propriedadeEditada))
+			propriedadeView.atualizacaoSuccess();
+	}
 }

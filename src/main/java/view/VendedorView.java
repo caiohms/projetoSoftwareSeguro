@@ -110,36 +110,4 @@ public class VendedorView extends View {
 
 		tabelarDados(columns, data);
 	}
-
-	public Propriedade editarPropriedadeCadastrada(Propriedade propriedadeOriginal) {
-
-		Propriedade pModificada = new Propriedade();
-
-		System.out.println("\n##    Atualizar proprieadade cadastrada    ##\n");
-		System.out.println("|-----------------------------");
-
-		System.out.println("| Tipos disponiveis: ");
-		System.out.println("|    (1) Casa residencial ");
-		System.out.println("|    (2) Apartamento ");
-		System.out.println("|    (3) Terreno ");
-		System.out.println("|    (4) Comercial ");
-		System.out.println("|    (5) Industrial ");
-		pModificada.setTipo(getEditingLimitedIntegerOption("Tipo", propriedadeOriginal.getTipo(), 1, 5));
-
-		pModificada.setDescricao(getEditingStringValue("Descricao", propriedadeOriginal.getDescricao(), 1024));
-		pModificada.setATotal(getEditingDoubleValue("Area total", propriedadeOriginal.getATotal()));
-		pModificada.setAUtil(getEditingDoubleValue("Area util", propriedadeOriginal.getAUtil()));
-		pModificada.setQuartos(getEditingIntegerOption("Quartos", propriedadeOriginal.getQuartos()));
-		pModificada.setBanheiros(getEditingIntegerOption("Banheiros", propriedadeOriginal.getBanheiros()));
-		pModificada.setVagasGaragem(getEditingIntegerOption("Vagas garagem", propriedadeOriginal.getVagasGaragem()));
-		pModificada.setPreco(getEditingDoubleValue("Preco", propriedadeOriginal.getPreco()));
-		pModificada.setValorCond(getEditingDoubleValue("Valor condominio", propriedadeOriginal.getValorCond()));
-		pModificada.setLogradouro(getEditingStringValue("Logradouro", propriedadeOriginal.getLogradouro(), 255));
-		pModificada.setNumero(getEditingStringValue("Numero", propriedadeOriginal.getNumero(), 10));
-		pModificada.setComplemento(getEditingStringValue("Complemento", propriedadeOriginal.getComplemento(), 255));
-		pModificada.setCep(getEditingStringValue("CEP", propriedadeOriginal.getCep(), 8));
-		pModificada.setBairro(getEditingStringValue("Bairro", propriedadeOriginal.getBairro(), 30));
-		pModificada.setUpdatedAt(new Date());
-		return pModificada;
-	}
 }
