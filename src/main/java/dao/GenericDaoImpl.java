@@ -44,7 +44,7 @@ public abstract class GenericDaoImpl<T> implements GenericDAO<T> {
 
 	public List<T> getAll() {
 		return Collections.emptyList();
-	};
+	}
 
 	@Override
 	public void delete(int id) throws SQLException {

@@ -182,18 +182,20 @@ public class CompradorController {
 	}
 
 	public void alterarDados() {
-		this.alterarDados(this.compradorAutenticado);
+		this.compradorAutenticado = this.alterarDados(this.compradorAutenticado);
 	}
 
-	public void alterarDados(Comprador c) {
+	public Comprador alterarDados(Comprador c) {
 		Comprador compradorAtualizado = compradorView.atualizaComprador(c);
 		try {
 			if (compradorDao.update(c.getId(), compradorAtualizado)) {
 				compradorView.atualizacaoSuccess();
+				return compradorAtualizado;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return c;
 	}
 
 	public void deletarComprador() {
