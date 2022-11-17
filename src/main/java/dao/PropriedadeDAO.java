@@ -97,7 +97,6 @@ public class PropriedadeDAO extends GenericDaoImpl<Propriedade> {
 				return null;
 			}
 		}
-
 		return propriedade;
 	}
 
