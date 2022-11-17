@@ -72,7 +72,28 @@ public class AdmView extends View {
 			return;
 		}
 
-		//TODO
+		System.out.println("##   Visualizar Propriedade  ##");
+		divisor();
+		System.out.println("ID: " + propriedade.getId());
+		System.out.println("Vendedor: " + propriedade.getVendedor());
+		System.out.println("Corretor: " + propriedade.getCorretor());
+		System.out.println("Status: " + propriedade.getStatus());
+		System.out.println("Tipo: " + propriedade.getTipo());
+		System.out.println("Descricao: " + propriedade.getDescricao());
+		System.out.println("Area total: " + propriedade.getATotal());
+		System.out.println("Area util: " + propriedade.getAUtil());
+		System.out.println("Quartos: " + propriedade.getQuartos());
+		System.out.println("Banheiros: " + propriedade.getBanheiros());
+		System.out.println("Vagas garagem: " + propriedade.getVagasGaragem());
+		System.out.println("Preco: " + propriedade.getPreco());
+		System.out.println("Valor Condominio: " + propriedade.getValorCond());
+		System.out.println("Logradouro: " + propriedade.getLogradouro());
+		System.out.println("Numero: " + propriedade.getNumero());
+		System.out.println("Complemento: " + propriedade.getComplemento());
+		System.out.println("CEP: " + propriedade.getCep());
+		System.out.println("Bairro: " + propriedade.getBairro());
+		System.out.println("Estado: " + propriedade.getEstado());
+		divisor();
 
 	}
 
