@@ -66,8 +66,9 @@ public class PropriedadeDAO extends GenericDaoImpl<Propriedade> {
 			pstm.setObject(19, propriedade.getEstado());
 			pstm.setObject(20, new Date());
 			pstm.setObject(21, new Date());
+			saveImage(propriedade);
 
-			log.info("Persistindo propriedade :: " + pstm);
+			log.info("Persistindo imagem :: " + pstm);
 			pstm.execute();
 			ResultSet rs = pstm.getGeneratedKeys();
 			while (rs.next()) {
@@ -77,6 +78,26 @@ public class PropriedadeDAO extends GenericDaoImpl<Propriedade> {
 			log.error(e.getMessage(), e);
 			return null;
 		}
+		return propriedade;
+	}
+
+	public Propriedade saveImage(Propriedade propriedade){
+		ArrayList<String> imagens = propriedade.getImagens();
+
+		for(String imagem : imagens){
+			String insertString = "INSERT INTO " + "imagem" +
+					"(id,linkImagem)" + " VALUES(?,?)";
+			try (PreparedStatement pstm = conn.prepareStatement(insertString, Statement.RETURN_GENERATED_KEYS)) {
+				pstm.setObject(1, propriedade.getId());
+				pstm.setObject(2, imagem);
+				log.info("Persistindo imagem :: " + pstm);
+				pstm.execute();
+			} catch (Exception e) {
+				log.error(e.getMessage(), e);
+				return null;
+			}
+		}
+
 		return propriedade;
 	}
 
