@@ -9,7 +9,7 @@ import java.sql.SQLException;
 @Slf4j
 public class DatabaseConSingleton {
 
-	private static final String DB_ADDR = "localhost";
+	private static final String DB_ADDR = "192.168.100.5";
 	private static final String DB_PORT = "3306";
 	private static final String DB_NAME = "lino";
 	private static final String DB_USER = "lino";

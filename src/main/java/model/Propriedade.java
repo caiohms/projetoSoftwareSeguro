@@ -2,7 +2,6 @@ package model;
 
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 @Data
@@ -29,5 +28,4 @@ public class Propriedade {
 	private Integer estado;
 	private Date createdAt;
 	private Date updatedAt;
-	private ArrayList<String> imagens;
 }

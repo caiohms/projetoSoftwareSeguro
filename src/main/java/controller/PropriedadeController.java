@@ -2,11 +2,13 @@ package controller;
 
 import dao.PropriedadeDAO;
 import lombok.extern.slf4j.Slf4j;
+import model.Imagem;
 import model.Propriedade;
 import model.Vendedor;
 import view.PropriedadeView;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Slf4j
 public class PropriedadeController {
@@ -23,12 +25,25 @@ public class PropriedadeController {
 
 		novaPropriedade.setVendedor(vendedorAutenticado.getId());
 
+		Propriedade saved = null;
 		try {
-			if (propriedadeDAO.save(novaPropriedade) != null) {
+			saved = propriedadeDAO.save(novaPropriedade);
+			if (saved != null) {
 				propriedadeView.cadastroSuccess();
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error(e.getMessage(), e);
+		}
+
+		oferecerCadastroImagens(saved);
+	}
+
+	private void oferecerCadastroImagens(Propriedade p) {
+		boolean yes = propriedadeView.getNextBoolean("Deseja cadastrar imagens? [y/n]");
+		if (yes) {
+			List<Imagem> imagens = propriedadeView.cadastrarImagens(p);
+			boolean ok = propriedadeDAO.saveImages(imagens);
+			if (ok) propriedadeView.cadastroSuccess();
 		}
 	}
 

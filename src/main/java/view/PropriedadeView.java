@@ -1,8 +1,12 @@
 package view;
 
+import model.Imagem;
 import model.Propriedade;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class PropriedadeView extends View {
@@ -27,7 +31,6 @@ public class PropriedadeView extends View {
 		String compl = lengthLimitedStringInput("| Complemento: ", 255);
 		String cep = lengthLimitedStringInput("| CEP (somente numeros): ", 8);
 		String bairro = lengthLimitedStringInput("| Bairro: ", 30);
-		ArrayList<String> imagens = cadastrarImagens(new ArrayList<>());
 
 //		String estado = lengthLimitedStringInput("| Estado (sigla): ", 2);
 
@@ -46,20 +49,24 @@ public class PropriedadeView extends View {
 		p.setCep(cep);
 		p.setBairro(bairro);
 		p.setEstado(1); // PR
-		p.setImagens(imagens); // PR
 
 		return p;
 	}
 
-	public ArrayList<String> cadastrarImagens(ArrayList<String> imagens){
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Deseja cadastrar uma imagem? (s/n");
-		if(sc.nextLine().toLowerCase(Locale.ROOT).equals("s")){
-			String imagem = lengthLimitedStringInput("| Link imagem: ", 300);
-			imagens.add(imagem);
-			return cadastrarImagens(imagens);
+	public List<Imagem> cadastrarImagens(Propriedade p) {
+		boolean done = false;
+		List<Imagem> imgs = new ArrayList<>();
+		while (!done) {
+			if (getNextBoolean("Deseja cadastrar mais uma imagem? (y/n)")) {
+				Imagem i = new Imagem();
+				i.setId(null);
+				i.setUrl(lengthLimitedStringInput("| Link imagem: ", 300));
+				i.setPropriedadeFk(p.getId());
+				imgs.add(i);
+			} else done = true;
 		}
-		return imagens;
+
+		return imgs;
 	}
 
 	public void listarPropriedades(List<Propriedade> propriedades) {

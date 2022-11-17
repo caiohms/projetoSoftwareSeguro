@@ -2,6 +2,7 @@ package dao;
 
 import dao.helper.DatabaseConverter;
 import lombok.extern.slf4j.Slf4j;
+import model.Imagem;
 import model.Propriedade;
 
 import java.sql.PreparedStatement;
@@ -66,7 +67,6 @@ public class PropriedadeDAO extends GenericDaoImpl<Propriedade> {
 			pstm.setObject(19, propriedade.getEstado());
 			pstm.setObject(20, new Date());
 			pstm.setObject(21, new Date());
-			saveImage(propriedade);
 
 			log.info("Persistindo imagem :: " + pstm);
 			pstm.execute();
@@ -81,23 +81,22 @@ public class PropriedadeDAO extends GenericDaoImpl<Propriedade> {
 		return propriedade;
 	}
 
-	public Propriedade saveImage(Propriedade propriedade){
-		ArrayList<String> imagens = propriedade.getImagens();
+	public boolean saveImages(List<Imagem> imgs) {
+		for (Imagem i : imgs) {
+			String insertString = "INSERT INTO " + "imagem" + " (id,image_url, id_Propriedade)" + " VALUES(?,?,?)";
 
-		for(String imagem : imagens){
-			String insertString = "INSERT INTO " + "imagem" +
-					"(id,linkImagem)" + " VALUES(?,?)";
 			try (PreparedStatement pstm = conn.prepareStatement(insertString, Statement.RETURN_GENERATED_KEYS)) {
-				pstm.setObject(1, propriedade.getId());
-				pstm.setObject(2, imagem);
+				pstm.setObject(1, i.getId());
+				pstm.setObject(2, i.getUrl());
+				pstm.setObject(3, i.getPropriedadeFk());
 				log.info("Persistindo imagem :: " + pstm);
 				pstm.execute();
 			} catch (Exception e) {
 				log.error(e.getMessage(), e);
-				return null;
+				return false;
 			}
 		}
-		return propriedade;
+		return true;
 	}
 
 	@Override

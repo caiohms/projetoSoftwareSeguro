@@ -1,8 +1,12 @@
 package model;
 
+import lombok.Data;
+
+@Data
 public class Imagem {
 
-	private String localAddress;
-
+	private Integer id;
+	private String url;
+	private Integer propriedadeFk;
 
 }
